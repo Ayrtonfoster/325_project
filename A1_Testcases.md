@@ -1,5 +1,4 @@
-﻿
-##R7.1 - Logout will invalid the current session and redirect to the login page. After logout, the user shouldn't be able to access restricted pages.  
+﻿##R7.1 - Logout will invalid the current session and redirect to the login page. After logout, the user shouldn't be able to access restricted pages.  
 
 ###Testcase R7.1.1 - Confirm after logout that user is redirected to the login page
 Mocking:   

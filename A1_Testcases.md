@@ -77,6 +77,17 @@ open /logout (invalidate any logged-in sessions that may exist))
 open /nonexistantpage  
 validate a 404 error is returned  
 
+## Testcase R8.1 - For any other requests except the ones above, the system should return a 404 error   
+
+### Testcase R8.1.1 - Confirm that requested urls other than the listed requests (/, /login, /logout, /sell, /update, /buy) fail to be accessed and a 404 error is returned
+Mocking:   
+N/A  
+
+Actions:  
+open /nonexistentpage  
+validate users is returned a 404 error  
+
+
 
 
 

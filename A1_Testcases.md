@@ -88,7 +88,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   click element  `#update_submit`
@@ -119,7 +119,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   click element  `#update_submit`
@@ -151,7 +151,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   click element  `#update_submit`
@@ -182,7 +182,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's price into element  `#update_price`
@@ -215,7 +215,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's price into element  `#update_price`
@@ -248,7 +248,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's price into element  `#update_price`
@@ -281,7 +281,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's date into element  `#update_date`
@@ -312,7 +312,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's date into element  `#update_date`
@@ -343,7 +343,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's date into element  `#update_date`
@@ -375,7 +375,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   click element  `#update_submit`
@@ -407,7 +407,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   enter test_ticket's date into element  `#update_date`
@@ -439,7 +439,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
+-   open /
 -   enter test_ticket's name into element  `#update_name`
 -   enter test_ticket's quantity into element  `#update_quantity`
 -   click element  `#update_submit`

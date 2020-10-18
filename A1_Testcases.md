@@ -471,7 +471,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -503,7 +503,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -535,7 +535,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -566,7 +566,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -598,7 +598,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -638,7 +638,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`
@@ -678,7 +678,7 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /buy
+-   open /
 -   enter test_ticket's name into element  `#buy_name`
 -   enter test_ticket's quantity into element  `#buy_quantity`
 -   click element  `#buy_submit`

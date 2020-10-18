@@ -1,21 +1,46 @@
-﻿# TestCases R5
+﻿
+# CMPE327 A1 Web App Test Cases 
+### R1 /login
+#### Test Case R1.1.1 If the user hasn't logged in, show the login page
+Test Data: None
+Mocking:
+ - Mock backend.get_user to check if user has previously logged in
 
-## R5
-### Test case R5.0.1 - /update[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
-Test Data:
+Actions:
+ - open /logout (invalidate previous login)
+ - run website startup with `python -m qa327`
+ - check URL contains /login using `self.get_current_url()` from Selenium
+#### Test Case R1.1.2 If the user hasn't logged in, show the login page
+Test Data: None
+Mocking: 
+ - Mock backend.get_user to check if user has previously logged in
+ 
+Actions:
+ - open /logout (invalidate previous login)
+ - run website startup with `python -m qa327`
+ - open /
+ - check URL contains /login using `self.get_current_url()` from Selenium
+#### Test Case R1.2.1 the login page has a message that by default says 'please login'
+Test Data: None
+Mocking:
+ - Mock backend.get_user to check if user has previously logged in
+
+Actions:
+ - run website startup with `python -m qa327`
+ - open /login
+ - Check `#message` element exists and contains message 'please login'
+
+#### Test Case R1.3.1 If the user has logged in, redirect to the user profile page
+Test Data: 
 ```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_test_ticket_@69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
+test_user = User(
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password=generate_password_hash('test_frontend')
+	)
 ```
 Mocking:
-
 -   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
 
 Actions:
 
@@ -24,829 +49,743 @@ Actions:
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /update
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `Error: Alphanumeric characherts only`
--   open /logout (clean up)
+-   open /login again
+-   validate that current page contains  `#welcome-header`  element
 
-
-### Test case R5.1 - /update[POST] The name of the ticket is no longer than 60 characters
-#### R5.1.1 - Check if updating action passes with ticket names shorter than 60 characters
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /update
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R5.1.2 - Check if updating action passes with ticket names longer than 60 characters
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_MLG_test_ticket_69_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: Ticket name longer than 60 characters`
--   open /logout (clean up)
-
-### Test case R5.2 - /update[POST] The quantity of the tickets has to be more than 0, and less than or equal to 100.
-#### R5.2.1 - Check if "ticket quantity" inside of range is accepted by front end
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R5.2.2 -  Check if "ticket quantity" outside of range causes updating action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=999,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: number of tickets is not between 0 and 100`
--   open /logout (clean up)
-
-### Test case R5.3 - /update[POST] The quantity of the tickets has to be more than 0, and less than or equal to 100.
-#### R5.3.1 - Check if "ticket price" inside of range is accepted by front end
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=20,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's price into element  `#update_price`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R5.3.2 - Check if "ticket price" outside of range causes updating action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's price into element  `#update_price`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: ticket price not between 0 and 100`
--   open /logout (clean up)
-
-
-### Test case R5.4 - /update[POST] Date must be given in the format YYYYMMDD 
-#### R5.4.1 - Check if entered date using proper format is accepted by front end
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=20,
-    date='20201101'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's price into element  `#update_price`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R5.4.2 - Check if entered date using improper format cause updating action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
-    date='09092020'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's date into element  `#update_date`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: ticket date does not follow specified format`
--   open /logout (clean up)
-
-#### R5.4.3 - Check if dates that match the format but do not exists(e.g. Nov 31st) cause selling action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
-    date='20201573'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's date into element  `#update_date`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: ticket date does not exist`
--   open /logout (clean up)
-
-#### R5.4.4 - Check if dates that have already passed cause updating action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
-    date='14530523'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's date into element  `#update_date`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: ticket date is from the past`
--   open /logout (clean up)
-
-### Test case R5.5 - /update[POST] The ticket of the given name must exist
-#### R5.5.1 - Check if the system allows you to purchase a ticket that does not exist
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=20,
-    date='20201101'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: A ticket under that name does not exist`
--   open /logout (clean up)
-
-
-
-#### R5.5.2 - Check if the system allows you to purchase a ticket that exist
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
-    date='20201101'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   enter test_ticket's date into element  `#update_date`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `success`
--   open /logout (clean up)
-
-### Test case R5.6 - /update[POST] For any errors, redirect back to / and show an error message
-#### R5.6.1 - Check if when an error message is created a redirection to the / page occurs, and teh error message displays
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=20,
-    date='20201101'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#update_name`
--   enter test_ticket's quantity into element  `#update_quantity`
--   click element  `#update_submit`
--   validate that the  `#update_message`  element shows  `error: A ticket under that name does not exist`
-- validate we are on /
--   open /logout (clean up)
-
-## R6
-### Test case R6.0.1 - /buy[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_test_ticket_@69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `Error: Alphanumeric characherts only`
--   open /logout (clean up)
-
-
-### Test case R6.1 - /update[POST] The name of the ticket is no longer than 60 characters
-#### R6.1.1 - Check if updating action passes with ticket names shorter than 60 characters
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R6.1.2 - Check if updating action passes with ticket names longer than 60 characters
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx_MLG_test_ticket_69_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `error: Ticket name longer than 60 characters`
--   open /logout (clean up)
-
-### Test case R6.2 - /update[POST] The quantity of the tickets has to be more than 0, and less than or equal to 100.
-#### R6.2.1 - Check if "ticket quantity" inside of range is accepted by front end
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `success`
--   open /logout (clean up)
-
-
-
-#### R6.2.2 -  Check if "ticket quantity" outside of range causes updating action failure
-Test Data:
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=999,
-    price=10,
-    date='20200901'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `error: number of tickets is not between 0 and 100`
--   open /logout (clean up)
-
-### Test case R6.3 - /update[POST] The ticket name exists in the database and the quantity is more than the quantity requested to buy
-#### R6.3.1 - Check if you can buy more tickets than what are available
+#### Test Case R1.3.2 If the user has logged in, redirect to the user profile page/
 Test Data:
 ```
 test_user = User(
-    email='test_frontend@test.com',
-    name='test_frontend',
-    password=generate_password_hash('test_frontend')
-    balance= 99999
-)
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password= # Purposefully cause password failure
+	)
 ```
+Mocking:
+- Mock backend.get_user to return a False test_user instance
+- Mock backend.login_user to return a failed login
 
+Actions:
+open /logout (to invalidate any logged-in sessions that may exist)
+- open /login
+- enter test_user's email into element  `#email`
+- enter test_user's password into element  `#password`
+- click element  `input[type="submit"]`
+- check URL does not end at / using `self.get_current_url()` from Selenium
+#### Test Case R1.4.1 The login page provides a login form which requests two fields: email and passwords
+Test Data: None
+Mocking: None
+Actions:
+- open /logout (invalidate previous login)
+ - run website startup with `python -m qa327`
+ - check URL contains /login using `self.get_current_url()` from Selenium
+ - validate that the current URL contains two elements `#email` and `#password`
+ - validate that elements `#email` and `#password` are both input elements
+
+#### Test Case R1.5.1 The login form can be submitted as a POST request to the current URL (/login)
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password=generate_password_hash('test_frontend')
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-  Mock backend.login_user to return a successful login
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email`
+- enter test_user's password into element  `#password`
+- click element  `input[type="submit"]`
+- verify that 'POST' method type is submitted from /login route
+- check URL is at / using `self.get_current_url()` from Selenium
+
+#### Test Case R1.5.2 The login form can be submitted as a POST request to the current URL (/login)
+follow Test Case R1.3.2 If the user has logged in, redirect to the user profile page/
+
+#### Test Case R1.6.1 Email and password both cannot be empty
+Test Data:
+None
+Mocking:
+-   Mock backend.login_user to return a failed login attempt
+
+Actions:
+- open /login
+- enter blank email into element  `#email`
+- enter blank password into element  `#password`
+- click element  `input[type="submit"]`
+- verify failed login request is received
+- verify error_message is displayed on /login
+
+#### Test Case R1.7.1 Email has to follow addr-spec defined in RFC 5322
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com', # Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend')
+	)
+	# https://en.wikipedia.org/wiki/Email_address#Examples
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a successful/failed login attempt
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` (will be repeated with many valid/invalid emails)
+- enter test_user's password into element  `#password`
+- click element  `input[type="submit"]`
+- verify that the RFC 5322 REGEX is being used within `frontend.login_post()`
+- verify error message is generated by `frontend.login_post()` on invalid emails
+
+#### Test Case R1.7.2 Email has to follow addr-spec defined in RFC 5322
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com', # Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend')
+	)
+	# https://en.wikipedia.org/wiki/Email_address#Examples
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a successful/failed login attempt
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` (will be repeated with many invalid email variations)
+- enter test_user's password into element  `#password`
+- click element  `input[type="submit"]`
+- verify for each example of invalid emails from RFC 5322 that an error_message is thrown from `frontend.login_post()`
+
+#### Test Case R1.8.1 Password has to meet the required complexity: minimum length 6, at least one upper case, at least one lower case, and at least one special character
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a successful/failed login attempt
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` 
+- enter test_user's password into element  `#password` (will be repeated with many invalid password variations)
+- click element  `input[type="submit"]`
+- verify that the  password_regex is being used within `frontend.login_post()`, following the customers password guidelines
+- verify error message is generated by `frontend.login_post()` on invalid passwords 
+
+#### Test Case R1.8.2 Password has to meet the required complexity: minimum length 6, at least one upper case, at least one lower case, and at least one special character
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a successful/failed login attempt
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` 
+- enter test_user's password into element  `#password` (will be repeated with many invalid password variations)
+- click element  `input[type="submit"]`
+- verify error message is generated by `frontend.login_post()` on each case of invalid passwords
+
+#### Test Case R1.9.1 For any formatting errors, render the login page and show the message 'email/password format is incorrect.'
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',		# Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines
+													
+	# https://en.wikipedia.org/wiki/Email_address#Examples 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a failed login attempt for password or email
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` (will be repeated with many invalid email variations)
+- enter test_user's password into element  `#password` (will be repeated with many invalid password variations)
+- click element  `input[type="submit"]`
+- verify redirection to /login occurs after error_message is thrown from `frontend.login_post()`
+
+#### Test Case R1.9.2 For any formatting errors, render the login page and show the message 'email/password format is incorrect.'
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',		# Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines
+													
+	# https://en.wikipedia.org/wiki/Email_address#Examples 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a failed login attempt for password or email
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email` (will be repeated with many invalid email variations)
+- enter test_user's password into element  `#password` (will be repeated with many invalid password variations)
+- click element  `input[type="submit"]`
+- verify error_message is visible on /login using `self.is_text_visible(text,slector, by)` from Selenium
+
+#### Test Case R1.10.1 If email/password are correct, redirect to /
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',
+	name='test_frontend',
+	password=generate_password_hash('test_frontend')
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a successful login attempt for password or email
+
+Actions:
+- open /login
+- enter test_user's email into element  `#email`
+- enter test_user's password into element  `#password`
+- click element  `input[type="submit"]`
+- check if after redirection URL end with / (home page) using `self.get_current_url()` from Selenium
+
+#### Test Case R1.11.1 Otherwise, redict to /login and show message 'email/password combination incorrect'
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',		# Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines
+													
+	# https://en.wikipedia.org/wiki/Email_address#Examples 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a failed login attempt for password or email
+
+Actions:
+- open /login
+- enter wrong email into element  `#email`
+- enter wrong password into element  `#password`
+- click element  `input[type="submit"]`
+- verify an error_message is generated from `frontend.login_post()`
+- check if after redirection URL end with /login using `self.get_current_url()` from Selenium
+
+
+#### Test Case R1.11.2 Otherwise, redict to /login and show message 'email/password combination incorrect'
+Test Data:
+```
+test_user = User(
+	email='test_frontend@test.com',		# Change emails to match failure examples at link (on login)
+	name='test_frontend',
+	password=generate_password_hash('test_frontend') # Password will change to either 
+													# follow or contradict customer outlines
+													
+	# https://en.wikipedia.org/wiki/Email_address#Examples 
+	)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.login_user to return a failed login attempt for password or email
+
+Actions:
+- open /login
+- enter wrong email into element  `#email`
+- enter wrong password into element  `#password`
+- click element  `input[type="submit"]`
+- verify an error_message is generated from `frontend.login_post()`
+- verify error_message is visible on /login using `self.is_text_visible(text,slector, by)` from Selenium 
+ 
+### R4 /sell
+#### Test Case R4.0.1 The page /sell exists/is accessible
+Test Data: None
+
+Mocking: None
+-   Mock backend.get_user to return a test_user instance
+Actions:
+- open /sell page
+- check URL contains /sell using `self.get_current_url()` from Selenium
+
+#### Test Case R4.1.1 The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
+Test Data:
 ```
 test_ticket = Ticket(
     owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
+    name='test_ticket_yo',# Use non-alphanumeric ticket names
     quantity=10,
-    price=20,
+    price=10,
     date='20200901'
 )
 ```
 Mocking:
-
 -   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
 Actions:
-
 -   open /logout (to invalidate any logged-in sessions that may exist)
 -   open /login
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `error: you are attempting to purchase more tickets than what are available`
--   open /logout (clean up)
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`, with a non-alphanumeric instance
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+- validate that ticket name REGEX identifies non-alphanumeric and throws error_message
+-   validate that the  `#sell_message`  element shows  `failed`
 
-
-
-#### R5.3.2 - Check if you can buy less than the available amount
+#### Test Case R4.2.1 The name of the ticket is no longer than 60 characters
 Test Data:
-```
-test_user = User(
-    email='test_frontend@test.com',
-    name='test_frontend',
-    password=generate_password_hash('test_frontend')
-    balance= 99999
-)
-```
 ```
 test_ticket = Ticket(
     owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=20,
-    price=2,
+    name='test_ticket_yo',# Ticket name used should be less than 60 characters
+    quantity=10,
+    price=10,
     date='20200901'
 )
 ```
 Mocking:
-
 -   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
 Actions:
-
 -   open /logout (to invalidate any logged-in sessions that may exist)
 -   open /login
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `success`
--   open /logout (clean up)
-
-
-### Test case R6.4 - /update[POST] The user has more balance than the ticket price * quantity + service fee (35%) + tax (5%)
-#### R6.4.1 - Check if you can buy tickets where the total comes to be more than what the user has in their balance
-Test Data:
-```
-test_user = User(
-    email='test_frontend@test.com',
-    name='test_frontend',
-    password=generate_password_hash('test_frontend')
-    balance= 100
-)
-```
-```
-test_ticket = Ticket(
-    owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
-    quantity=10,
-    price=20,
-    date='20201101'
-)
-```
-Mocking:
-
--   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
-
-Actions:
-
--   open /logout (to invalidate any logged-in sessions that may exist)
--   open /login
--   enter test_user's email into element  `#email`
--   enter test_user's password into element  `#password`
--   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `error: You do not have nought money in you balance to buy these tickets`
--   open /logout (clean up)
-
-
-### Test case R6.5 - /update[POST] The ticket of the given name must exist
-#### R6.5.1 - Check if the system allows you to purchase a ticket that does not exist
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that selling action was successful
+- validate that the  `#sell_message`  element shows  `successful`
+-
+#### Test Case R4.2.2 The name of the ticket is no longer than 60 characters
 Test Data:
 ```
 test_ticket = Ticket(
     owner='test_frontend@test.com',
-    name='xXX_MLG_test_ticket_69_XXx',
+    name='test_ticket_yo',# Ticket name used should be greater than 60 characters
     quantity=10,
-    price=20,
-    date='20201101'
+    price=10,
+    date='20200901'
 )
 ```
 Mocking:
-
 -   Mock backend.get_user to return a test_user instance
--   Mock backend.get_ticket to return a test_ticket instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
 Actions:
-
 -   open /logout (to invalidate any logged-in sessions that may exist)
 -   open /login
 -   enter test_user's email into element  `#email`
 -   enter test_user's password into element  `#password`
 -   click element  `input[type="submit"]`
--   open /
--   enter test_ticket's name into element  `#buy_name`
--   enter test_ticket's quantity into element  `#buy_quantity`
--   click element  `#buy_submit`
--   validate that the  `#buy_message`  element shows  `error`
--   open /logout (clean up)
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that selling action was unsuccessful
+- validate that the  `#sell_message`  element shows  `failed`
 
-
-## R7.1 - Logout will invalid the current session and redirect to the login page. After logout, the user shouldn't be able to access restricted pages.  
-
-### Testcase R7.1.1 - Confirm after logout that user is redirected to the login page
-Mocking:   
-backend.get_user to authenticate user not logged in  
-
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-/validate user is redirected to login  
-
-### Testcase R7.1. - Confirm after logout that user succeed to access /login  
-Mocking:   
-backend.get_user to authenticate user not logged in  
+#### Test Case R4.3.1 The quantity of the tickets has to be more than 0, and less than or equal to 100.
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=10,# ticket quantity inside of range
+    price=10,
+    date='20200901'
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
 Actions:
-open /logout (invalidate any logged-in sessions that may exist))  
-open /login  
-validate users current page is /login  
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that selling action was successful
+-  validate that the  `#sell_message`  element shows  `successful`
 
-### Testcase R7.1.3 - Confirm after logout that user succeed to access /register  
-Mocking:   
-backend.get_user to authenticate user not logged in  
+#### Test Case R4.3.2 The quantity of the tickets has to be more than 0, and less than or equal to 100.
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, # ticket quantity outside of range
+    price=10,
+    date='20200901'
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /register  
-validate users current page is /register  
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+- validate that ticket count check identifies out of range and throws error_message
+-  validate that selling action was unsuccessful
+-  validate that the  `#sell_message`  element shows  `failed`
 
-### Testcase R7.1.4 - Confirm after logout that user fails to access /logout  
-Mocking:   
-backend.get_user to authenticate user is not logged in  
+#### Test Case R4.4.1 Price has to be of range [10, 100]
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=10, # price is inside required range
+    date='20200901'
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /register  
-validate users current page is /register  
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that selling action was successful
+-  validate that the  `#sell_message`  element shows  `successful`
 
-### Testcase R7.1.5 - Confirm after logout that user fails to access /  
-Mocking:   
-backend.get_user to authenticate user is not logged in  
+#### Test Case R4.4.2 Price has to be of range [10, 100]
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=200, # price is outside required range
+    date='20200901'
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /  
-validate users is redirected to /login   
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that ticket price check identifies out of range and throws error_message
+-  validate that selling action was unsuccessful
+-  validate that the  `#sell_message`  element shows  `failed`
 
-### Testcase R7.1.6 - Confirm after logout that user fails to access /sell  
-Mocking:   
-backend.get_user to authenticate user is not logged in  
+#### Test Case R4.5.1 Date must be given in the format YYYYMMDD (e.g. 20200901)
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=20, 
+    date='20200901'
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /sell  
-validate users is redirected to /login   
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+-  validate that selling action was successful
+-  validate that the  `#sell_message`  element shows  `successful`
 
-### Testcase R7.1.7 - Confirm after logout that user fails to access /update  
-Mocking:   
-backend.get_user to authenticate user is not logged in  
+#### Test Case R4.5.2 Date must be given in the format YYYYMMDD (e.g. 20200901)
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=20, 
+    date='17-10-2020' # improper format is used
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /update  
-validate users is redirected to /login   
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+- validate that ticket date check identifies date entered in wrong format (using python `datetime.datetime()`) and throws error_message
+-  validate that selling action was unsuccessful
+-  validate that the  `#sell_message`  element shows  `failed`
 
-### Testcase R7.1.8 - Confirm after logout that user fails to access /buy   
-Mocking:   
-backend.get_user to authenticate user is not logged in  
+#### Test Case R4.5.3 Date must be given in the format YYYYMMDD (e.g. 20200901)
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=200, 
+    price=200, 
+    date='20201131' # correct format is used but date does not exist
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /logout (invalidate any logged-in sessions that may exist))  
-open /buy  
-validate users is redirected to /login   
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+- validate that ticket date check identifies date entered is not a real date (using python `datetime.datetime()`) and throws error_message
+-  validate that selling action was unsuccessful
+-  validate that the  `#sell_message`  element shows  `failed`
 
-### Testcase R7.1.9 - Confirm after logout that user fails to access /\* any other urls
-open /logout (invalidate any logged-in sessions that may exist))  
-open /nonexistantpage  
-validate a 404 error is returned  
+#### Test Case R4.5.4 Date must be given in the format YYYYMMDD (e.g. 20200901)
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=200, 
+    price=200, 
+    date='19001002' # correct format is used but date has already passed
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-## Testcase R8.1 - For any other requests except the ones above, the system should return a 404 error   
+Actions:
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+- enter test_ticket's date into element`#sell_date`
+-   click element  `#sell_submit`
+- validate that ticket date check identifies date entered has already passed (using python `datetime.datetime() and datetime.now()`) and throws error_message
+-  validate that selling action was unsuccessful
+-  validate that the  `#sell_message`  element shows  `failed`
 
-### Testcase R8.1.1 - Confirm that requested urls other than the listed requests (/, /login, /logout, /sell, /update, /buy) fail to be accessed and a 404 error is returned
-Mocking:   
-N/A  
+#### Test Case R4.6.1 For any errors, redirect back to / and show an error message
+Test Data:
+```
+# ticket must include one formating error to throw error_message
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=200, 
+    price=200, 
+    date='19001002' 
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
-Actions:  
-open /nonexistentpage  
-validate users is returned a 404 error  
+Actions:
+  - open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+-  enter test_ticket's date into element`#sell_date`
+-  click element  `#sell_submit`
+- verify an error_message is generated before`backend.create_ticket()`
+- check if after redirection URL end with / (home page) using `self.get_current_url()` from Selenium
 
+#### Test Case R4.6.2 For any errors, redirect back to / and show an error message
+Test Data:
+```
+# ticket must include one formating error to throw error_message
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=200, 
+    price=200, 
+    date='19001002' # Incorrect date should throw error 
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
+Actions:
+ - open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+-  enter test_ticket's date into element`#sell_date`
+-  click element  `#sell_submit`
+- verify an error_message is generated before`backend.create_ticket()`
+- verify error_message is visible on / (home page) using `self.is_text_visible(text,slector, by)` from Selenium 
 
+#### Test Case R4.7.1 The added new ticket information will be posted on the user profile page
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=20, 
+    date='20201020' 
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
 
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+-  enter test_ticket's date into element`#sell_date`
+-  click element  `#sell_submit`
+- validate that the  `#sell_message`  element shows  `successful`
+- validate that a ticket element exists on / (home page/user profile) matching all `#sell_` elements from test ticket 
+
+#### Test Case R4.7.2 The added new ticket information will be posted on the user profile page
+Test Data:
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=20, 
+    price=20, 
+    date='20201020' 
+)
+```
+Mocking:
+-   Mock backend.get_user to return a test_user instance
+-   Mock backend.create_ticket to return a test_ticket instance
+-   Mock backend.get_tickets_sum to return the toal tickets the user has for sale
+
+Actions:
+- open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /sell
+-   enter test_ticket's name into element  `#sell_name`
+-   enter test_ticket's quantity into element  `#sell_quantity`
+-  enter test_ticket's price into element  `#sell_price`
+-  enter test_ticket's date into element`#sell_date`
+-  click element  `#sell_submit`
+- validate that the  `#sell_message`  element shows  `successful`
+- validate that the # of tickets displayed on / is equal to the number of tickets from mock `backend.get_tickets_sum`
 

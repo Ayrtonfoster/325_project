@@ -783,7 +783,179 @@ Actions:
 	 - `#x td.ticket-price` equals test_ticket price, and
 	 - `#x td.ticket-date` equals test_ticket date
 
-<ERIC'S 3.5-3.10 HERE>
+  
+
+### Testcase R3.5 - This page contains a form that a user can submit new tickets for sell. Fields: name, quantity, price, expiration date
+Test Data:
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+```
+#### Testcase R3.5.1 - Check sell form present with all fields
+Mock:  
+Mock backend.get_user to return a test_user instance
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /
+-   validate page contains element `#sell_form` with descendants ` #sell_name,  #sell_quantity, #sell_price, #sell_expiration_date ` fields 
+
+### Testcase R3.6 - This page contains a form that a user can buy new tickets. Fields: name, quantity  
+Test Data:
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+```
+#### Testcase R3.6.1 - Check buy form present with all fields  
+Mock:  
+Mock backend.get_user to return a test_user instance
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /
+-   validate page contains element `#buy_form` with descendants` #buy_name #buy_quantity ` fields    
+
+#### Testcase R3.7 - This page contains a form that a user can update existing tickets. Fields: name, quantity, price, expiration date
+Test Data:
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+
+```
+#### Testcase R3.7.1 - Check update form present with all fields
+Mock:  
+- Mock backend.get_user to return a test_user instance
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)
+-   open /login
+-   enter test_user's email into element  `#email`
+-   enter test_user's password into element  `#password`
+-   click element  `input[type="submit"]`
+-   open /
+-   validate page contains elements for `#update_form` with descendants ` #update_name #update_quantity #update_price #update_expiration_date ` fields 
+
+### R3.8 - The ticket-selling form can be posted to /sell  
+Test Data:  
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+```
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=10,
+    price=10,
+    date='20200901'
+)
+```  
+#### R3.8.1 - Check submit to /sell
+Mocking:  
+-   Mock backend.get_user to return a test_user instance  
+-   Mock backend.get_ticket to return a test_ticket instance  
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)  
+-   open /login  
+-   enter test_user's email into element  `#email`  
+-   enter test_user's password into element  `#password`  
+-   click element  `input[type="submit"]`  
+-   open /  
+-   enter test_ticket's name into element  `#sell_name`  
+-   enter test_ticket's quantity into element  `#sell_quantity`  
+-  enter test_ticket's price into element  `#sell_price`  
+- enter test_ticket's price into element  `#sell_expiration_date`
+-   validate clicking element `input[type="sell_submit"]` routes to /sell  
+
+### R3.9 - The ticket-buying form can be posted to /buy 
+Test Data:  
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+``` 
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=10,
+    price=10,
+    date='20200901'
+)
+```   
+#### R3.9.1 - The ticket-buying form can be posted to /buy  
+Mocking:  
+-   Mock backend.get_user to return a test_user instance  
+-   Mock backend.get_ticket to return a test_ticket instance  
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)  
+-   open /login  
+-   enter test_user's email into element  `#email`  
+-   enter test_user's password into element  `#password`  
+-   click element  `input[type="submit"]`  
+-   open /  
+-   enter test_ticket's name into element  `#buy_name`  
+-   enter test_ticket's quantity into element  `#buy_quantity`  
+-  validate clicking element `input[type="buy_submit"]` routes to /buy
+### R3.10 - The ticket-update form can be posted to /update
+Test Data:  
+```
+test_user = User(
+    email='test_frontend@test.com',
+    name='test_frontend',
+    password=generate_password_hash('test_frontend')
+)
+``` 
+```
+test_ticket = Ticket(
+    owner='test_frontend@test.com',
+    name='test_ticket_yo',
+    quantity=10,
+    price=10,
+    date='20200901'
+)
+```     
+#### R3.10.1 - The ticket-update form can be posted to /update  
+Mocking:  
+-   Mock backend.get_user to return a test_user instance  
+-   Mock backend.get_ticket to return a test_ticket instance  
+
+Actions:  
+-   open /logout (to invalidate any logged-in sessions that may exist)  
+-   open /login  
+-   enter test_user's email into element  `#email`  
+-   enter test_user's password into element  `#password`  
+-   click element  `input[type="submit"]`  
+-   open /  
+-   enter test_ticket's name into element  `#update_name`  
+-   enter test_ticket's quantity into element  `#update_quantity`  
+-  enter test_ticket's price into element  `#update_price`  
+- enter test_ticket's price into element  `#update_expiration_date`
+-   validate clicking element `input[type="update_submit"]` routes to /update 
 
 ### R4 /sell
 #### Test Case R4.0.1 The page /sell exists/is accessible

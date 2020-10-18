@@ -1426,7 +1426,8 @@ Actions:
 - validate that the # of tickets displayed on / is equal to the number of tickets from mock `backend.get_tickets_sum`
 
 ## R5
-### Test case R5.0.1 - /update[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
+### Test case R5.0. - /update[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
+#### R5.0.1 Check if failure "ticket name" inputs against ticket name regex causes selling action failure
 Test Data:
 ```
 test_ticket = Ticket(
@@ -1873,7 +1874,8 @@ Actions:
 -   open /logout (clean up)
 
 ## R6
-### Test case R6.0.1 - /buy[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
+### R6.0 The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
+#### Test case R6.0.1 - /buy[POST] The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
 Test Data:
 ```
 test_ticket = Ticket(

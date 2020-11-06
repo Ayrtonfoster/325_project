@@ -12,7 +12,41 @@ The html templates are stored in the 'templates' folder.
 """
 
 
+def login_redirect(inner_function):
+    """
+    :param inner_function: any python function that accepts a user object
+
+    Wrap any python function and check the current session to see if 
+    the user has logged in. If login, it will call the inner_function
+    with the logged in user object.
+
+    To wrap a function, we can put a decoration on that function.
+    Example:
+
+    @login_redirect
+    def login_get():
+        pass
+    """
+    def wrapped_inner():
+        # check did we store the key in the session
+        if 'logged_in' in session:
+            email = session['logged_in']
+            user = bn.get_user(email)
+            if user:
+                # if the user exists, call the inner_function
+                # with user as parameter
+                return redirect('/')
+        else:
+            # else, redirect to the login page
+            return inner_function()
+
+    # return the wrapped version of the inner_function:
+    wrapped_inner.__name__ = inner_function.__name__
+    return wrapped_inner
+
+
 @app.route('/register', methods=['GET'])
+@login_redirect
 def register_get():
     # templates are stored in the templates folder
     return render_template('register.html', message='')
@@ -50,6 +84,7 @@ def register_post():
 
 
 @app.route('/login', methods=['GET'])
+@login_redirect
 def login_get():
     return render_template('login.html', message='Please login')
 
@@ -141,6 +176,7 @@ def authenticate(inner_function):
             return redirect('/login')
 
     # return the wrapped version of the inner_function:
+    wrapped_inner.__name__ = inner_function.__name__
     return wrapped_inner
 
 

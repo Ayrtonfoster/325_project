@@ -1,5 +1,6 @@
-from qa327.models import db, User
+from qa327.models import db, User, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 """
 This file defines all backend logic that interacts with database and other services
@@ -30,6 +31,26 @@ def login_user(email, password):
     return user
 
 
+def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date):
+    """
+    Add tickets from form to db
+    """
+    # store the encrypted password rather than the plain password
+    new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date)
+
+    db.session.add(new_ticket)
+    db.session.commit()
+    return None
+
+
+def get_all_tickets():
+    """
+    retrieve tickets from db
+    """
+    # store the encrypted password rather than the plain password
+    #ticket = Ticket.all()
+    return []
+
 def register_user(email, name, password, password2):
     """
     Register the user to the database
@@ -42,12 +63,8 @@ def register_user(email, name, password, password2):
 
     hashed_pw = generate_password_hash(password, method='sha256')
     # store the encrypted password rather than the plain password
-    new_user = User(email=email, name=name, password=hashed_pw)
+    new_user = User(email=email, name=name, password=hashed_pw, balance=100)
 
     db.session.add(new_user)
     db.session.commit()
     return None
-
-
-def get_all_tickets():
-    return []

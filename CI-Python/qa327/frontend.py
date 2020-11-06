@@ -1,6 +1,8 @@
 from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
+import datetime
+
 
 """
 This file defines the front-end part of the service.
@@ -81,6 +83,31 @@ def logout():
     if 'logged_in' in session:
         session.pop('logged_in', None)
     return redirect('/')
+
+
+@app.route('/sell', methods=['POST'])
+def sell_tickets():
+    ticket_name = request.form.get('ticket_name')
+    num_tickets = request.form.get('num_tickets')
+    ticket_price = request.form.get('ticket_price')
+    ticket_date = request.form.get('ticket_date')
+    error_message = None
+
+    #ticket_date_2 = datetime.date(int(ticket_date))
+    date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
+
+
+    if len(ticket_name) < 1:
+        error_message = "format error"
+    else:
+        if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date):
+            error_message = "Failed to store ticket info."
+
+    # if there is any error messages when registering new user
+    # at the backend, go back to the register page.
+    #if error_message:
+    #    return render_template('index.html', message=error_message)
+    return redirect('/', code=303)
 
 
 def authenticate(inner_function):

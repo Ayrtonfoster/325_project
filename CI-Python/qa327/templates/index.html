@@ -7,13 +7,39 @@
 {% block content %}
 <h2 id="welcome-header">Welcome {{ user.name }} !</h2>
 
+<h4 id="account-balance">Your balance is: {{ user.balance }} !</h4>
+
+
+<h2 >Here is where you can purchase tickets</h2>
+
+<hr>
+<h2 >Here is where you can sell tickets</h2>
+
+<h4 id='message'>{{message}}</h4>
+<form method="post" action="/sell">
+    <div class="form-group">
+      <label for="ticket_name">Ticket Name</label>
+      <input class="form-control" name="ticket_name" id="ticket_name" required>
+      <label for="num_tickets">Number of Tickets</label>
+      <input class="form-control" name="num_tickets" id="num_tickets" required>
+      <label for="ticket_price">Ticket Price $</label>
+      <input class="form-control" name="ticket_price" id="ticket_price" required>
+      <label for="ticket_date">Ticket Date</label>
+      <br>
+      <input type="date" name="ticket_date" id="ticket_date" required>
+      <br>
+      <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Post Tickets">
+    </div>
+</form>
+
 
 <h2 >Here are all available tickets</h2>
+
 
 <div id="tickets">
 {% for ticket in tickets %}
     <div>
-        <h4>{{ ticket.name }} {{ ticket.price }}</h4>
+        <h4>{{ ticket.ticket_name }} {{ ticket.ticket_price }}</h4>
     </div>
 {% endfor %}
 </div>

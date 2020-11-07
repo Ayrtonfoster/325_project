@@ -222,25 +222,26 @@ def buy_tickets():
     error_message = ticket_info_sanitizer(ticket_name, num_tickets)
     
     # Subtract the bought tickets from amount available
-    if error_message == None:
+    if error_message is None:
         # Retrieve info on ticket being bought
         ticket_info = bn.get_ticket(ticket_name)
 
-        # Calc cost of ticket
-        ticket_cost = ticket_info.ticket_price * int(num_tickets)
-        service_fee = ticket_cost * 0.35
-        tax = ticket_cost * 0.05
+        if ticket_info is not None:
+            # Calc cost of ticket
+            ticket_cost = ticket_info.ticket_price * int(num_tickets)
+            service_fee = ticket_cost * 0.35
+            tax = ticket_cost * 0.05
 
-        overall_cost = ticket_cost + service_fee + tax
+            overall_cost = ticket_cost + service_fee + tax
 
-        if (ticket_info.num_tickets < int(num_tickets)):
-            error_message = "requested more than available tickets, "
+            if (ticket_info.num_tickets < int(num_tickets)):
+                error_message = "requested more than available tickets, "
 
-        if (user.balance - overall_cost < 0):
-            error_message = "Not enough money in balance"
+            if (user.balance - overall_cost < 0):
+                error_message = "Not enough money in balance"
 
-        if not bn.buy_tickets(ticket_name, num_tickets):
-            error_message = "Not a concert"
+            if not bn.buy_tickets(ticket_name, num_tickets):
+                error_message = "Not a concert"
 
 
     # get Info on Tickets

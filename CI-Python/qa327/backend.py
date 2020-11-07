@@ -48,8 +48,65 @@ def get_all_tickets():
     retrieve tickets from db
     """
     # store the encrypted password rather than the plain password
-    #ticket = Ticket.all()
-    return []
+    ticket = Ticket.query.all()
+    return ticket
+
+
+def buy_tickets(ticket_name, num_tickets):
+    """
+    buy tickets from form to db
+    """
+    ticket = get_ticket(ticket_name)
+    if not ticket or int(num_tickets) > ticket.num_tickets:
+        return None
+
+    ticket.num_tickets = ticket.num_tickets - int(num_tickets)
+
+    db.session.commit()
+
+def get_ticket(ticket_name):
+    """
+    Get a ticket by a given ticket name
+    :param ticket: the ticket to be found
+    :return: a ticket that has the matched ticket named
+    """
+    ticket = Ticket.query.filter_by(ticket_name=ticket_name).first()
+    return ticket
+
+
+def update_ticket(ticket_name, num_tickets, ticket_price, date):
+    """
+    Get a ticket by a given ticket name
+    :param ticket: the ticket to be found
+    :return: a ticket that has the matched ticket named
+    """
+    ticket = get_ticket(ticket_name)
+    if not ticket:
+        return None
+    
+    ticket.num_tickets = num_tickets
+    ticket.ticket_price = ticket_price
+    ticket.ticket_date = date
+
+    db.session.commit()
+    return None
+
+
+def update_balance(email, ticket_price):
+    """
+    Get a ticket by a given ticket name
+    :param ticket: the ticket to be found
+    :return: a ticket that has the matched ticket named
+    """
+    user = get_user(email)
+    if not user:
+        return None
+    
+    user.balance =  user.balance - int(ticket_price)
+
+    db.session.commit()
+    return None
+
 
 def register_user(email, name, password, password2):
     """

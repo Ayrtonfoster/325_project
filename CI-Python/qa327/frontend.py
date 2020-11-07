@@ -23,8 +23,7 @@ def login_redirect(inner_function):
     :param inner_function: any python function that accepts a user object
 
     Wrap any python function and check the current session to see if 
-    the user has logged in. If login, it will call the inner_function
-    with the logged in user object.
+    the user has logged in. If login, it will redirect to the home page
 
     To wrap a function, we can put a decoration on that function.
     Example:
@@ -39,11 +38,10 @@ def login_redirect(inner_function):
             email = session['logged_in']
             user = bn.get_user(email)
             if user:
-                # if the user exists, call the inner_function
-                # with user as parameter
+                # if the user exists, redirect to /
                 return redirect('/')
         else:
-            # else, redirect to the login page
+            # else, call the inner function
             return inner_function()
 
     # return the wrapped version of the inner_function:
@@ -155,7 +153,7 @@ def login_post():
         between browser and the end server. Typically it is encrypted 
         and stored in the browser cookies. They will be past 
         along between every request the browser made to this services.
-
+        
         Here we store the user object into the session, so we can tell
         if the client has already login in the following sessions.
 

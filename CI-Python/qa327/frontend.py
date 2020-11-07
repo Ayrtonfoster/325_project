@@ -2,6 +2,7 @@ from flask import render_template, request, session, redirect
 from qa327 import app
 import qa327.backend as bn
 import datetime
+import re
 
 
 """
@@ -48,8 +49,56 @@ def login_redirect(inner_function):
 @app.route('/register', methods=['GET'])
 @login_redirect
 def register_get():
+
     # templates are stored in the templates folder
     return render_template('register.html', message='')
+
+
+def check_user_format(email, password, name=None, password2=None):
+
+    error_message = None
+
+    # Email must conform to RFC 5322
+    regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\
+        -9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
+    if regexp.match(email) is None:
+
+        return "Email"
+
+    # password must have minimum length 6, at least one upper case, at least one lower case, and at least one
+    # special character
+    lower = [char for char in password if char.islower()]
+    upper = [char for char in password if char.isupper()]
+    special = [char for char in password if not char.isalnum()]
+    if len(password) < 6\
+            or len(lower) == 0\
+            or len(upper) == 0\
+            or len(special) == 0:
+
+        return "Password"
+
+    if name is None or password2 is None:
+
+        # done checks for login
+        return error_message
+
+    # Now check name and password2 for register use case
+
+    # User name has to be non-empty, longer than 2 characters and less than 20 characters.
+    # Space allowed only if it is not the first or the last character
+    # Name must be alphanumeric only
+    if not 2 <= len(name) <= 20\
+            or name[0] == " " or name[-1] == " "\
+            or not name.replace(" ", "").isalnum():
+
+        return "Name"
+
+    # Passwords must match
+    if password2 != password:
+
+        return "Confirm Password"
+
+    return error_message
 
 
 @app.route('/register', methods=['POST'])
@@ -58,21 +107,14 @@ def register_post():
     name = request.form.get('name')
     password = request.form.get('password')
     password2 = request.form.get('password2')
-    error_message = None
+    format_error_attribute = check_user_format(email, password, name=name, password2=password2)
 
-
-    if password != password2:
-        error_message = "The passwords do not match"
-
-    elif len(email) < 1:
-        error_message = "Email format error"
-
-    elif len(password) < 1:
-        error_message = "Password not strong enough"
+    if format_error_attribute is not None:
+        error_message = '{} format is incorrect.'.format(format_error_attribute)
     else:
         user = bn.get_user(email)
         if user:
-            error_message = "User exists"
+            error_message = "This email is already in use"
         elif not bn.register_user(email, name, password, password2):
             error_message = "Failed to store user info."
     # if there is any error messages when registering new user
@@ -93,6 +135,12 @@ def login_get():
 def login_post():
     email = request.form.get('email')
     password = request.form.get('password')
+
+    format_error_attribute = check_user_format(email, password)
+
+    if format_error_attribute is not None:
+        return render_template('login.html', message="email/password format is incorrect.")
+
     user = bn.login_user(email, password)
     if user:
         session['logged_in'] = user.email

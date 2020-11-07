@@ -63,8 +63,14 @@ def register_user(email, name, password, password2):
 
     hashed_pw = generate_password_hash(password, method='sha256')
     # store the encrypted password rather than the plain password
-    new_user = User(email=email, name=name, password=hashed_pw, balance=100)
-
+    new_user = User(email=email, name=name, password=hashed_pw, balance=5000)
     db.session.add(new_user)
-    db.session.commit()
-    return None
+    try:
+        db.session.commit()
+        return True
+    except Exception as e:
+    #log your exception in the way you want -> log to file, log as error with default logging, send by email. It's upon you
+        db.session.rollback()
+        db.session.flush() # for resetting non-commited .add()
+        return False
+    

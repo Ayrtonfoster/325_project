@@ -109,6 +109,7 @@ def register_post():
     password2 = request.form.get('password2')
     format_error_attribute = check_user_format(email, password, name=name, password2=password2)
 
+    error_message = None
     if format_error_attribute is not None:
         error_message = '{} format is incorrect.'.format(format_error_attribute)
     else:

@@ -56,65 +56,47 @@ def register_get():
 
 def check_user_format(email, password, name=None, password2=None):
 
-    # not sure if this needed for return value
     error_message = None
 
-    # email and password not empty
-    if email == "":
-        return "Email"
-        # return "Email cannot be empty"
-    elif password == "":
-        return "Password"
-        # return "Password cannot be empty"
-
-    # Email conforms to RFC 5322
+    # Email must conform to RFC 5322
     regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\
         -9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
     if regexp.match(email) is None:
+
         return "Email"
 
     # password must have minimum length 6, at least one upper case, at least one lower case, and at least one
     # special character
-    if len(password) < 6:  # minimum length 6,
-        return "Password"
-        # return "The password must have minimum length 6"
     lower = [char for char in password if char.islower()]
-    if len(lower) == 0:  # at least one lower case,
-        return "Password"
-        # return "The password must have at least one lower case"
     upper = [char for char in password if char.isupper()]
-    if len(upper) == 0:  # at least one upper case,
-        return "Password"
-        # return "The password must have at least one upper case"
     special = [char for char in password if not char.isalnum()]
-    if len(special) == 0:  # at least one special character
+    if len(password) < 6\
+            or len(lower) == 0\
+            or len(upper) == 0\
+            or len(special) == 0:
+
         return "Password"
-        # return "The password must have at least one special character"
 
     if name is None or password2 is None:
+
         # done checks for login
         return error_message
 
     # Now check name and password2 for register use case
 
     # User name has to be non-empty, longer than 2 characters and less than 20 characters.
-    elif not 2 <= len(name) <= 20:
-        return "Name"
-        # return "name must be between 2 and 20 characters"
-
     # Space allowed only if it is not the first or the last character
-    elif name[0] == " " or name[-1] == " ":
-        return "Name"
-        # return "First and last characters of name cannot be a space"
-
     # Name must be alphanumeric only
-    elif not name.replace(" ", "").isalnum():
-        return "Name"
-        # return "Name must be alphanumeric only"
+    if not 2 <= len(name) <= 20\
+            or name[0] == " " or name[-1] == " "\
+            or not name.replace(" ", "").isalnum():
 
-    elif password2 != password:
+        return "Name"
+
+    # Passwords must match
+    if password2 != password:
+
         return "Confirm Password"
-        # return "Passwords must match"
 
     return error_message
 

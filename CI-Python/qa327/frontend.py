@@ -184,13 +184,66 @@ def sell_tickets():
         error_message = "format error"
     else:
         if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date):
-            error_message = "Failed to store ticket info."
+            error_message = "Failed to store ticket info."            
 
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
     #if error_message:
     #    return render_template('index.html', message=error_message)
     return redirect('/', code=303)
+
+
+@app.route('/buy', methods=['POST'])
+def buy_tickets():
+    ticket_name = request.form.get('ticket_name')
+    num_tickets = request.form.get('num_tickets')
+    error_message = None
+
+    if len(ticket_name) < 1:
+        error_message = "format error"
+    else:
+        if not bn.buy_tickets(ticket_name, num_tickets):
+            error_message = "Not a concert or too many tickets" 
+    
+        ticket_info = bn.get_ticket(ticket_name)
+
+        email = session['logged_in']
+        user = bn.get_user(email)
+
+        bn.update_balance(user.email, ticket_info.ticket_price)
+
+    # if there is any error messages when registering new user
+    # at the backend, go back to the register page.
+    #if error_message:
+    #    return render_template('index.html', message=error_message)
+    return redirect('/', code=303)
+
+
+@app.route('/update', methods=['POST'])
+def update_tickets():
+    ticket_name = request.form.get('ticket_name')
+    num_tickets = request.form.get('num_tickets')
+    ticket_price = request.form.get('ticket_price')
+    ticket_date = request.form.get('ticket_date')
+    error_message = None
+
+    #ticket_date_2 = datetime.date(int(ticket_date))
+    date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
+
+    if len(ticket_name) < 1:
+        error_message = "format error"
+    else:
+        if not bn.update_ticket(ticket_name, num_tickets, ticket_price, date):
+            error_message = "Failed to store ticket info."
+
+
+    # if there is any error messages when registering new user
+    # at the backend, go back to the register page.
+    #if error_message:
+    #    return render_template('index.html', message=error_message)
+    return redirect('/', code=303)
+
+
 
 
 def authenticate(inner_function):

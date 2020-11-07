@@ -150,10 +150,9 @@ def register_user(email, name, password, password2):
     db.session.add(new_user)
     try:
         db.session.commit()
-        return True
+        return True             
     except Exception as e:
-    #log your exception in the way you want -> log to file, log as error with default logging, send by email. It's upon you
-        db.session.rollback()
-        db.session.flush() # for resetting non-commited .add()
-        return False
+        db.session.rollback()   # Rollback the current transaction in progress
+        db.session.flush()      # Reset non-commited .add()
+        return False       
     

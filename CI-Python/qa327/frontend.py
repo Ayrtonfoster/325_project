@@ -171,80 +171,113 @@ def logout():
 
 @app.route('/sell', methods=['POST'])
 def sell_tickets():
+
+    # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
     num_tickets = request.form.get('num_tickets')
     ticket_price = request.form.get('ticket_price')
     ticket_date = request.form.get('ticket_date')
+
+    # Get info on the user
+    email = session['logged_in']
+    user = bn.get_user(email)
+
     error_message = None
 
-    #ticket_date_2 = datetime.date(int(ticket_date))
+    #Convert datetime into something we can put in db
     date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
 
+    if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date, email):
+        error_message = "Failed to store ticket info."
 
-    if len(ticket_name) < 1:
-        error_message = "format error"
-    else:
-        if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date):
-            error_message = "Failed to store ticket info."            
+    # get Info on Tickets
+    tickets = bn.get_all_tickets()
 
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
-    #if error_message:
-    #    return render_template('index.html', message=error_message)
-    return redirect('/', code=303)
+    if error_message:
+        return render_template('index.html', user=user, sell_message=error_message, tickets=tickets)
 
+    return render_template('index.html', user=user, tickets=tickets)
 
 @app.route('/buy', methods=['POST'])
 def buy_tickets():
+
+    # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
     num_tickets = request.form.get('num_tickets')
-    error_message = None
+    error_message = ""
 
-    if len(ticket_name) < 1:
-        error_message = "format error"
-    else:
-        if not bn.buy_tickets(ticket_name, num_tickets):
-            error_message = "Not a concert or too many tickets" 
+    # Find out info on logged in user and tickets
+    email = session['logged_in']
+    user = bn.get_user(email)
+
+    # Retrieve info on ticket being bought
+    ticket_info = bn.get_ticket(ticket_name)
+
+    # Calc cost of ticket 
+    ticket_cost = ticket_info.ticket_price * int(num_tickets)
+    service_fee = ticket_cost * 0.35
+    tax = ticket_cost * 0.05
+
+    overall_cost = ticket_cost + service_fee + tax
+
+
+    if(ticket_info.num_tickets < int(num_tickets)):
+        error_message = "requested more than available tickets, "
+
+    if(user.balance - overall_cost < 0):
+        error_message += "Not enough money in balance"
     
-        ticket_info = bn.get_ticket(ticket_name)
+    # Subtract the bought tickets from amount available
+    if not bn.buy_tickets(ticket_name, num_tickets) and not error_message:
+        error_message += "Not a concert" 
 
-        email = session['logged_in']
-        user = bn.get_user(email)
 
-        bn.update_balance(user.email, ticket_info.ticket_price)
+    # get Info on Tickets
+    tickets = bn.get_all_tickets()
 
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
-    #if error_message:
-    #    return render_template('index.html', message=error_message)
-    return redirect('/', code=303)
+    if error_message:
+        return render_template('index.html', user=user, buy_message=error_message, tickets=tickets)
+    
+    # Update the buyer ans sellers balance to reflect the transaction
+    bn.update_balance(user.email, ticket_info.ticket_owner, ticket_cost, overall_cost)
+
+    #Re-render page with updates
+    return render_template('index.html', user=user, buy_message=error_message, tickets=tickets)
 
 
 @app.route('/update', methods=['POST'])
 def update_tickets():
+    
+    # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
     num_tickets = request.form.get('num_tickets')
     ticket_price = request.form.get('ticket_price')
     ticket_date = request.form.get('ticket_date')
     error_message = None
 
-    #ticket_date_2 = datetime.date(int(ticket_date))
+    # Find out info on logged in user and tickets
+    email = session['logged_in']
+    user = bn.get_user(email)
+
+    #Convert datetime into something we can put in db
     date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
 
-    if len(ticket_name) < 1:
-        error_message = "format error"
-    else:
-        if not bn.update_ticket(ticket_name, num_tickets, ticket_price, date):
-            error_message = "Failed to store ticket info."
+    if not bn.update_ticket(ticket_name, num_tickets, ticket_price, date):
+        error_message = "No such Ticket with that name."
 
+    # get Info on Tickets
+    tickets = bn.get_all_tickets()
 
     # if there is any error messages when registering new user
     # at the backend, go back to the register page.
-    #if error_message:
-    #    return render_template('index.html', message=error_message)
-    return redirect('/', code=303)
+    if error_message:
+        return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
-
+    return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
 
 def authenticate(inner_function):

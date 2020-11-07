@@ -33,6 +33,7 @@ class Ticket(db.Model):
     num_tickets = db.Column(db.Integer)
     ticket_price = db.Column(db.Integer)
     ticket_date = db.Column(db.Date)
+    ticket_owner = db.Column(db.String(100))
 
 # it creates all the SQL tables if they do not exist
 with app.app_context():

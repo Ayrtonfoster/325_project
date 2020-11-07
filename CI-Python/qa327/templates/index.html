@@ -15,7 +15,7 @@
 <hr>
 <h2 >Here is where you can sell tickets</h2>
 
-<h4 id='message'>{{message}}</h4>
+<h4 id='sell_message'>{{sell_message}}</h4>
 <form method="post" action="/sell">
     <div class="form-group">
       <label for="ticket_name">Ticket Name</label>
@@ -35,6 +35,7 @@
 
 
 <h2 >Buy tickets here</h2>
+<h4 id='buy_message'>{{buy_message}}</h4>
 <form method="post" action="/buy">
     <div class="form-group">
       <label for="ticket_name">Ticket Name</label>
@@ -47,6 +48,7 @@
 </form>
 
 <h2 >Update tickets here</h2>
+<h4 id='update_message'>{{update_message}}</h4>
 <form method="post" action="/update">
     <div class="form-group">
       <label for="ticket_name">Ticket Name</label>
@@ -74,6 +76,7 @@
       <th>Price $</th>
       <th>Available Tickets</th>
       <th>Date</th>
+      <th>Owner</th>
     </tr>
 {% for ticket in tickets %}
     <tr>
@@ -81,6 +84,7 @@
         <td>{{ ticket.ticket_price }}</td>
         <td>{{ ticket.num_tickets }}</td>
         <td>{{ ticket.ticket_date }}</td>
+        <td>{{ ticket.ticket_owner }}</td>
     </tr>
 {% endfor %}
 

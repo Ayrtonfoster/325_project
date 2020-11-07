@@ -1,6 +1,6 @@
 from qa327.models import db, User, Ticket
 from werkzeug.security import generate_password_hash, check_password_hash
-import datetime
+from datetime import date
 
 """
 This file defines all backend logic that interacts with database and other services
@@ -31,38 +31,48 @@ def login_user(email, password):
     return user
 
 
-def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date):
+def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
     """
-    Add tickets from form to db
+    Add new tickets to the db
+    :param ticket_name: The name of the ticket
+    :param num_tickets: Number of tickets being created
+    :param ticket_price: Price of each ticket
+    :param email: email of the ticket owner
+    :return: Truw when ticket created successfully
     """
     # store the encrypted password rather than the plain password
-    new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date)
+    new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
 
     db.session.add(new_ticket)
     db.session.commit()
-    return None
+    return True
 
 
 def get_all_tickets():
     """
-    retrieve tickets from db
+    retrieve tickets from db that are in the future
     """
-    # store the encrypted password rather than the plain password
-    ticket = Ticket.query.all()
+    # Only retrieve tickets that are in the future
+    today = date.today()
+    ticket = Ticket.query.filter(Ticket.ticket_date > today)
+    
     return ticket
 
 
 def buy_tickets(ticket_name, num_tickets):
     """
     buy tickets from form to db
+    :param ticket_name: The name of the ticket
+    :param num_tickets: Number of tickets being created
     """
     ticket = get_ticket(ticket_name)
-    if not ticket or int(num_tickets) > ticket.num_tickets:
+    if not ticket:
         return None
 
     ticket.num_tickets = ticket.num_tickets - int(num_tickets)
 
     db.session.commit()
+    return True
 
 def get_ticket(ticket_name):
     """
@@ -76,8 +86,11 @@ def get_ticket(ticket_name):
 
 def update_ticket(ticket_name, num_tickets, ticket_price, date):
     """
-    Get a ticket by a given ticket name
-    :param ticket: the ticket to be found
+    Update a ticket with new info
+    :param ticket_name: the name ticket to be found
+    :param num_tickets: new number of tickets
+    :param ticket_price: new price for each ticket
+    :param date: new date of ticket
     :return: a ticket that has the matched ticket named
     """
     ticket = get_ticket(ticket_name)
@@ -89,23 +102,36 @@ def update_ticket(ticket_name, num_tickets, ticket_price, date):
     ticket.ticket_date = date
 
     db.session.commit()
-    return None
+    return True
 
 
-def update_balance(email, ticket_price):
+def update_balance(buyer_email, seller_email, ticket_cost, overall_cost):
     """
     Get a ticket by a given ticket name
-    :param ticket: the ticket to be found
-    :return: a ticket that has the matched ticket named
+    :param buyer_email: email of ticket buyer
+    :param seller_email: email of ticket seller
+    :param ticket_cost: how much to be added to seller account
+    :param overall_cost: overall cost to buyer
+    :return: True if successful, failure of cant't find buyer or seller
     """
-    user = get_user(email)
-    if not user:
+
+    # Retrieve Buyer info
+    buyer = get_user(buyer_email)
+    if not buyer:
         return None
     
-    user.balance =  user.balance - int(ticket_price)
+    # Retrieve Seller info
+    seller = get_user(seller_email)
+    if not seller:
+        return None    
+    
+    # Ipdate Buyer and seller balances 
+    buyer.balance =  buyer.balance - overall_cost
+    seller.balance =  seller.balance + ticket_cost
+    
 
     db.session.commit()
-    return None
+    return True
 
 
 def register_user(email, name, password, password2):

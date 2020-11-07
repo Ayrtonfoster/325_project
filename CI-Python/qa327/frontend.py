@@ -12,6 +12,11 @@ http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
 
+# Reusable REGEX
+ticket_name_reg = re.compile("^\S[a-zA-Z0-9_ ]{1,60}\S$")
+"""The name of the ticket has to be alphanumeric-only, and space allowed only 
+    if it is not the first or the last character. The name of the ticket is 
+    no longer than 60 characters"""
 
 def login_redirect(inner_function):
     """
@@ -178,17 +183,19 @@ def sell_tickets():
     ticket_price = request.form.get('ticket_price')
     ticket_date = request.form.get('ticket_date')
 
+    # Check if the inputs are following correct format
+    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
+
     # Get info on the user
     email = session['logged_in']
     user = bn.get_user(email)
 
-    error_message = None
-
     #Convert datetime into something we can put in db
     date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
 
-    if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date, email):
-        error_message = "Failed to store ticket info."
+    if error_message == None:
+        if not bn.post_tickets(ticket_name, num_tickets, ticket_price, date, email):
+            error_message = "Failed to store ticket info."
 
     # get Info on Tickets
     tickets = bn.get_all_tickets()
@@ -206,32 +213,35 @@ def buy_tickets():
     # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
     num_tickets = request.form.get('num_tickets')
-    error_message = ""
+
 
     # Find out info on logged in user and tickets
     email = session['logged_in']
     user = bn.get_user(email)
 
-    # Retrieve info on ticket being bought
-    ticket_info = bn.get_ticket(ticket_name)
-
-    # Calc cost of ticket 
-    ticket_cost = ticket_info.ticket_price * int(num_tickets)
-    service_fee = ticket_cost * 0.35
-    tax = ticket_cost * 0.05
-
-    overall_cost = ticket_cost + service_fee + tax
-
-
-    if(ticket_info.num_tickets < int(num_tickets)):
-        error_message = "requested more than available tickets, "
-
-    if(user.balance - overall_cost < 0):
-        error_message += "Not enough money in balance"
+    error_message = ticket_info_sanitizer(ticket_name, num_tickets)
     
     # Subtract the bought tickets from amount available
-    if not bn.buy_tickets(ticket_name, num_tickets) and not error_message:
-        error_message += "Not a concert" 
+    if error_message is None:
+        # Retrieve info on ticket being bought
+        ticket_info = bn.get_ticket(ticket_name)
+
+        if ticket_info is not None:
+            # Calc cost of ticket
+            ticket_cost = ticket_info.ticket_price * int(num_tickets)
+            service_fee = ticket_cost * 0.35
+            tax = ticket_cost * 0.05
+
+            overall_cost = ticket_cost + service_fee + tax
+
+            if (ticket_info.num_tickets < int(num_tickets)):
+                error_message = "requested more than available tickets, "
+
+            if (user.balance - overall_cost < 0):
+                error_message = "Not enough money in balance"
+
+            if not bn.buy_tickets(ticket_name, num_tickets):
+                error_message = "Not a concert"
 
 
     # get Info on Tickets
@@ -257,7 +267,7 @@ def update_tickets():
     num_tickets = request.form.get('num_tickets')
     ticket_price = request.form.get('ticket_price')
     ticket_date = request.form.get('ticket_date')
-    error_message = None
+    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
 
     # Find out info on logged in user and tickets
     email = session['logged_in']
@@ -266,19 +276,33 @@ def update_tickets():
     #Convert datetime into something we can put in db
     date = datetime.datetime.strptime(ticket_date, '%Y-%m-%d').date()
 
-    if not bn.update_ticket(ticket_name, num_tickets, ticket_price, date):
-        error_message = "No such Ticket with that name."
+    if error_message == None:
+        if not bn.update_ticket(ticket_name, num_tickets, ticket_price, date):
+            error_message = "No such Ticket with that name."
 
     # get Info on Tickets
     tickets = bn.get_all_tickets()
 
-    # if there is any error messages when registering new user
+    # if there is any error messages when updating ticket info
     # at the backend, go back to the register page.
     if error_message:
         return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
     return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
+def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
+    # Check if the inputs are following correct format
+
+    if (not bool(ticket_name_reg.match(ticket_name))):
+        return "Ticket name does not follow guideline"
+
+    elif (int(num_tickets) < 1 or int(num_tickets) > 100):
+        return "Number of tickets outside of range"
+
+    elif (int(ticket_price) < 10 or int(ticket_price) > 100):
+        return "Ticket price outside of range"
+
+    else: return None
 
 def authenticate(inner_function):
     """

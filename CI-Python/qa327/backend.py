@@ -10,6 +10,7 @@ This file defines all backend logic that interacts with database and other servi
 def get_user(email):
     """
     Get a user by a given email
+
     :param email: the email of the user
     :return: a user that has the matched email address
     """
@@ -20,9 +21,10 @@ def get_user(email):
 def login_user(email, password):
     """
     Check user authentication by comparing the password
+
     :param email: the email of the user
     :param password: the password input
-    :return: the user if login succeeds
+    :return: the user if login succeeds, else None
     """
     # if this returns a user, then the name already exists in database
     user = get_user(email)
@@ -34,11 +36,12 @@ def login_user(email, password):
 def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
     """
     Add new tickets to the db
+
     :param ticket_name: The name of the ticket
     :param num_tickets: Number of tickets being created
     :param ticket_price: Price of each ticket
     :param email: email of the ticket owner
-    :return: Truw when ticket created successfully
+    :return: True when ticket created successfully
     """
     # store the encrypted password rather than the plain password
     new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
@@ -50,7 +53,9 @@ def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
 
 def get_all_tickets():
     """
-    retrieve tickets from db that are in the future
+    Retrieve tickets from db that are in the future
+
+    :return: list of Tickets
     """
     # Only retrieve tickets that are in the future
     today = date.today()
@@ -61,9 +66,11 @@ def get_all_tickets():
 
 def buy_tickets(ticket_name, num_tickets):
     """
-    buy tickets from form to db
+    Buy tickets from form to db
+
     :param ticket_name: The name of the ticket
-    :param num_tickets: Number of tickets being created
+    :param num_tickets: Number of tickets being purchased
+    :return: True if purchase succeeds, else None
     """
     ticket = get_ticket(ticket_name)
     if not ticket:
@@ -74,11 +81,13 @@ def buy_tickets(ticket_name, num_tickets):
     db.session.commit()
     return True
 
+
 def get_ticket(ticket_name):
     """
     Get a ticket by a given ticket name
-    :param ticket: the ticket to be found
-    :return: a ticket that has the matched ticket named
+
+    :param ticket_name: the ticket to be found
+    :return: a Ticket with the given ticket_name
     """
     ticket = Ticket.query.filter_by(ticket_name=ticket_name).first()
     return ticket
@@ -87,11 +96,12 @@ def get_ticket(ticket_name):
 def update_ticket(ticket_name, num_tickets, ticket_price, date):
     """
     Update a ticket with new info
+
     :param ticket_name: the name ticket to be found
     :param num_tickets: new number of tickets
     :param ticket_price: new price for each ticket
     :param date: new date of ticket
-    :return: a ticket that has the matched ticket named
+    :return: True if update succeeds, else None
     """
     ticket = get_ticket(ticket_name)
     if not ticket:
@@ -107,12 +117,13 @@ def update_ticket(ticket_name, num_tickets, ticket_price, date):
 
 def update_balance(buyer_email, seller_email, ticket_cost, overall_cost):
     """
-    Get a ticket by a given ticket name
+    Update user balance amounts following ticket purchase
+
     :param buyer_email: email of ticket buyer
     :param seller_email: email of ticket seller
     :param ticket_cost: how much to be added to seller account
     :param overall_cost: overall cost to buyer
-    :return: True if successful, failure of cant't find buyer or seller
+    :return: True if successful, None if buyer or seller not found
     """
 
     # Retrieve Buyer info
@@ -125,10 +136,9 @@ def update_balance(buyer_email, seller_email, ticket_cost, overall_cost):
     if not seller:
         return None    
     
-    # Ipdate Buyer and seller balances 
-    buyer.balance =  buyer.balance - overall_cost
-    seller.balance =  seller.balance + ticket_cost
-    
+    # Update Buyer and seller balances
+    buyer.balance = buyer.balance - overall_cost
+    seller.balance = seller.balance + ticket_cost
 
     db.session.commit()
     return True
@@ -137,6 +147,7 @@ def update_balance(buyer_email, seller_email, ticket_cost, overall_cost):
 def register_user(email, name, password, password2):
     """
     Register the user to the database
+
     :param email: the email of the user
     :param name: the name of the user
     :param password: the password of user

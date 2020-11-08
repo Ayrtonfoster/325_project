@@ -12,7 +12,7 @@ def get_user(email):
     Get a user by a given email
 
     :param email: the email of the user
-    :return: a user that has the matched email address
+    :return: a User that has the matching email address
     """
     user = User.query.filter_by(email=email).first()
     return user
@@ -24,7 +24,7 @@ def login_user(email, password):
 
     :param email: the email of the user
     :param password: the password input
-    :return: the user if login succeeds, else None
+    :return: the User if login succeeds, else None
     """
     # if this returns a user, then the name already exists in database
     user = get_user(email)
@@ -53,7 +53,7 @@ def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
 
 def get_all_tickets():
     """
-    Retrieve tickets from db that are in the future
+    Retrieve all tickets from db that are in the future
 
     :return: list of Tickets
     """
@@ -152,7 +152,7 @@ def register_user(email, name, password, password2):
     :param name: the name of the user
     :param password: the password of user
     :param password2: another password input to make sure the input is correct
-    :return: an error message if there is any, or None if register succeeds
+    :return: True if registration succeeds, otherwise False
     """
 
     hashed_pw = generate_password_hash(password, method='sha256')

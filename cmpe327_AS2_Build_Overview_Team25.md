@@ -1,4 +1,4 @@
-# CMPE327 AS2 Group X
+# CMPE327 AS2 Group 25 Prototype Build Overview
 #### Ayrton Foster, Eric Leask, Franc Marrato, Matthew Kruzich
 ## Project Structure
 ### Overview
@@ -137,5 +137,3 @@ implementing homepage and buy, sell, and update ticket functions.
 #### System Testing
 The full team will be jointly involved in resolving system testcase issues, as these will require an understanding of 
 the full design.
-
-### Budget Management

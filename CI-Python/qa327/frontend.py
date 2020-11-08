@@ -20,7 +20,7 @@ ticket_name_reg = re.compile("^\S[a-zA-Z0-9_ ]{1,60}\S$")
 
 def login_redirect(inner_function):
     """
-    :param inner_function: any python function that accepts a user object
+    :param: inner_function: any python function that accepts a user object
 
     Wrap any python function and check the current session to see if 
     the user has logged in. If login, it will redirect to the home page
@@ -52,13 +52,29 @@ def login_redirect(inner_function):
 @app.route('/register', methods=['GET'])
 @login_redirect
 def register_get():
+    """
+    :return: the register page to be rendered
+
+    Redirect the user to the register page
+    """    
 
     # templates are stored in the templates folder
     return render_template('register.html', message='')
 
 
 def check_user_format(email, password, name=None, password2=None):
+    """
+    :param email: email of user trying to register
+    :param password: passowrd of user trying to register
+    :param name: Name of user trying to regoster
+    :param password2: Second input of user trying to regoster
 
+    Check the input of the registration process, ensuring that it follows
+    all necessary semantics
+
+    return: if something does not meet requirements return that, otherwise nothing
+
+    """
     error_message = None
 
     # Email must conform to RFC 5322
@@ -106,6 +122,15 @@ def check_user_format(email, password, name=None, password2=None):
 
 @app.route('/register', methods=['POST'])
 def register_post():
+    """
+    Take the inputs from the registration form and create a new user if it passes all requirements
+
+    :return: if something does not meet requirements return that, otherwise create user and
+    redirect to login page
+
+    """
+
+    # Retrieve info from forms
     email = request.form.get('email')
     name = request.form.get('name')
     password = request.form.get('password')
@@ -132,11 +157,24 @@ def register_post():
 @app.route('/login', methods=['GET'])
 @login_redirect
 def login_get():
+    """
+    Renders the lgin page for the user 
+
+    :return: The login page to be rendered
+
+    """
     return render_template('login.html', message='Please login')
 
 
 @app.route('/login', methods=['POST'])
 def login_post():
+    """
+    Process login requests once 
+
+    :return: if the login is successful redirect to the main page
+
+    """
+
     email = request.form.get('email')
     password = request.form.get('password')
 
@@ -167,6 +205,12 @@ def login_post():
 
 @app.route('/logout')
 def logout():
+    """
+    Process logout requests once 
+
+    :return: if the logout is successful redirect to the main page
+
+    """
     if 'logged_in' in session:
         session.pop('logged_in', None)
     return redirect('/')
@@ -174,6 +218,14 @@ def logout():
 
 @app.route('/sell', methods=['POST'])
 def sell_tickets():
+    """
+    This function is responsible for completing the selling action on tickets, so taking
+    the inputs from the sell section and converting them to tickets that can be bought
+
+    :return: If the forms don't adhere to the required formatting, return with error message,
+    otherwise return with successfull ticket posting
+
+    """
 
     # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
@@ -207,6 +259,13 @@ def sell_tickets():
 
 @app.route('/buy', methods=['POST'])
 def buy_tickets():
+    """
+    This function is responsible for completing the buying action on tickets, so taking
+    the inputs from the buy section and converting them to bought tickets
+
+    :return: If the forms don't adhere to the required formatting, return with error message,
+    otherwise return with successfull ticket selling
+    """
 
     # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
@@ -259,6 +318,13 @@ def buy_tickets():
 
 @app.route('/update', methods=['POST'])
 def update_tickets():
+    """
+    This function is responsible for completing the update action on tickets, so taking
+    the inputs from the update section and converting them to updated tickets
+
+    :return: If the forms don't adhere to the required formatting, return with error message,
+    otherwise return with successfull ticket modification
+    """
     
     # Retrieve info from forms
     ticket_name = request.form.get('ticket_name')
@@ -288,9 +354,19 @@ def update_tickets():
 
     return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
-def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
-    # Check if the inputs are following correct format
 
+def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
+    """
+    Sanitize the input for the ticket fields to ensure they follow the required guidelines
+    :param ticket_name: the name ticket to be found
+    :param num_tickets: new number of tickets
+    :param ticket_price: new price for each ticket
+
+    :return: If there are no issues with the fields return nothing
+    if there are issues return with message indicating the issue
+    """
+
+    # Check if the inputs are following correct format
     if (not bool(ticket_name_reg.match(ticket_name))):
         return "Ticket name does not follow guideline"
 
@@ -340,6 +416,13 @@ def authenticate(inner_function):
 @app.route('/')
 @authenticate
 def profile(user):
+    """
+    This function is responsible for generating the main/profile page with all the needed info 
+    :param user: user object representing the current active user
+
+    :return: instructions to render the profile page with all the required info (balance, name, tickets)
+    """
+
     # authentication is done in the wrapper function
     # see above.
     # by using @authenticate, we don't need to re-write

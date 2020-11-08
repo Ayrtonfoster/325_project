@@ -8,7 +8,7 @@ and handle HTML serving. In the case where website behaviour depends on reading 
 frontend will make a call to the backend, which will handle database access. The backend will enforce any constraints 
 on consistency of objects in database. There are two classes of objects in the database: Users and Tickets.
 ### Method Outlines
-### Prototype method/interactions diagram
+#### Prototype method/interactions diagram
 ![alt text](https://i.imgur.com/bWG3omE.png) 
 #### Frontend
 | Function Name | Function Description | 
@@ -73,6 +73,38 @@ integration testing is highlighted as these functions make up the majority of us
 System Testing: System testing will be based on user stories, where test cases are created from paths and actions that are common to how the website should be used.
 Malintent user stories will also be used for testing. Malintent test cases will consider the possibility of user attempting to miss use the website for mischievous purpose.
 User story testing will be the most complex with multiple checks being made each time the website commits a new change to the screen. 
+
+### Order of Testcases<br />
+The logic in priority is based on requiring the previous level to function before its capabilities are usable. 	<br /> 
+As such, the priority of components(by pages/routes) within each level generally follow this order. This follows the <br />general order a user interacts with the site.<br /> 
+| /Register /Login<br /> |
+| --- |
+| /<br /> |
+| /Sell /Buy<br /> |
+| /Update<br /> |
+
+#### Level 3	Unit Testing <br /> 
+Here unit testing will verify the individual components defined by requirements R1-8 meet their specifications.<br />
+Primary focus is on requirements with internal interactions(specifications not interacting with other components/requirements)<br /> 
+Examples:<br /> 
+
+| R1.8.1 | Password has to meet the required complexity: minimum length 6, at least one upper case, at least one lower case, and at least one special character. |
+| --- | --- |
+
+#### Level 2	Integration Testing<br /> 
+In integration testing we will verify requirements focused on interactions between components.<br /> 
+Examples:<br /> 
+
+| R1.3.1 | If the user has logged in, redirect to the user profile page. |
+| --------: | :-------- |
+| R1.10.1 | If email/password are correct, redirect to / |
+
+#### Level 1 System testing<br /> 
+Here testing will verify the system through the completion of scenarios.<br /> 
+Example Scenario: <br /> 
+
+| A user logs in, and buys X tickets. |
+| ---: |
 
 ### Environment, Techniques, and Tools
 Test will be automatically run using the ```pytest``` before each build is merged with the main code branch. 

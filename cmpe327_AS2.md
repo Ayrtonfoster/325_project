@@ -66,6 +66,24 @@ stories
 Automated tests will be run using the ```pytest``` command prior to each commit. The automated tests will be pulled 
 from ```qa327_test``` folder which will be organized as outlined in "Test Organization".
 
-- Environments
-- Responsibilities
-- Budget Management
+### Environments
+
+### Responsibilities
+Team members will be responsible for test cases related to the functionalities they implemented. Dynamic pair 
+programming was used, with Eric + Matt implementing login, registration, and redirect functions; and Ayrton and Franc 
+implementing homepage and buy, sell, and update ticket functions.
+#### Unit Testing
+| Unit Test Cases | Contact |
+| --- | --- |
+| R1, R2, R7, R8 | Eric + Matt |
+| R3, R4, R5, R6 | Ayrton + Franc |
+#### Integration Testing
+| Integration Test Cases | Contact |
+| --- | --- |
+| login, registration, logout, redirect | Eric + Matt |
+| homepage, buy, sell, and update | Ayrton + Franc |
+#### System Testing
+The full team will be jointly involved in resolving system testcase issues, as these will require an understanding of 
+the full design.
+
+### Budget Management

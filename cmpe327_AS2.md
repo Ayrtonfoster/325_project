@@ -8,6 +8,8 @@ and handle HTML serving. In the case where website behaviour depends on reading 
 frontend will make a call to the backend, which will handle database access. The backend will enforce any constraints 
 on consistency of objects in database. There are two classes of objects in the database: Users and Tickets.
 ### Method Outlines
+### Prototype method/interactions diagram
+![alt text](https://i.imgur.com/bWG3omE.png) 
 #### Frontend
 | Function Name | Function Description | 
 | ---: | :--- |
@@ -23,6 +25,7 @@ on consistency of objects in database. There are two classes of objects in the d
 | `sell_tickets` | user function to put tickets up for sale |
 | `buy_tickets` | user function to buy tickets, if they exist |
 | `update_tickets` | user function to modify tickets they are selling |
+| `ticket_info_sanitizer` | check all ticket entries against  outlined requirements and constraints|
 #### Backend
 | Function Name | Function Description | 
 | ---: | :--- |
@@ -56,17 +59,34 @@ increasing clarity, and reducing time required for code inspections.
 
 A link to the full style guide outline can be found here: https://www.python.org/dev/peps/pep-0008/ 
 ## Test Plan
-### Test Organization
+### Test Organisation
 Unit Tests: Based on the requirement sub-lists R1 to R8 with mirrored tests for both front and back end. Front end 
-tests will use mocking for backend requirements and vise-versa.
- 
-unit tests based on R groupings, integration tests based around the buy sell features, system testing using user 
-stories
-### Tools and Techniques
-Automated tests will be run using the ```pytest``` command prior to each commit. The automated tests will be pulled 
-from ```qa327_test``` folder which will be organized as outlined in "Test Organization".
+tests will use mocking for backend requirements and back end tests will use mocking for frontend tests. Back end tests will 
+be based off the front end tests written in A1. A test partitioning system will be put inplace for all tests using HTML 
+input boxes to reduce the number of tests required to be confident of its functionality
 
-### Environments
+Integration Testing: Integration testing will begin with performing identical tests from sub-lists R1 to R8 without the 
+use of mocking for front end or back end. These re-tests will identify any misalignment between requests made to the backend and the expected data to be returned.
+Indepth test cases will also be created for the interactions between the ```/``` home page and the ```/buy, /sell, /update``` functions. ```/buy, /sell, /update```
+integration testing is highlighted as these functions make up the majority of user interactions.
+
+System Testing: System testing will be based on user stories, where test cases are created from paths and actions that are common to how the website should be used.
+Malintent user stories will also be used for testing. Malintent test cases will consider the possibility of user attempting to miss use the website for mischievous purpose.
+User story testing will be the most complex with multiple checks being made each time the website commits a new change to the screen. 
+
+### Environment, Techniques, and Tools
+Test will be automatically run using the ```pytest``` before each build is merged with the main code branch. 
+Code repository badges such as 
+
+![alt text](https://travis-ci.org/{{username}}/{{project_name}}.png?branch={{branch}})  (build status) 
+
+and  
+
+![alt text](https://camo.githubusercontent.com/3a5fbd250633413cd9a1a57ba65e09cb88ef5cf9d1d871fd2be4febb97e7a3b3/68747470733a2f2f63646e2e7261776769742e636f6d2f646272676e2f636f7665726167652d62616467652f6d61737465722f6578616d706c652e737667)  (build coverage)
+
+ will be updated based on the test results and posted to the main page of the github repository, most likely 
+on the ```README.md``` document. If possible (still un-researched) the test repository will be automatically ran 
+directly from github on a schedule basis allowing testing to continue without direct supervision.
 
 ### Responsibilities
 Team members will be responsible for test cases related to the functionalities they implemented. Dynamic pair 

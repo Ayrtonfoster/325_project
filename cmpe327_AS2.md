@@ -73,11 +73,8 @@ integration testing is highlighted as these functions make up the majority of us
 System Testing: System testing will be based on user stories, where test cases are created from paths and actions that are common to how the website should be used.
 Malintent user stories will also be used for testing. Malintent test cases will consider the possibility of user attempting to miss use the website for mischievous purpose.
 User story testing will be the most complex with multiple checks being made each time the website commits a new change to the screen. 
-### Tools and Techniques
-Automated tests will be run using the ```pytest``` command prior to each commit. The automated tests will be pulled 
-from ```qa327_test``` folder which will be organized as outlined in "Test Organization".
 
-### Environment
+### Environment, Techniques, and Tools
 Test will be automatically run using the ```pytest``` before each build is merged with the main code branch. 
 Code repository badges such as 
 

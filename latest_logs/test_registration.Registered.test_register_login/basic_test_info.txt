@@ -1,0 +1,22 @@
+test_registration.Registered.test_register_login
+----------------------------------------------------
+Last Page: http://localhost:8081/login
+  Browser: chrome
+Timestamp: 1605554114  (Unix Timestamp)
+     Date: Monday, November 16, 2020
+     Time: 2:15:14 PM  (Eastern Daylight Time, UTC-05:00)
+----------------------------------------------------
+Traceback: File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\unittest\case.py", line 628, in run
+    testMethod()
+  File "F:\Queens\Comp_Eng_2020-2021\CMPE 327 Software Quality Assurance\CMPE-327-SOFT_QUAL_ASSU\CI-Python\qa327_test\integration\test_registration.py", line 34, in test_register_login
+    self.assert_element("#welcome-header")
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\base_case.py", line 5038, in assert_element
+    self.wait_for_element_visible(selector, by=by, timeout=timeout)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\base_case.py", line 3381, in wait_for_element_visible
+    self.driver, selector, by, timeout)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\page_actions.py", line 299, in wait_for_element_visible
+    timeout_exception(NoSuchElementException, message)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\page_actions.py", line 117, in timeout_exception
+    raise exc(message)
+Exception: Message: 
+ Element {#welcome-header} was not present after 6 seconds!

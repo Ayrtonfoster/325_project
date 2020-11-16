@@ -1,0 +1,24 @@
+test_registraion.FrontEndHomePageTest.test_login_success
+----------------------------------------------------
+Last Page: http://localhost:8081/login
+  Browser: chrome
+Timestamp: 1605554087  (Unix Timestamp)
+     Date: Monday, November 16, 2020
+     Time: 2:14:47 PM  (Eastern Daylight Time, UTC-05:00)
+----------------------------------------------------
+Traceback: File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\unittest\case.py", line 628, in run
+    testMethod()
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\unittest\mock.py", line 1256, in patched
+    return func(*args, **keywargs)
+  File "F:\Queens\Comp_Eng_2020-2021\CMPE 327 Software Quality Assurance\CMPE-327-SOFT_QUAL_ASSU\CI-Python\qa327_test\frontend\test_registraion.py", line 67, in test_login_success
+    self.assert_element("#welcome-header")
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\base_case.py", line 5038, in assert_element
+    self.wait_for_element_visible(selector, by=by, timeout=timeout)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\base_case.py", line 3381, in wait_for_element_visible
+    self.driver, selector, by, timeout)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\page_actions.py", line 299, in wait_for_element_visible
+    timeout_exception(NoSuchElementException, message)
+  File "c:\users\francesco marrato\appdata\local\programs\python\python37\lib\site-packages\seleniumbase\fixtures\page_actions.py", line 117, in timeout_exception
+    raise exc(message)
+Exception: Message: 
+ Element {#welcome-header} was not present after 6 seconds!

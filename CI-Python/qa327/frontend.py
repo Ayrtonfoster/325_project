@@ -158,7 +158,7 @@ def register_post():
 @login_redirect
 def login_get():
     """
-    Renders the lgin page for the user 
+    Renders the login page for the user
 
     :return: The login page to be rendered
 

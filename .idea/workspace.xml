@@ -2,12 +2,25 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37c03fa7-95bd-4e22-93c5-23ea6d36d09d" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_sell.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327/frontend.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI-Python/qa327/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327_test/frontend/test_registraion.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CI-Python/qa327_test/integration/test_registration.py" beforeDir="false" afterPath="$PROJECT_DIR$/CI-Python/qa327_test/integration/test_registration.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,5 +47,11 @@
       <updated>1605552600207</updated>
     </task>
     <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="414" y="175" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605565417058">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="414" y="175" width="1092" height="706" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1040/0.0.1920.1040@0.0.1920.1040" timestamp="1605565417058" />
   </component>
 </project>

@@ -3,6 +3,9 @@ This repo contains everything you need to run an application called SeetGeek. Wh
 
 In the future testing will be added to ensure that the product meets quality standards
 
+## Build Status
+[![](https://github.com/TankyFranky/CMPE-327-SOFT_QUAL_ASSU/workflows/SeekGeek-Build/badge.svg)]()
+
 The team consists of:
 •	Ayrton Foster
 •	Francesco Marrato

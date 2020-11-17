@@ -127,4 +127,23 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
 .idea/
+
+.vscode/settings.json
+db.sqlite
+latest_logs/
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_password_failed/basic_test_info.txt
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_password_failed/page_source.html
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_password_failed/screenshot.png
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_success/basic_test_info.txt
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_success/page_source.html
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_success/screenshot.png
+latest_logs/test_registration.Registered.test_register_login/basic_test_info.txt
+latest_logs/test_registration.Registered.test_register_login/page_source.html
+latest_logs/test_registration.Registered.test_register_login/screenshot.png
+latest_logs/test_registration.Registered.test_register_login/page_source.html
+latest_logs/test_registration.Registered.test_register_login/screenshot.png
+latest_logs/test_registraion.FrontEndHomePageTest.test_login_password_failed/basic_test_info.txt
+db.sqlite
+

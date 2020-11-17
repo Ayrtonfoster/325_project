@@ -82,3 +82,50 @@ class FrontEndHomePageTest(BaseCase):
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("email/password format is incorrect.", "#message")
+
+    '''def test_if_logged_in_properties():
+        # R2.0.1
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_new_user_properties():
+        # R2.1.1'''
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_register_page_elements(self, *_):
+        # R2.2.1
+
+        # open login page
+        self.open(base_url + '/register')
+        self.assert_element("#email")
+        self.assert_element("#name")
+        self.assert_element("#password")
+        self.assert_element("#password2")
+
+
+    def test_submit_button_works(self, *_):
+        # R2.3.1
+
+        # open login page
+        self.open(base_url + '/register')    
+        self.assert_element("#btn-submit")
+
+
+    def test_with_empty_email(self, *_):
+        # R2.4.1
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "")
+        self.type("#name", "test0")        
+        self.type("#password", "test_Frontend!2")        
+        self.type("#password2", "test_Frontend!2")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("email/password format is incorrect.", "#message")
+
+

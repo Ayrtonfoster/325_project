@@ -228,10 +228,10 @@ def sell_tickets():
     """
 
     # Retrieve info from forms
-    ticket_name = request.form.get('ticket_name')
-    num_tickets = request.form.get('num_tickets')
-    ticket_price = request.form.get('ticket_price')
-    ticket_date = request.form.get('ticket_date')
+    ticket_name = request.form.get('sell_ticket_name')
+    num_tickets = request.form.get('sell_num_tickets')
+    ticket_price = request.form.get('sell_ticket_price')
+    ticket_date = request.form.get('sell_ticket_date')
 
     # Check if the inputs are following correct format
     error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
@@ -268,8 +268,8 @@ def buy_tickets():
     """
 
     # Retrieve info from forms
-    ticket_name = request.form.get('ticket_name')
-    num_tickets = request.form.get('num_tickets')
+    ticket_name = request.form.get('buy_ticket_name')
+    num_tickets = request.form.get('buy_num_tickets')
 
 
     # Find out info on logged in user and tickets
@@ -327,10 +327,10 @@ def update_tickets():
     """
     
     # Retrieve info from forms
-    ticket_name = request.form.get('ticket_name')
-    num_tickets = request.form.get('num_tickets')
-    ticket_price = request.form.get('ticket_price')
-    ticket_date = request.form.get('ticket_date')
+    ticket_name = request.form.get('update_ticket_name')
+    num_tickets = request.form.get('update_num_tickets')
+    ticket_price = request.form.get('update_ticket_price')
+    ticket_date = request.form.get('update_ticket_date')
     error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
 
     # Find out info on logged in user and tickets

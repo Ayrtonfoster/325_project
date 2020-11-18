@@ -85,11 +85,11 @@ class MainPageTest(BaseCase):
         self.assert_element("#tickets")
         ticket_info = self.driver.find_element_by_id('tickets').text
         for ticket in test_tickets:
-            self.assertIn(ticket.ticket_name,ticket_info )
-            self.assertIn(ticket.num_tickets,ticket_info)
-            self.assertIn(ticket.ticket_price,ticket_info)
-            self.assertIn(ticket.ticket_date,ticket_info)
-            self.assertIn(ticket.ticket_owner,ticket_info)
+            self.assertIn(str(ticket.ticket_name),ticket_info )
+            self.assertIn(str(ticket.num_tickets),ticket_info)
+            self.assertIn(str(ticket.ticket_price),ticket_info)
+            self.assertIn(str(ticket.ticket_date),ticket_info)
+            self.assertIn(str(ticket.ticket_owner),ticket_info)
         
     #This page contains a form that a user can submit new tickets for sell. Fields: name, quantity, price, expiration date
     @login_pass

@@ -29,8 +29,9 @@ test_tickets = [
 class FrontEndLoginFunctionTest(BaseCase):
 
     def test_show_login_not(self, *_):
-        # R1.1.1
-
+        """
+        R1.1.1: Check if the default page before login is /login
+        """
         self.open(base_url) # open login page
 
         cur_url = self.get_current_url()
@@ -39,7 +40,9 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assert_text("Log In", "#login_title") # check if 'Log In' is visible
 
     def test_login_return_home(self, *_):
-        # R1.1.2
+        """
+        R1.1.2: Check if the home page '/' is inaccessible when not logged in
+        """
         # Attempt to open home page (not logged in)
         self.open(base_url + '/')
 
@@ -50,7 +53,9 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assert_text("Log In", "#login_title")  # check if 'Log In' is visible
 
     def test_login_default_message(self, *_):
-        # R1.2.1
+        """
+        R1.2.1: Check if the startup page /login contains the message 'please login' on initial open
+        """
 
         self.open(base_url + '/login')  # open login page
 
@@ -61,13 +66,16 @@ class FrontEndLoginFunctionTest(BaseCase):
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @patch('qa327.backend.login_user', return_value=test_user)
     def test_login_redirect_pass(self, *_):
-        # R1.3.1
-        # R1.5.1
-        # R1.8.1
-        # R1.10.1
+        """
+        R1.3.1: If the user is logged in redirect to / 'home' page
+        R1.5.1: The login form is submitted and requests / 'home' page
+        R1.8.1: Check if a correct password returns a True/Pass value when login is requested
+        R1.10.1: If email and password are correct and a login request is made, redirect to / 'home'
+        """
+
         self.open(base_url + '/login')  # go to login page for initial log in
 
-        # fill in login information
+        # fill in login information (correctly)
         self.type("#email", email)
         self.type("#password", "test_Frontend!2")
         # click enter button
@@ -84,8 +92,11 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assertEquals(cur_url, "http://localhost:8081/")
 
     def test_login_redirect_fail(self, *_):
-        # R1.3.2
-        # R1.5.2
+        """
+        R1.3.2: When the login post fails test that the webpage does not perform a redirects to / 'home'
+        R1.5.2: When a login post fails a redirection to /login is performed
+        """
+
         self.open(base_url + '/login')  # go to login page for initial log in
 
         # fill in login information (improperly)
@@ -99,7 +110,10 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assertEquals(cur_url, "http://localhost:8081/login")
 
     def test_login_fields(self, *_):
-        # R1.4.1
+        """
+        R1.4.1: Check if the login page includes the minimum fields of email and password
+        """
+
         self.open(base_url + '/login')  # go to login page
 
         # check if email and password fields exist
@@ -107,7 +121,10 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assert_element("#password")
 
     def test_login_empty_fields(self, *_):
-        # R1.6.1
+        """
+        R1.6.1: Check if login does not succeed when the fields are empty
+        """
+
         self.open(base_url + '/login')  # go to login page for initial log in
 
         # Attempt login with empty fields
@@ -126,8 +143,11 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assertEquals(cur_url, "http://localhost:8081/login")
 
     def test_login_email_RFC5322(self, *_):
-        # R1.7.1 "Cannot test this directly because is background function"
-        # R1.7.2
+        """
+        R1.7.1: Email inputs are checked against RFC 5322 Regex
+        R1.7.2: Email inputs checked against RFC 5322 Standard throw error_messages when not met
+        """
+        # List of first characters that could cause failure of RFC 5322
         false_char = ['.','@','  ','..']
 
         self.open(base_url + '/login')  # go to login page for initial log in
@@ -136,7 +156,7 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.type("#email", str(np.random.choice(false_char))+email)
         self.type("#password", "test_Frontend!2")
 
-        # Submit login attempt with empty fields
+        # Submit login attempt with porr email field
         self.click('input[type="submit"]')
 
         # Check if we are still on the /login page
@@ -148,6 +168,9 @@ class FrontEndLoginFunctionTest(BaseCase):
 
 
     def test_login_password_fail(self, *_):
+        """
+        R1.8.2: Test if 'bad' password that do not meet the password criteria throw a login error
+        """
         # R1.8.2
         self.open(base_url + '/login')  # go to login page for initial log in
 
@@ -180,10 +203,12 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.assert_text("email/password format is incorrect.")
 
     def test_login_formating_errors(self, *_):
-        # R1.9.1
-        # R1.9.2 Has been removed because a pop-up does not occur, the error message is a element field #message
-        # R1.11.1 Has been covered here as well as the check User returns as invalid when testing incorrect email
-        # R1.11.2 Has been covered here as well altered because message is shown in #message not on a pop-up
+        """
+        R1.9.1: Check if the /login page is rendered for any formatting errors and message is displayed
+        R1.9.2: Check if pop-up message reads "email/password" os shown on /login after error_message is thrown
+        R1.11.1: If email or password are incorrect redirect to /login
+        R1.11.2: Check if pop-up message reads "email/password" os shown on /login after error_message is thrown
+        """
 
         self.open(base_url + '/login')  # go to login page for initial log in
 

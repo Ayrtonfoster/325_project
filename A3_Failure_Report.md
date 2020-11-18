@@ -27,6 +27,7 @@
 |---------------------------------------|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------|
 | Test_submit_button_exists: R2.3.1      | Check that there is a submit button for registration       | Redundant                                                                  | No Error                                                                                  | Rolled into R.2.1                                     |
 | Check user created properly: R2.7.2     | Check if username is too short when registering | Valid Username                                                                  | Code checking whether username is too shirt or too long implemented incorrectly                                                                                  | Fixed logic for username length check                                   |
+| Check user created properly: R2.10.1     | Check to ensure user created successfully and can login | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.1                                     |
 
    
 

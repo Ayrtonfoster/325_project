@@ -378,3 +378,33 @@ class FrontEndHomePageTest(BaseCase):
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("This email is already in use", "#message")
+
+
+    def test_register_login(self, *_):
+        """
+        R2.10.1: Test if you can register then login with that account
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#name", "bob")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        self.open(base_url + '/login')   
+
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#password", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # open home page
+        self.open(base_url)
+        # test if the page loads correctly
+        self.assert_element("#welcome-header")
+        self.assert_text("Welcome bob", "#welcome-header")

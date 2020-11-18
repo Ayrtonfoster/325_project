@@ -112,7 +112,7 @@ class FrontEndHomePageTest(BaseCase):
 
     def test_registration_accessible(self, *_):
         """
-        R2.1.1: Check that re-registration is bypassed for a user that is already logged in
+        R2.1.1: Check that rregistration is accessible for a user that is not logged in
         """
         # try to open register page
         self.open(base_url + '/register')   

@@ -106,7 +106,7 @@ def check_user_format(email, password, name=None, password2=None):
     # User name has to be non-empty, longer than 2 characters and less than 20 characters.
     # Space allowed only if it is not the first or the last character
     # Name must be alphanumeric only
-    if not 2 <= len(name) <= 20\
+    if len(name) >= 20 or len(name) <= 2\
             or name[0] == " " or name[-1] == " "\
             or not name.replace(" ", "").isalnum():
 

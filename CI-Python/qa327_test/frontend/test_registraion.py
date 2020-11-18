@@ -24,7 +24,7 @@ Annotate @patch before unit tests can mock backend methods (for that testing fun
 # Moch a sample user
 test_user = User(
     email='testfrontend@test.com',
-    name='test_frontend',
+    name='test0',
     password=generate_password_hash('test_Frontend!2')
 )
 
@@ -65,7 +65,7 @@ class FrontEndHomePageTest(BaseCase):
         self.open(base_url)
         # test if the page loads correctly
         self.assert_element("#welcome-header")
-        self.assert_text("Welcome test_frontend", "#welcome-header")
+        self.assert_text("Welcome test0", "#welcome-header")
 
 
     @patch('qa327.backend.get_user', return_value=test_user)
@@ -83,18 +83,14 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#message")
         self.assert_text("email/password format is incorrect.", "#message")
 
-    '''def test_if_logged_in_properties():
-        # R2.0.1
-
-    @patch('qa327.backend.get_user', return_value=test_user)
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    def test_new_user_properties():
-        # R2.1.1'''
 
     @patch('qa327.backend.get_user', return_value=test_user)
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_register_page_elements(self, *_):
-        # R2.2.1
+        """
+        R2.2.1: Check that "email", "user name", "password", and "password2" elements are present in 
+                login page and that they are all form text inputs
+        """
 
         # open login page
         self.open(base_url + '/register')
@@ -104,16 +100,13 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#password2")
 
 
-    def test_submit_button_works(self, *_):
-        # R2.3.1
+    def test_with_empty_fields(self, *_):
+        """
+        R2.4.1: Test email cannot be empty
+        R2.4.2: Test password cannot be empty
+        R2.6.1: Test username cannot be empty
+        """
 
-        # open login page
-        self.open(base_url + '/register')    
-        self.assert_element("#btn-submit")
-
-
-    def test_with_empty_email(self, *_):
-        # R2.4.1
         self.open(base_url + '/register')    
 
         # fill empty email
@@ -126,6 +119,224 @@ class FrontEndHomePageTest(BaseCase):
         self.click('input[type="submit"]')
         # make sure it shows proper error message
         self.assert_element("#message")
-        self.assert_text("email/password format is incorrect.", "#message")
+        self.assert_text("Email format is incorrect.", "#message")
 
 
+        # fill empty password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "test0")        
+        self.type("#password", "")        
+        self.type("#password2", "")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Password format is incorrect.", "#message")   
+
+
+        # fill empty username
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", "")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+    
+    def test_valid_entries(self, *_):
+        """
+        R2.4.3: Test whether valid emails pass formatting checks
+        R2.4.5: Test whether valid passowrd inputs pass formating checks
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend@test.com")
+        self.type("#name", "test0")        
+        self.type("#password", "test_Frontend!2")        
+        self.type("#password2", "test_Frontend!2")
+
+        # click enter button
+        self.click('input[type="submit"]')
+
+        # open home page
+        self.open(base_url)
+
+
+    def test_invalid_entries(self, *_):
+        """
+        R2.4.4: Check if failure of "email" input against RFC 5322 fails to register
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "Abc.example.com")
+        self.type("#name", "test0")        
+        self.type("#password", "test_Frontend!2")        
+        self.type("#password2", "test_Frontend!2")
+
+        # click enter button
+        self.click('input[type="submit"]')
+
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Email format is incorrect.", "#message")
+
+
+
+    def test_invalid_password(self, *_):
+        """
+        R2.4.6: Check if failure of "password" inputs against password regex fails registration
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", "test0")        
+        self.type("#password", "test")        
+        self.type("#password2", "test")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Password format is incorrect.", "#message")
+
+
+    def test_matching_password(self, *_):
+        """
+        R2.5.1: Check if password and password2 different fails to register
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", "tester0")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta1234")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Confirm Password format is incorrect.", "#message")
+
+
+    def test_invalid_username(self, *_):
+        """
+        R2.6.2: Check username alphanumeric only	
+        R2.6.3: Check no space at start	
+        R2.6.4: Check no space at end	
+        R2.7.1: Check username too short
+        R2.7.2: Check username too long
+        """
+        self.open(base_url + '/register')    
+
+        # fill non alphanumeric username
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", "-!?")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+        
+        # fill username starting with space
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", " aaaaaaaaa")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+
+        # fill username ending with space
+        self.type("#email", "test_frontend6@test.com")
+        self.type("#name", "aaaaaaaa ")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+
+        # fill too short username
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#name", "a")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+
+        # fill too long username
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#name", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("Name format is incorrect.", "#message")
+
+
+
+    def test_duplicate_emails(self, *_):
+        """
+        R2.4.3: Check to ensure you can't create a second account with same email
+        """
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#name", "aaaaaaaa")        
+        self.type("#password", "#Pasta123")        
+        self.type("#password2", "#Pasta123")
+
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        self.open(base_url + '/register')    
+
+        # fill empty email
+        self.type("#email", "test_frontend76@test.com")
+        self.type("#name", "bbbbbbbbbb")        
+        self.type("#password", "#Pasta12")        
+        self.type("#password2", "#Pasta12")
+
+        # click enter button
+        self.click('input[type="submit"]')
+
+        # make sure it shows proper error message
+        self.assert_element("#message")
+        self.assert_text("This email is already in use", "#message")

@@ -1,5 +1,6 @@
 import pytest
 from seleniumbase import BaseCase
+from flask import render_template, request, session, redirect
 
 from qa327_test.conftest import base_url
 from unittest.mock import patch
@@ -82,6 +83,43 @@ class FrontEndHomePageTest(BaseCase):
         # make sure it shows proper error message
         self.assert_element("#message")
         self.assert_text("email/password format is incorrect.", "#message")
+
+
+    @patch('qa327.backend.get_user', return_value=test_user)
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_registration_inaccessible(self, *_):
+        """
+        R2.0.1: Check that re-registration is bypassed for a user that is already logged in
+        """
+        # open login page
+        self.open(base_url + '/login')
+        # fill email and password
+        self.type("#email", "test_frontend@test.com")
+        self.type("#password", "test_Frontend!2")
+        # click enter button
+        self.click('input[type="submit"]')
+        
+        # open home page
+        self.open(base_url)
+
+        # try to open register page
+        self.open(base_url + '/register')   
+
+        # Check if / page is opened for logged in user
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, "http://localhost:8081/")
+
+
+    def test_registration_accessible(self, *_):
+        """
+        R2.1.1: Check that rregistration is accessible for a user that is not logged in
+        """
+        # try to open register page
+        self.open(base_url + '/register')   
+
+        # Check if / page is opened for logged in user
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, "http://localhost:8081/register")
 
 
     @patch('qa327.backend.get_user', return_value=test_user)

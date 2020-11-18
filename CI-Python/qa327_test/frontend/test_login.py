@@ -35,7 +35,7 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.open(base_url) # open login page
 
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
         self.assert_element("#login_title") # Had to create a title for H1 in login
         self.assert_text("Log In", "#login_title") # check if 'Log In' is visible
 
@@ -48,7 +48,7 @@ class FrontEndLoginFunctionTest(BaseCase):
 
         # Check if returned to /login page
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
         self.assert_element("#login_title")  # Had to create a title for H1 in login
         self.assert_text("Log In", "#login_title")  # check if 'Log In' is visible
 
@@ -83,13 +83,13 @@ class FrontEndLoginFunctionTest(BaseCase):
 
         # Check if / page is opened for logged in user
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/")
+        self.assertEqual(cur_url, "http://localhost:8081/")
 
         self.open(base_url + '/login')  # attempt to go back to /login without signing out
 
         # Check if / page is opened for logged in user
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/")
+        self.assertEqual(cur_url, "http://localhost:8081/")
 
     def test_login_redirect_fail(self, *_):
         """
@@ -107,7 +107,7 @@ class FrontEndLoginFunctionTest(BaseCase):
 
         # check if redirection to /login occurs when failed login post occurs
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
 
     def test_login_fields(self, *_):
         """
@@ -140,7 +140,7 @@ class FrontEndLoginFunctionTest(BaseCase):
 
         # Check if we are still on the /login page
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
 
     def test_login_email_RFC5322(self, *_):
         """
@@ -161,7 +161,7 @@ class FrontEndLoginFunctionTest(BaseCase):
 
         # Check if we are still on the /login page
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
 
         self.assert_element("#message")  # check for error_message for bad email
         self.assert_text("email/password format is incorrect.")
@@ -218,7 +218,7 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.click('input[type="submit"]')
         # check if /login page is requested
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
         # check if message is shown
         self.assert_element("#message")
         self.assert_text("login failed")
@@ -229,7 +229,7 @@ class FrontEndLoginFunctionTest(BaseCase):
         self.click('input[type="submit"]')
         # check if /login page is requested
         cur_url = self.get_current_url()
-        self.assertEquals(cur_url, "http://localhost:8081/login")
+        self.assertEqual(cur_url, "http://localhost:8081/login")
         # check if message is shown
         self.assert_element("#message")
         self.assert_text("email/password format is incorrect.")

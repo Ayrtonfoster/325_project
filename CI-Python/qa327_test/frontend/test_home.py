@@ -31,7 +31,10 @@ test_tickets = [Ticket(
 )]
 
 
-#Unit Tests require the a user to login to the system
+'''
+login_pass is a decorator which logs in the user before each test
+It contains tests to confirm that login was successful as well
+'''
 @patch('qa327.backend.get_user', return_value=test_user)
 @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
 @patch('qa327.backend.login_user', return_value=test_user)
@@ -71,7 +74,8 @@ class MainPageTest(BaseCase):
         R3.1.1: Check element present containing welcome message "Hi {user.name}"
         """
         self.assert_element("#welcome-header")
-        self.assert_text("Welcome " + test_user.name, "#welcome-header")  
+        self.assert_text("Welcome " + test_user.name, "#welcome-header")
+          
     @login_pass
     def test_user_balance(self, *_):
         """
@@ -91,6 +95,7 @@ class MainPageTest(BaseCase):
         logout_element=self.driver.find_element_by_id('logout')
         logout_link=logout_element.get_attribute("href")  
         self.assert_equal(logout_link, base_url + "/logout")
+        
     @login_pass
     def test_ticket_list(self, *_):
         """
@@ -105,18 +110,18 @@ class MainPageTest(BaseCase):
             self.assertIn(str(ticket.ticket_price),ticket_info)
             self.assertIn(str(ticket.ticket_date),ticket_info)
             self.assertIn(str(ticket.ticket_owner),ticket_info)
+            
     @login_pass
     def test_sell_form_visuals(self, *_):
         """
         R3.5.1: Check sell form present with all fields
         """
-
         self.assert_element("#sell_ticket_name")
         self.assert_element("#sell_num_tickets")
         self.assert_element("#sell_ticket_price")
         self.assert_element("#sell_ticket_date")
-
-        self.assert_element("#sell_btn-submit")    
+        self.assert_element("#sell_btn-submit")   
+         
     @login_pass
     def test_buy_form_visuals(self, *_):
         """
@@ -125,6 +130,7 @@ class MainPageTest(BaseCase):
         self.assert_element("#buy_ticket_name")
         self.assert_element("#buy_num_tickets")
         self.assert_element("#buy_btn-submit")
+        
     @login_pass
     def test_update_form_visuals(self, *_):
         """
@@ -135,6 +141,7 @@ class MainPageTest(BaseCase):
         self.assert_element("#update_ticket_price")  
         self.assert_element("#update_ticket_date")  
         self.assert_element("#update_btn-submit")  
+        
     @login_pass
     def test_sell_post(self, *_):
         """
@@ -156,6 +163,7 @@ class MainPageTest(BaseCase):
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/sell")
+        
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     def test_buy_post(self, *_):
@@ -175,6 +183,7 @@ class MainPageTest(BaseCase):
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/") 
+        
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     def test_update_post(self, *_):

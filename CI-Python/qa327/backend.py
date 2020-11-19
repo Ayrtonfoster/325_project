@@ -47,8 +47,14 @@ def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
     new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
 
     db.session.add(new_ticket)
-    db.session.commit()
-    return True
+
+    try:
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()  # Rollback the current transaction in progress
+        db.session.flush()  # Reset non-commited .add()
+        return False
 
 
 def get_all_tickets():
@@ -60,7 +66,7 @@ def get_all_tickets():
     # Only retrieve tickets that are in the future
     today = date.today()
     ticket = Ticket.query.filter(Ticket.ticket_date > today)
-    
+
     return ticket
 
 
@@ -78,8 +84,13 @@ def buy_tickets(ticket_name, num_tickets):
 
     ticket.num_tickets = ticket.num_tickets - int(num_tickets)
 
-    db.session.commit()
-    return True
+    try:
+        db.session.commit()
+        return True
+    except Exception as e:
+        db.session.rollback()  # Rollback the current transaction in progress
+        db.session.flush()  # Reset non-commited .add()
+        return False
 
 
 def get_ticket(ticket_name):

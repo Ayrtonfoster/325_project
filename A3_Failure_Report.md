@@ -32,6 +32,19 @@
    
 
 ## R3 / | Failure Report
+| Test Name         | Test Function                      | Error in Output                   | Cause of Error                            | Solution                |
+|-------------------|------------------------------------|-----------------------------------|-------------------------------------------|-------------------------|
+| R3.0.1 test_redirect_login          | Check user not logged in redirect to /login          |              Planned to use the id of the login header but did not contain an ID at the time     | No ID to be found    |       Add id="login_title"         |
+| R3.0.2         |    Check user logged in does not redirect          |    Redundant Testing(R1.3.1)               |           N/A                      |      Testing completed by R1.3.1          |
+| R3.4.2         |    Check expired ticket not listed          |    Backend Test              |           Backend functionality therefore not tested in A3                     |      N/A          |
+| R3.5.1 test_sell_form_visuals        |    Check sell form present with all fields         |        sell, buy, and update forms fields all had the same id         |           Unable to distinguish elements between different forms         |    Add sell_ to id of each field id in sell_form of index.html          |
+| R3.6.1 test_buy_form_visuals        |    Check buy form present with all fields          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |    Add buy_ to id of each field id in buy_form of index.html          |
+| R3.7.1 test_update_form_visuals        |    Check update form present with all fields          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add update_ to id of each field id in update_form of index.html          |
+| R3.8.1 test_sell_post  |    Check submit to sell	          |        sell, buy, and update forms fields all had the same id           |    Unable to distinguish elements between different forms   |   Add sell_ to id of each field id in sell_form of index.html          |
+| R3.9.1 test_buy_post        |    Check submit to buy	    |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add buy_ to id of each field id in buy_form of index.html          |
+| R3.10.1 test_update_post        |    Check submit to update          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add update_ to id of each field id in update_form of index.html          |
+
+
 ## R4 /Sell | Failure Report
 
 - To be completed at a later date

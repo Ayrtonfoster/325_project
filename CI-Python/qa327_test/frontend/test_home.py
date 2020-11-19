@@ -57,115 +57,143 @@ def login_pass(inner_function, self, *_):
     
 
 class MainPageTest(BaseCase):
-    #If the user is not logged in, redirect to login page
+    
     def test_redirect_login(self, *_):
-        # open index page
+        """
+        R3.0.1: Check user not logged in redirect to /login
+        """
+        # open / page
         self.open(base_url + '/')
         self.assert_element("#login_title")
         self.assert_text("Log In", "#login_title") 
-    #This page shows a header 'Hi {}'.format(user.name)
+    
     @login_pass
     def test_main_header(self, *_):
+        """
+        R3.1.1: Check element present containing welcome message "Hi {user.name}"
+        """
         self.assert_element("#welcome-header")
         self.assert_text("Welcome " + test_user.name, "#welcome-header")  
-    #This page shows user balance.
     @login_pass
     def test_user_balance(self, *_):
+        """
+        R3.2.1: Check element present containing user balance
+        """
         self.assert_element("#account-balance")
         self.assert_text("Your balance is: " + str(test_user.balance) + " !", "#account-balance")
-    #This page shows a logout link, pointing to /logout
+    
     @login_pass
     def test_logout_visual(self, *_):
+        """
+        R3.3.1: Check element present containing link to /logout
+        """
         self.assert_element("#logout")
-        self.assert_text("logout", "#logout")  
-
-    #This page lists all available tickets. Information including the quantity of each ticket, the owner's email, and the price, for tickets that are not expired.
+        self.assert_text("logout", "#logout") 
+        #Find the logout element and confirm it contains the correct hyperlink
+        logout_element=self.driver.find_element_by_id('logout')
+        logout_link=logout_element.get_attribute("href")  
+        self.assert_equal(logout_link, base_url + "/logout")
     @login_pass
     def test_ticket_list(self, *_):
+        """
+        R3.4.1: Check ticket table element present with a row matching a non expired ticket in the database
+        """
         self.assert_element("#tickets")
         ticket_info = self.driver.find_element_by_id('tickets').text
+        #Look within the text of the table and confirm all values of all tickets exist
         for ticket in test_tickets:
-            self.assertIn(str(ticket.ticket_name),ticket_info )
+            self.assertIn(str(ticket.ticket_name),ticket_info)
             self.assertIn(str(ticket.num_tickets),ticket_info)
             self.assertIn(str(ticket.ticket_price),ticket_info)
             self.assertIn(str(ticket.ticket_date),ticket_info)
             self.assertIn(str(ticket.ticket_owner),ticket_info)
-        
-    #This page contains a form that a user can submit new tickets for sell. Fields: name, quantity, price, expiration date
     @login_pass
     def test_sell_form_visuals(self, *_):
+        """
+        R3.5.1: Check sell form present with all fields
+        """
         self.assert_element("#sell_ticket_name")
         self.assert_element("#sell_num_tickets")
         self.assert_element("#sell_ticket_price")
         self.assert_element("#sell_ticket_date")
-        self.assert_element("#sell_btn-submit") 
-
-    #This page contains a form that a user can buy new tickets. Fields: name, quantity
+        self.assert_element("#sell_btn-submit")    
     @login_pass
     def test_buy_form_visuals(self, *_):
+        """
+        R3.6.1: Check buy form present with all fields
+        """ 
         self.assert_element("#buy_ticket_name")
         self.assert_element("#buy_num_tickets")
         self.assert_element("#buy_btn-submit")
-
-    #This page contains a form that a user can update existing tickets. Fields: name, quantity, price, expiration date
     @login_pass
     def test_update_form_visuals(self, *_):
+        """
+        R3.7.1: Check update form present with all fields
+        """
         self.assert_element("#update_ticket_name")  
         self.assert_element("#update_num_tickets")  
         self.assert_element("#update_ticket_price")  
         self.assert_element("#update_ticket_date")  
         self.assert_element("#update_btn-submit")  
-    #The ticket-selling form can be posted to /sell
     @login_pass
     def test_sell_post(self, *_):
+        """
+        R3.8.1: Check form POST to /sell
+        """
+        #Find the sell form, confirm the method and action attributes
         sell_form_info=self.driver.find_element_by_id('sell_form')
         sell_method=sell_form_info.get_attribute("method")
-        sell_action=sell_form_info.get_attribute("action") #Needs id to find these comps
+        sell_action=sell_form_info.get_attribute("action") 
         self.assertEqual(sell_method,"post")
         self.assertEqual(sell_action, base_url + "/sell")
-        
+        #Input ticket data
         self.type("#sell_ticket_name", "test sell post name")
         self.type("#sell_num_tickets", "10" )
         self.type("#sell_ticket_price", "50" )
-        self.type("#sell_ticket_date",  "2022\t1231") #Formatting error year can take 5 numbers and requires a tab
+        self.type("#sell_ticket_date",  "2022\t1231") 
         self.click('input[id="sell_btn-submit"]')
-
+        #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/sell")
-  
-    #The ticket-buying form can be posted to /buy
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     def test_buy_post(self, *_):
+        """
+        R3.9.1: Check form POST to /buy
+        """
+        #Find the buy form, confirm the method and action attributes
         buy_form_info=self.driver.find_element_by_id('buy_form')
         buy_method=buy_form_info.get_attribute("method")
-        buy_action=buy_form_info.get_attribute("action") #Needs id to find these comps
+        buy_action=buy_form_info.get_attribute("action") 
         self.assertEqual(buy_method , "post")
         self.assertEqual(buy_action, base_url + "/buy")
-        
+        #Input ticket data
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "1" )
-
+        #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/") 
-    #The ticket-update form can be posted to /update
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     def test_update_post(self, *_):
+        """
+        R3.10.1: Check form POST to /update
+        """
+        #Find the update form, confirm the method and action attributes
         update_form_info=self.driver.find_element_by_id('update_form')
         update_method=update_form_info.get_attribute("method")
-        update_action=update_form_info.get_attribute("action") #Needs id to find these comps
+        update_action=update_form_info.get_attribute("action") 
         self.assertEqual(update_method,"post")
         self.assertEqual(update_action, base_url + "/update")
-        
+        #Input ticket data
         self.type("#update_ticket_name", test_tickets[0].ticket_name)
         self.type("#update_num_tickets", test_tickets[0].num_tickets)
         self.type("#update_ticket_price", test_tickets[0].ticket_price)
-        self.type("#update_ticket_date",  "2022\t1231") #Formatting error year can take 5 numbers and requires a tab
+        self.type("#update_ticket_date",  "2022\t1231") 
         self.click('input[id="update_btn-submit"]')
-
+        #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/update")

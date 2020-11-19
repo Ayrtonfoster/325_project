@@ -6,11 +6,11 @@ that where all the inputs are valid and the ticket is added to the database. For
 method to generate many random inputs within this partition. 
 
 #### Precondition
-Server started
+- Server started
 
 #### Actions
-Create random valid inputs for ticket sell form, as defined in R4
-Call backend sell_tickets method with these inputs, record return value
+- Create random valid inputs for ticket sell form, as defined in R4
+- Call backend sell_tickets method with these inputs, record return value
 
 #### Postcondition
-return value is True
+- return value from sell_tickets is True

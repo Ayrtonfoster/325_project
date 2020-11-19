@@ -16,19 +16,19 @@
 <h2 >Here is where you can sell tickets</h2>
 
 <h4 id='sell_message'>{{sell_message}}</h4>
-<form method="post" action="/sell">
+<form id="sell_form" method="post" action="/sell">
     <div class="form-group">
-      <label for="ticket_name">Ticket Name</label>
-      <input class="form-control" name="ticket_name" id="ticket_name" required>
-      <label for="num_tickets">Number of Tickets</label>
-      <input class="form-control" name="num_tickets" id="num_tickets" type="number" required>
-      <label for="ticket_price">Ticket Price $</label>
-      <input class="form-control" name="ticket_price" id="ticket_price" type="number" required>
-      <label for="ticket_date">Ticket Date</label>
+      <label for="sell_ticket_name">Ticket Name</label>
+      <input class="form-control" name="sell_ticket_name" id="sell_ticket_name" required>
+      <label for="sell_num_tickets">Number of Tickets</label>
+      <input class="form-control" name="sell_num_tickets" id="sell_num_tickets" type="number" required>
+      <label for="sell_ticket_price">Ticket Price $</label>
+      <input class="form-control" name="sell_ticket_price" id="sell_ticket_price" type="number" required>
+      <label for="sell_ticket_date">Ticket Date</label>
       <br>
-      <input type="date" name="ticket_date" id="ticket_date" required>
+      <input type="date" name="sell_ticket_date" id="sell_ticket_date" required>
       <br>
-      <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Post Tickets">
+      <input class="btn btn-lg btn-primary" type="submit" id="sell_btn-submit" value="Post Tickets">
       <br>
     </div>
 </form>
@@ -36,32 +36,32 @@
 
 <h2 >Buy tickets here</h2>
 <h4 id='buy_message'>{{buy_message}}</h4>
-<form method="post" action="/buy">
+<form id="buy_form" method="post" action="/buy">
     <div class="form-group">
-      <label for="ticket_name">Ticket Name</label>
-      <input class="form-control" name="ticket_name" id="ticket_name" required>
-      <label for="num_tickets">Number of Tickets</label>
-      <input class="form-control" name="num_tickets" id="num_tickets" type="number" required>
-      <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Buy Tickets">
+      <label for="buy_ticket_name">Ticket Name</label>
+      <input class="form-control" name="buy_ticket_name" id="buy_ticket_name" required>
+      <label for="buy_num_tickets">Number of Tickets</label>
+      <input class="form-control" name="buy_num_tickets" id="buy_num_tickets" type="number" required>
+      <input class="btn btn-lg btn-primary" type="submit" id="buy_btn-submit" value="Buy Tickets">
       <br>
     </div>
 </form>
 
 <h2 >Update tickets here</h2>
 <h4 id='update_message'>{{update_message}}</h4>
-<form method="post" action="/update">
+<form id="update_form" method="post" action="/update">
     <div class="form-group">
-      <label for="ticket_name">Ticket Name</label>
-      <input class="form-control" name="ticket_name" id="ticket_name" required>
-      <label for="num_tickets">New Number of Tickets</label>
-      <input class="form-control" name="num_tickets" id="num_tickets" type="number" required>
-      <label for="ticket_price">New Ticket Price $</label>
-      <input class="form-control" name="ticket_price" id="ticket_price" type="number" required>
-      <label for="ticket_date">New Ticket Date</label>
+      <label for="update_ticket_name">Ticket Name</label>
+      <input class="form-control" name="update_ticket_name" id="update_ticket_name" required>
+      <label for="update_num_tickets">New Number of Tickets</label>
+      <input class="form-control" name="update_num_tickets" id="update_num_tickets" type="number" required>
+      <label for="update_ticket_price">New Ticket Price $</label>
+      <input class="form-control" name="update_ticket_price" id="update_ticket_price" type="number" required>
+      <label for="update_ticket_date">New Ticket Date</label>
       <br>
-      <input type="date" name="ticket_date" id="ticket_date" required>
+      <input type="date" name="update_ticket_date" id="update_ticket_date" required>
       <br>
-      <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Update Tickets">
+      <input class="btn btn-lg btn-primary" type="submit" id="update_btn-submit" value="Update Tickets">
       <br>
     </div>
 </form>
@@ -93,5 +93,5 @@
 
 <br>
 <br>
-<a href='/logout'>logout</a>
+<a id="logout" href='/logout'>logout</a>
 {% endblock %}

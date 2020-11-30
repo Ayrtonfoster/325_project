@@ -44,7 +44,8 @@ def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
     :return: True when ticket created successfully
     """
     # store the encrypted password rather than the plain password
-    new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
+    new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets,
+        ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
 
     db.session.add(new_ticket)
 

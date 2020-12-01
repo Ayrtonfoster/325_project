@@ -12,7 +12,6 @@ http requests from the client (browser) through templating.
 The html templates are stored in the 'templates' folder. 
 """
 
-# Reusable REGEX
 #This is a sanity check
 ticket_name_reg = re.compile("^\S[a-zA-Z0-9_ ]{1,60}\S$")
 """The name of the ticket has to be alphanumeric-only, and space allowed only 

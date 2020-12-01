@@ -9,7 +9,8 @@ import re
 This file defines the front-end part of the service.
 It elaborates how the services should handle different
 http requests from the client (browser) through templating.
-The html templates are stored in the 'templates' folder. 
+The html templates are stored in the 'templates' folder.
+test
 """
 
 # Reusable REGEX

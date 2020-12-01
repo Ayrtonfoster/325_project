@@ -9,7 +9,8 @@ import re
 This file defines the front-end part of the service.
 It elaborates how the services should handle different
 http requests from the client (browser) through templating.
-The html templates are stored in the 'templates' folder. 
+The html templates are stored in the 'templates' folder.
+test
 """
 
 # Reusable REGEX
@@ -78,13 +79,15 @@ def check_user_format(email, password, name=None, password2=None):
     error_message = None
 
     # Email must conform to RFC 5322
-    regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\
-        -9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
+    regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"(['
+                        r']!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\-9=?A-Z^-~-]+'
+                        r'(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
     if regexp.match(email) is None:
 
         return "Email"
 
-    # password must have minimum length 6, at least one upper case, at least one lower case, and at least one
+    # password must have minimum length 6, at least one upper case,
+    # at least one lower case, and at least one
     # special character
     lower = [char for char in password if char.islower()]
     upper = [char for char in password if char.isupper()]
@@ -103,7 +106,8 @@ def check_user_format(email, password, name=None, password2=None):
 
     # Now check name and password2 for register use case
 
-    # User name has to be non-empty, longer than 2 characters and less than 20 characters.
+    # User name has to be non-empty, longer than 2 characters and less
+    # than 20 characters.
     # Space allowed only if it is not the first or the last character
     # Name must be alphanumeric only
     if len(name) >= 20 or len(name) <= 2\
@@ -123,10 +127,11 @@ def check_user_format(email, password, name=None, password2=None):
 @app.route('/register', methods=['POST'])
 def register_post():
     """
-    Take the inputs from the registration form and create a new user if it passes all requirements
+    Take the inputs from the registration form and create a new user
+    if it passes all requirements
 
-    :return: if something does not meet requirements return that, otherwise create user and
-    redirect to login page
+    :return: if something does not meet requirements return that,
+    otherwise create user andredirect to login page
 
     """
 
@@ -417,10 +422,12 @@ def authenticate(inner_function):
 @authenticate
 def profile(user):
     """
-    This function is responsible for generating the main/profile page with all the needed info 
+    This function is responsible for generating the main/profile page
+    with all the needed info
     :param user: user object representing the current active user
 
-    :return: instructions to render the profile page with all the required info (balance, name, tickets)
+    :return: instructions to render the profile page with
+    all the required info (balance, name, tickets)
     """
 
     # authentication is done in the wrapper function

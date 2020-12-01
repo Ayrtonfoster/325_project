@@ -14,7 +14,7 @@ test
 """
 
 # Reusable REGEX
-ticket_name_reg = re.compile(r"^\S[a-zA-Z0-9_ ]{1,60}\S$")
+ticket_name_reg = re.compile("^\S[a-zA-Z0-9_ ]{1,60}\S$")
 """The name of the ticket has to be alphanumeric-only, and space allowed only 
     if it is not the first or the last character. The name of the ticket is 
     no longer than 60 characters"""
@@ -79,8 +79,9 @@ def check_user_format(email, password, name=None, password2=None):
     error_message = None
 
     # Email must conform to RFC 5322
-    regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"([]!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\
-        -9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
+    regexp = re.compile(r'([!#-\'*+/-9=?A-Z^-~-]+(\.[!#-\'*+/-9=?A-Z^-~-]+)*|"(['
+                        r']!#-[^-~ \t]|(\\[\t -~]))+")@([!#-\'*+/\-9=?A-Z^-~-]+'
+                        r'(\.[!#-\'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])')
     if regexp.match(email) is None:
 
         return "Email"

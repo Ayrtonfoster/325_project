@@ -198,8 +198,8 @@ class MainPageTest(BaseCase):
         self.assertEqual(update_action, base_url + "/update")
         #Input ticket data
         self.type("#update_ticket_name", test_tickets[0].ticket_name)
-        self.type("#update_num_tickets", test_tickets[0].num_tickets)
-        self.type("#update_ticket_price", test_tickets[0].ticket_price)
+        self.type("#update_num_tickets",  str(test_tickets[0].num_tickets))
+        self.type("#update_ticket_price",  str(test_tickets[0].ticket_price))
         self.type("#update_ticket_date",  "2022\t1231") 
         self.click('input[id="update_btn-submit"]')
         #Confirm correct page and no 404 error /etc

@@ -73,8 +73,11 @@ class FrontEndSellFunctionTest(BaseCase):
 
     @login_pass
     def test_sell_name_regex(self, *_):
+        """
+        R4.1.1: Check if the ticket name regex throws an
+        error when a ticket name does not follow the guide lines
+        """
 
-        # R4.1.1
         self.open(base_url) # Go to page with ticket sale ability
 
         # Fill in ticket information
@@ -108,7 +111,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_name_length(self, *_):
-        # R4.2.1
+        """
+        R4.2.1: Check if selling action passes with ticket
+        names shorter than 60 characters
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -132,7 +138,10 @@ class FrontEndSellFunctionTest(BaseCase):
 
     @login_pass
     def test_sell_name_length_long(self, *_):
-        # R4.2.2
+        """
+        R4.2.2: Check if selling action passes with ticket
+        names longer than 60 characters
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -154,7 +163,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_quantity_inside(self, *_):
-        # R4.3.1
+        """
+        R4.3.1: Check if ticket quantity inside of range
+        is accepted by frontend (1-100)
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -178,12 +190,15 @@ class FrontEndSellFunctionTest(BaseCase):
 
     @login_pass
     def test_sell_quantity_outside(self, *_):
-        # R4.3.2
+        """
+        R4.3.2: Check if ticket quantity outside of range is
+        accepted by frontend (1-100)
+        """
         self.open(base_url)  # Go to page with ticket sale ability
 
         # Fill in ticket information
         self.type("#sell_ticket_name", "too many tickets")
-        self.type("#sell_num_tickets", "200")
+        self.type("#sell_num_tickets", "200") # Tickets more than 100
         self.type("#sell_ticket_price", "15")
         self.type("#sell_ticket_date", future_date)  # use date that is ahead of todays date
 
@@ -197,7 +212,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_price_inside(self, *_):
-        # R4.4.1
+        """
+        R4.4.1: Check if ticket price inside of range is
+        accepted by front end (10-100)
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -218,12 +236,17 @@ class FrontEndSellFunctionTest(BaseCase):
                                                    + format_date + "%test_sellerpage@test.com").text
 
         self.assertIn("testTicket", ticket_id)
+        # check if url is /sell Post request from index.html
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/sell")
 
     @login_pass
     def test_sell_price_outside(self, *_):
-        # R4.4.2
+        """
+        R4.4.2: Check if ticket price outside of range is
+        accepted by front end (10-100)
+        """
+
         self.open(base_url)  # Go to page with ticket sale ability
 
         # Fill in ticket information
@@ -242,7 +265,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_date_proper(self, *_):
-        # R4.5.1
+        """
+        R4.5.1: Check if dates entered using proper format are
+        accepted by frontend (yyyy-mm-dd)
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -270,7 +296,10 @@ class FrontEndSellFunctionTest(BaseCase):
 
     @login_pass
     def test_sell_date_past(self, *_):
-        # R4.5.4
+        """
+        R4.5.4: Check if dates entered that are in the past
+        (before today) cause selling action failure
+        """
         self.open(base_url)  # Go to page with ticket sale ability
 
         # Fill in ticket information
@@ -288,8 +317,12 @@ class FrontEndSellFunctionTest(BaseCase):
 
     @login_pass
     def test_sell_error_redirection(self, *_):
-        # R4.6.1
-        # R4.6.2
+        """
+        R4.6.1: Check if when an error message occurs a redirection
+        to the index.html template occurs
+        R4.6.2: Check if when an error message is created the message
+        is displayed when the redirection to the index.html template occurs
+        """
         self.open(base_url)  # Go to page with ticket sale ability
 
         # Fill in ticket information
@@ -313,7 +346,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_display_correct(self, *_):
-        # R4.7.1
+        """
+        R4.7.1: Check if a correctly added ticket and its information is displayed
+        on the / page of the user
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 
@@ -347,7 +383,10 @@ class FrontEndSellFunctionTest(BaseCase):
     @login_pass
     @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     def test_sell_display_duplicates(self, *_):
-        # R4.7.2
+        """
+        R4.7.2: Check if the correct number of tickets (table entries)
+        is presented in the ticket list and bottom of / page of user
+        """
 
         self.open(base_url)  # Go to page with ticket sale ability
 

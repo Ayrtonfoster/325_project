@@ -13,7 +13,7 @@
 <h2 >Here is where you can purchase tickets</h2>
 
 <hr>
-<h2 >Here is where you can sell tickets</h2>
+<h2 id='sell_header'>Here is where you can sell tickets</h2>
 
 <h4 id='sell_message'>{{sell_message}}</h4>
 <form id="sell_form" method="post" action="/sell">
@@ -34,7 +34,7 @@
 </form>
 
 
-<h2 >Buy tickets here</h2>
+<h2 id='buy_header'>Buy tickets here</h2>
 <h4 id='buy_message'>{{buy_message}}</h4>
 <form id="buy_form" method="post" action="/buy">
     <div class="form-group">
@@ -70,7 +70,7 @@
 <h4>Tickets for sale</h4>
 
 <div id="tickets">
-<table style="width:100%">
+<table style="width:100%" id="ticket_table">
     <tr>
       <th>Concert Name</th>
       <th>Price $</th>

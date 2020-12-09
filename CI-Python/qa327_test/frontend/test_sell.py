@@ -1,4 +1,5 @@
 import pytest
+from selenium.webdriver.common.by import By
 from seleniumbase import BaseCase
 
 from qa327_test.conftest import base_url
@@ -19,6 +20,9 @@ dateTime = date.today()
 dateTime + timedelta(days=10)
 future_date = dateTime.strftime("%Y\t%m%d")
 format_date = dateTime.strftime("%Y-%m-%d")
+past = dateTime - timedelta(days=45)
+past_date = past.strftime("%Y\t%m%d")
+
 
 test_user = User(
     email='test_sellerpage@test.com',
@@ -30,6 +34,9 @@ test_user = User(
 test_tickets = [
     {'ticket_name': 'testTicket',
      'ticket_price': '15', 'num_tickets': '15',
+     'ticket_date': format_date, 'ticket_owner': 'test_sellerpage@test.com'},
+    {'ticket_name': 'ticket_info_correct',
+     'ticket_price': '35', 'num_tickets': '80',
      'ticket_date': format_date, 'ticket_owner': 'test_sellerpage@test.com'}
 ]
 
@@ -144,52 +151,229 @@ class FrontEndSellFunctionTest(BaseCase):
         self.assert_element("#sell_message")
         self.assert_text("Ticket name does not follow guideline", "#sell_message")
 
+    @login_pass
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_sell_quantity_inside(self, *_):
+        # R4.3.1
 
-    # def test_sell_qunatity_inside(self, *_):
-    #     # R4.3.1
-    #     pass
-    #
-    # def test_sell_qunatity_outside(self, *_):
-    #     # R4.3.2
-    #     pass
-    #
-    # def test_sell_price_inside(self, *_):
-    #     # R4.4.1
-    #     pass
-    #
-    # def test_sell_price_outside(self, *_):
-    #     # R4.4.2
-    #     pass
-    #
-    # def test_sell_date_proper(self, *_):
-    #     # R4.5.1
-    #     pass
-    #
-    # def test_sell_date_improper(self, *_):
-    #     # R4.5.2
-    #     pass
-    #
-    # def test_sell_date_not_exist(self, *_):
-    #     # R4.5.3
-    #     pass
-    #
-    # def test_sell_date_past(self, *_):
-    #     # R4.5.4
-    #     pass
-    #
-    # def test_sell_error_redirection(self, *_):
-    #     # R4.6.1
-    #     pass
-    #
-    # def test_sell_error_message(self, *_):
-    #     # R4.6.2
-    #     pass
-    #
-    # def test_sell_display_correct(self, *_):
-    #     # R4.7.1
-    #     pass
-    #
-    # def test_sell_display_duplicates(self, *_):
-    #     # R4.7.2
-    #     pass
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "testTicket")
+        # test name shorter than 60 characters
+        self.type("#sell_num_tickets", "15")
+        self.type("#sell_ticket_price", "15")
+        self.type("#sell_ticket_date", future_date)  # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for posted ticket in table and /sell was reached
+        ticket_id = self.driver.find_element_by_id("testTicket%15%15%"
+                                                   + format_date + "%test_sellerpage@test.com").text
+
+        self.assertIn("testTicket", ticket_id)
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, base_url + "/sell")
+
+    @login_pass
+    def test_sell_quantity_outside(self, *_):
+        # R4.3.2
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "too many tickets")
+        self.type("#sell_num_tickets", "200")
+        self.type("#sell_ticket_price", "15")
+        self.type("#sell_ticket_date", future_date)  # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for failed to sell ticket message
+        self.assert_element("#sell_message")
+        self.assert_text("Number of tickets outside of range", "#sell_message")
+
+    @login_pass
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_sell_price_inside(self, *_):
+        # R4.4.1
+
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "testTicket")
+        # test name shorter than 60 characters
+        self.type("#sell_num_tickets", "15")
+        # In range # of tickets to sell
+        self.type("#sell_ticket_price", "15")
+        # In range ticket price
+        self.type("#sell_ticket_date", future_date)  # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for posted ticket in table and /sell was reached
+        ticket_id = self.driver.find_element_by_id("testTicket%15%15%"
+                                                   + format_date + "%test_sellerpage@test.com").text
+
+        self.assertIn("testTicket", ticket_id)
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, base_url + "/sell")
+
+    @login_pass
+    def test_sell_price_outside(self, *_):
+        # R4.4.2
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "too many tickets")
+        self.type("#sell_num_tickets", "15")
+        self.type("#sell_ticket_price", "1500") # price outside of range
+        self.type("#sell_ticket_date", future_date)  # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for failed to sell ticket message
+        self.assert_element("#sell_message")
+        self.assert_text("Ticket price outside of range", "#sell_message")
+
+    @login_pass
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_sell_date_proper(self, *_):
+        # R4.5.1
+
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "testTicket")
+        # test name shorter than 60 characters
+        self.type("#sell_num_tickets", "15")
+        # In range # of tickets to sell
+        self.type("#sell_ticket_price", "15")
+        # In range ticket price
+        self.type("#sell_ticket_date", future_date)
+        # using properly formatted date
+        # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for posted ticket in table and /sell was reached
+        ticket_id = self.driver.find_element_by_id("testTicket%15%15%"
+                                                   + format_date + "%test_sellerpage@test.com").text
+
+        self.assertIn(format_date, ticket_id)
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, base_url + "/sell")
+
+    @login_pass
+    def test_sell_date_past(self, *_):
+        # R4.5.4
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "date in past")
+        self.type("#sell_num_tickets", "15")
+        self.type("#sell_ticket_price", "15")
+        self.type("#sell_ticket_date", past_date)  # date is in past
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for failed to sell ticket message
+        self.assert_element("#sell_message")
+        self.assert_text("Date entered not valid", "#sell_message")
+
+    @login_pass
+    def test_sell_error_redirection(self, *_):
+        # R4.6.1
+        # R4.6.2
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "$WrongName***") # Incorrect Name
+        self.type("#sell_num_tickets", "1500") # Out of range ticket numbers
+        self.type("#sell_ticket_price", "1500")  # Price outside of range
+        self.type("#sell_ticket_date", past_date)  # Date is from past
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for signs that index.htmp was loaded
+        self.assert_element("#welcome-header")
+        self.assert_element("#account-balance")
+        self.assert_element("#sell_header")
+        self.assert_element("#buy_header")
+        # Check for failed to sell ticket message
+        self.assert_element("#sell_message")
+        self.assert_text("Ticket name does not follow guideline", "#sell_message")
+
+    @login_pass
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_sell_display_correct(self, *_):
+        # R4.7.1
+
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information
+        self.type("#sell_ticket_name", "ticket_info_correct")
+        # test name shorter than 60 characters
+        self.type("#sell_num_tickets", "80")
+        # In range # of tickets to sell
+        self.type("#sell_ticket_price", "35")
+        # In range ticket price
+        self.type("#sell_ticket_date", future_date)
+        # using properly formatted date
+        # use date that is ahead of todays date
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Check for posted ticket in table and /sell was reached
+        ticket_id = self.driver.find_element_by_id("ticket_info_correct%35%80%"
+                                                   + format_date + "%test_sellerpage@test.com").text
+
+        # Check that all relevant info is posted to the selling table
+        self.assertIn(format_date, ticket_id)
+        self.assertIn("80", ticket_id)
+        self.assertIn("35", ticket_id)
+        self.assertIn("ticket_info_correct", ticket_id)
+        self.assertIn("test_sellerpage@test.com", ticket_id)
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, base_url + "/sell")
+
+    @login_pass
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    def test_sell_display_duplicates(self, *_):
+        # R4.7.2
+
+        self.open(base_url)  # Go to page with ticket sale ability
+
+        # Fill in ticket information Ticket #1
+        self.type("#sell_ticket_name", "ticket_info_correct")
+        self.type("#sell_num_tickets", "80")
+        self.type("#sell_ticket_price", "35")
+        self.type("#sell_ticket_date", future_date)
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        # Fill in ticket information Ticket #2
+        self.type("#sell_ticket_name", "testTicket")
+        self.type("#sell_num_tickets", "15")
+        self.type("#sell_ticket_price", "15")
+        self.type("#sell_ticket_date", future_date)
+
+        # Hit 'Post Ticket'
+        self.click('input[id="sell_btn-submit"]')
+
+        table_entries = self.driver.find_element_by_id("ticket_table")
+        rows = table_entries.find_elements(By.TAG_NAME, "tr")
+        if(len(rows) == 3):
+            pass
+        else:
+            raise ValueError("Looking for 2 table entries got: " + str(len(table_entries)))
+
 

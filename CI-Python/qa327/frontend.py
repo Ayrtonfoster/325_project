@@ -374,8 +374,9 @@ def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11, date = No
     :return: If there are no issues with the fields return nothing
     if there are issues return with message indicating the issue
     """
-    today = datetime.datetime.today()
-    passed = datetime.datetime.strptime(date, '%Y-%m-%d')
+    if date != None: 
+        today = datetime.datetime.today()
+        passed = datetime.datetime.strptime(date, '%Y-%m-%d')
     # Check if the inputs are following correct format
     if (not bool(ticket_name_reg.match(ticket_name))):
         return "Ticket name does not follow guideline"

@@ -56,93 +56,89 @@ def login_pass(inner_function, self, *_):
     return wrapped_inner
     
 class BuyTest(BaseCase):
-    #Constraint:
-    #The name of the ticket has to be alphanumeric-only, and space allowed only if it is not the first or the last character.
-    #Breaks if inputting a ticket that doesn't exist
-    #Is not catching non-alphanum values in first/last index of string
-    #Fixed regex
-    """
-        R6.0.1.1: Check if failure "ticket name" inputs against ticket name regex causes selling action failure
-    """
+    
     @login_pass
     def test_ticket_alphanumeric(self, *_):
+        """
+        R6.0.1.1: Check if failure "ticket name" inputs against ticket name regex causes buying action failure
+        """
         self.type("#buy_ticket_name", "ticket#") 
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("Ticket name does not follow guideline", "#buy_message")
-    """
-        R6.0.1.2: Check if failure "ticket name" inputs against ticket name regex causes selling action failure
-    """    
+       
     @login_pass
     def test_ticket_spaces(self, *_):
+        """
+        R6.0.1.2: Check if failure "ticket name" inputs against ticket name regex causes buying action failure
+        """ 
         self.type("#buy_ticket_name", " ticket ")
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("Ticket name does not follow guideline", "#buy_message")
-    """
-        R6.1.2: Check if selling action fails with ticket names longer than 60 characters
-    """
-    #The name of the ticket is no longer than 60 characters
+    
     @login_pass
-    def test_ticket_over_length(self, *_):
+    def test_ticket_name_length(self, *_):
+        """
+        R6.1.2: Check if buying action fails with ticket names longer than 60 characters
+        """
         self.type("#buy_ticket_name", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("Ticket name does not follow guideline", "#buy_message")
-    """
-        R6.2.2.1: Check if "ticket quantity" outside of range causes selling action failure
-    """
-    #The quantity of the tickets has to be more than 0, and less than or equal to 100.
+    
     @login_pass
-    def test_purchase_min(self, *_):
+    def test_num_ticket_min(self, *_):
+        """
+        R6.2.2.1: Check if "ticket quantity" outside of range causes buying action failure
+        """
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "0" )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("Number of tickets outside of range", "#buy_message")
-    """
-        R6.2.2.2: Check if "ticket quantity" outside of range causes selling action failure
-    """
+    
     @login_pass    
-    def test_purchase_max(self, *_):
+    def test_num_ticket_max(self, *_):
+        """
+        R6.2.2.2: Check if "ticket quantity" outside of range causes buying action failure
+        """
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "101" )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("Number of tickets outside of range", "#buy_message")
     
-   """
-   R6.1.1: Check if selling action passes with ticket names shorter than 60 characters
-   R6.2.1: Check if "ticket quantity" inside of range is accepted by front end
-   R6.3.2: Check if you can buy less than the available amount
-   """
-    #The ticket name exists in the database and the quantity is more than the quantity requested to buy
     @login_pass 
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     @patch('qa327.backend.buy_tickets', return_value=True)
     def test_ticket_purchase_success(self, *_):
+        """
+        R6.1.1: Check if buying action passes with ticket names shorter than 60 characters
+        R6.2.1: Check if "ticket quantity" inside of range is accepted by front end
+        R6.3.2: Check if you can buy less than the available amount
+        """
         purchase_num_tickets=5
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", str(purchase_num_tickets) )
         self.click('input[id="buy_btn-submit"]')
         self.assert_text("", "#buy_message")
     
-    """
-    R6.3.1:Check if you can buy more tickets than what are available
-    """
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
-    def test_ticket_over_quantity(self, *_):
+    def test_available_ticket_max(self, *_):
+        """
+        R6.3.1:Check if you can buy more tickets than what are available
+        """
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "100" )
         self.click('input[id="buy_btn-submit"]')
-        self.assert_text("Requested more than available tickets", "#buy_message")
-    #Issue gertting Not a concert ticket, implying it did not find the ticket #testcase issue
-    #Conditionals for error message were not if elif, were if if 
+        self.assert_text("Requested more than available tickets", "#buy_message")  
     
-    
-    #The user has more balance than the ticket price * quantity + service fee (35%) + tax (5%)
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])
     def test_payment(self, *_):
+        """
+        R6.4.1:Check if you can buy tickets where the total comes to be more than what the user has in their balance
+        """
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "50" )
         self.click('input[id="buy_btn-submit"]')

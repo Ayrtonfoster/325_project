@@ -61,8 +61,21 @@
 
 - To be completed at a later date
 ## R6 /Buy | Failure Report
+| Test Name | Test Function | Error in Output | Cause of Error | Solution |
+|-----------|------------------------|-----------------------|--------------------------|------------------|
+| R6.0.1.1: test_ticket_alphanumeric | Check if non-alphanumeric inputs against ticket name regex causes buying action failure |  Non-alphanumeric value in the first or last character is not caught by regex | Regex error, special check for spaces in the first or last string index caused regex to ignore other rules that should apply to the first and last character  | Regex updated |
+| R6.0.1.2: test_ticket_spaces | Check if space inputs at first or last character of ticket name cause regex buying action failure | Passing spaces on first and last string index, however spaces through a ticket name were failing | Regex error | Regex updated |
+| R6.1.1: test_ticket_purchase_success | Check if buying action passes with ticket names shorter than 60 characters | ticket_parser functionality failing | ticket_parser functionality had checks related to date(implemented for testing sell functionality). No checks are in place for when the input date is None, therefore a crash occurs | Date conversion only occurs if input date is not None |
+| R6.1.2: test_ticket_name_length | Check if buying action fails with ticket names longer than 60 characters |  |  |  |
+| R6.2.1: test_ticket_purchase_success | Check if "ticket quantity" inside of range is accepted by front end | Redundant | To test ticket quanity, ticket name must also be correct, therefore tested together  | Also implemented in test_ticket_purchase_success |
+| R6.2.2.1: test_num_ticket_min | Check if "ticket quantity" outside of range causes selling action failure | | | |
+| R6.2.2.2: test_num_ticket_max | Check if "ticket quantity" outside of range causes selling action failure | | | |
+| R6.3.1: test_available_ticket_max | Check if you can buy more tickets than what are available | Wrong Error Returned "Not a concert ticket" | Conditionals for error message separate if statements  | Converts seperate if statements to if elif |
+| R6.3.2: test_ticket_purchase_success | Check if you can buy less than the available amount | Redundant | To test ticket quanity, ticket name must also be correct, therefore tested together | Also implemented in test_ticket_purchase_success |
+| R6.4.1: test_payment | Check if you can buy tickets where the total comes to be more than what the user has in their balance |  |  |  |
+| R6.5.1: NA | Check if when an error message is created a redirection to the / page occurs | Redundant |  | Testcase NA, previous testcases use error output for validation, therefore additional testcase for confirming errors is not required |  
 
-- To be completed at a later date
+
 ## R7 /Logout | Failure Report
 | Test Name                             | Test Function                                                                       | Error in Output                                                                             | Cause of Error                                                                            | Solution                                                      |
 |---------------------------------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------|

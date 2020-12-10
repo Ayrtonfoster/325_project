@@ -14,7 +14,7 @@ test
 """
 
 # Reusable REGEX
-ticket_name_reg = re.compile("^\S[a-zA-Z0-9_ ]{1,60}\S$")
+ticket_name_reg = re.compile("^[\w\d][\w\d\s_]{1,58}[\w\d]$")
 """The name of the ticket has to be alphanumeric-only, and space allowed only 
     if it is not the first or the last character. The name of the ticket is 
     no longer than 60 characters"""
@@ -295,15 +295,19 @@ def buy_tickets():
             tax = ticket_cost * 0.05
 
             overall_cost = ticket_cost + service_fee + tax
-
+        
             if (ticket_info.num_tickets < int(num_tickets)):
-                error_message = "requested more than available tickets, "
-
-            if (user.balance - overall_cost < 0):
+                error_message = "Requested more than available tickets"
+            elif (user.balance - overall_cost < 0):
                 error_message = "Not enough money in balance"
 
-            if not bn.buy_tickets(ticket_name, num_tickets):
+            elif not bn.buy_tickets(ticket_name, num_tickets):
                 error_message = "Not a concert"
+            else:
+                error_message = "Unknown Error"
+                
+        else:
+            error_message = "Not a concert"
 
 
     # get Info on Tickets
@@ -370,8 +374,9 @@ def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11, date = No
     :return: If there are no issues with the fields return nothing
     if there are issues return with message indicating the issue
     """
-    today = datetime.datetime.today()
-    passed = datetime.datetime.strptime(date, '%Y-%m-%d')
+    if date != None: 
+        today = datetime.datetime.today()
+        passed = datetime.datetime.strptime(date, '%Y-%m-%d')
     # Check if the inputs are following correct format
     if (not bool(ticket_name_reg.match(ticket_name))):
         return "Ticket name does not follow guideline"

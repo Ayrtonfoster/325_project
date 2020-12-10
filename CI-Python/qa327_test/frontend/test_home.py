@@ -179,10 +179,11 @@ class MainPageTest(BaseCase):
         #Input ticket data
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "1" )
+        self.click('input[id="buy_btn-submit"]')
         #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")
         cur_url = self.get_current_url()
-        self.assertEqual(cur_url, base_url + "/") 
+        self.assertEqual(cur_url, base_url + "/buy") 
         
     @login_pass
     @patch('qa327.backend.get_ticket', return_value=test_tickets[0])

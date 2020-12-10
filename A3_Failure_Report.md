@@ -59,7 +59,11 @@
 | R4.7.2: test_sell_display_duplicates | Check if correct number of items in the ticket list is presented                             | no element with ID #ticket_table                   | No elements with correct ID in the tickets for sale table on index.html template                                                    | Added an ID to index.html page to identify the selling ticket table                                      |
 ## R5 /Update | Failure Report
 
-- To be completed at a later date
+| Test Name | Test Function | Error in Output | Cause of Error | Solution |
+|-----------|------------------------|-----------------------|--------------------------|------------------|
+| R5.4.2: test_ticket_update_date | Check if entered date using improper format cause selling action failure | HTML date tool does not allow for improper dates | None | Invalid Test|
+| R5.4.3: test_ticket_update_date | Check if dates that match the format but do not exists(e.g. Nov 31st) cause selling action failure | HTML date tool does not allow for date that do not exist | None | Invalid Test |
+
 ## R6 /Buy | Failure Report
 | Test Name | Test Function | Error in Output | Cause of Error | Solution |
 |-----------|------------------------|-----------------------|--------------------------|------------------|

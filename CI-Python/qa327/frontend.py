@@ -361,7 +361,7 @@ def update_tickets():
     if error_message:
         return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
-    return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
+    return render_template('index.html', user=user, tickets=tickets)
 
 
 def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11, date = None):

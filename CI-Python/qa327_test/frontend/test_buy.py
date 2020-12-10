@@ -62,6 +62,7 @@ class BuyTest(BaseCase):
         """
         R6.0.1.1: Check if failure "ticket name" inputs against ticket name regex causes buying action failure
         """
+        
         self.type("#buy_ticket_name", "ticket#") 
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
@@ -72,6 +73,7 @@ class BuyTest(BaseCase):
         """
         R6.0.1.2: Check if failure "ticket name" inputs against ticket name regex causes buying action failure
         """ 
+        
         self.type("#buy_ticket_name", " ticket ")
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
@@ -82,6 +84,7 @@ class BuyTest(BaseCase):
         """
         R6.1.2: Check if buying action fails with ticket names longer than 60 characters
         """
+        
         self.type("#buy_ticket_name", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         self.type("#buy_num_tickets", "1" )
         self.click('input[id="buy_btn-submit"]')
@@ -92,6 +95,7 @@ class BuyTest(BaseCase):
         """
         R6.2.2.1: Check if "ticket quantity" outside of range causes buying action failure
         """
+        
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "0" )
         self.click('input[id="buy_btn-submit"]')
@@ -102,6 +106,7 @@ class BuyTest(BaseCase):
         """
         R6.2.2.2: Check if "ticket quantity" outside of range causes buying action failure
         """
+        
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "101" )
         self.click('input[id="buy_btn-submit"]')
@@ -116,6 +121,7 @@ class BuyTest(BaseCase):
         R6.2.1: Check if "ticket quantity" inside of range is accepted by front end
         R6.3.2: Check if you can buy less than the available amount
         """
+        
         purchase_num_tickets=5
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", str(purchase_num_tickets) )
@@ -128,6 +134,7 @@ class BuyTest(BaseCase):
         """
         R6.3.1:Check if you can buy more tickets than what are available
         """
+        
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "100" )
         self.click('input[id="buy_btn-submit"]')
@@ -139,6 +146,7 @@ class BuyTest(BaseCase):
         """
         R6.4.1:Check if you can buy tickets where the total comes to be more than what the user has in their balance
         """
+        
         self.type("#buy_ticket_name", test_tickets[0].ticket_name)
         self.type("#buy_num_tickets", "50" )
         self.click('input[id="buy_btn-submit"]')

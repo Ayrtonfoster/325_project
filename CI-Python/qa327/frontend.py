@@ -239,7 +239,7 @@ def sell_tickets():
     ticket_date = request.form.get('sell_ticket_date')
 
     # Check if the inputs are following correct format
-    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
+    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price, date=ticket_date)
 
     # Get info on the user
     email = session['logged_in']
@@ -336,7 +336,7 @@ def update_tickets():
     num_tickets = request.form.get('update_num_tickets')
     ticket_price = request.form.get('update_ticket_price')
     ticket_date = request.form.get('update_ticket_date')
-    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price)
+    error_message = ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = ticket_price, date=ticket_date)
 
     # Find out info on logged in user and tickets
     email = session['logged_in']
@@ -360,7 +360,7 @@ def update_tickets():
     return render_template('index.html', user=user, update_message=error_message, tickets=tickets)
 
 
-def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
+def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11, date = None):
     """
     Sanitize the input for the ticket fields to ensure they follow the required guidelines
     :param ticket_name: the name ticket to be found
@@ -370,7 +370,8 @@ def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
     :return: If there are no issues with the fields return nothing
     if there are issues return with message indicating the issue
     """
-
+    today = datetime.datetime.today()
+    passed = datetime.datetime.strptime(date, '%Y-%m-%d')
     # Check if the inputs are following correct format
     if (not bool(ticket_name_reg.match(ticket_name))):
         return "Ticket name does not follow guideline"
@@ -380,8 +381,11 @@ def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11):
 
     elif (int(ticket_price) < 10 or int(ticket_price) > 100):
         return "Ticket price outside of range"
-
-    else: return None
+    elif(date != None and  passed < today):
+        print("hit")
+        return "Date entered not valid"
+    else:
+        return None
 
 def authenticate(inner_function):
     """

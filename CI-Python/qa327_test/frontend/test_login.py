@@ -147,6 +147,7 @@ class FrontEndLoginFunctionTest(BaseCase):
         R1.7.1: Email inputs are checked against RFC 5322 Regex
         R1.7.2: Email inputs checked against RFC 5322 Standard throw error_messages when not met
         """
+
         # List of first characters that could cause failure of RFC 5322
         false_char = ['.','@','  ','..']
 

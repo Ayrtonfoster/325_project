@@ -75,9 +75,9 @@ class FrontEndUpdateFunctionTest(BaseCase):
     @login_pass
     def test_update_name_regex(self, *_):
         """
-        R5.0.1: Check if bad ticket name passes
+        R5.0.1: Check if bad ticket name fails
         R5.1.1: Check if ticket name shorter than 60 works
-        R5.1.2: Check if ticket name longer than 60 works
+        R5.1.2: Check if ticket name longer than 60 fails
         R5.5.2: Check if the system allows you to purchase a ticket that exist
         """
 

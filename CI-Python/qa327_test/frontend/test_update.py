@@ -206,5 +206,11 @@ class FrontEndUpdateFunctionTest(BaseCase):
         self.type("#update_ticket_date",  "1998\t1231")
         self.click('input[id="update_btn-submit"]')
 
+
+        # Check for signs that index.html was loaded
         self.assert_element("#update_message")
+        self.assert_element("#welcome-header")
+        self.assert_element("#account-balance")
+        self.assert_element("#sell_header")
+        self.assert_element("#buy_header")
         self.assert_text("Date entered not valid", "#update_message")

@@ -6,8 +6,6 @@ import selenium
 
 
 import time
-
-
 from qa327_test.conftest import base_url
 from unittest.mock import patch
 from qa327.models import db, User, Ticket
@@ -179,6 +177,7 @@ class FrontEndUpdateFunctionTest(BaseCase):
     def test_update_ticket_date_regex(self, *_):
         """
         R5.4.4: Check if dates that have already passed cause updating action failure
+        R5.6.1: Check if when an error message is created a redirection to the / page occurs
         """
 
         self.type("#update_ticket_name", "testTicket")
@@ -189,21 +188,3 @@ class FrontEndUpdateFunctionTest(BaseCase):
 
         self.assert_element("#update_message")
         self.assert_text("Date entered not valid", "#update_message")
-
-
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
-    @login_pass
-    def test_update_ticket_no_ticket(self, *_):
-        """
-        R5.5.1: Check if the system allows you to purchase a ticket that does not exist
-        R5.6.1: Check if when an error message is created a redirection to the / page occurs
-        """
-
-        self.type("#update_ticket_name", "blahblah")
-        self.type("#update_num_tickets", "20")
-        self.type("#update_ticket_price", "20")
-        self.type("#update_ticket_date",  future_date)
-        self.click('input[id="update_btn-submit"]')
-
-        self.assert_element("#update_message")
-        self.assert_text("No such Ticket with that name.", "#update_message")

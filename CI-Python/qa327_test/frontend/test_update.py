@@ -191,6 +191,7 @@ class FrontEndUpdateFunctionTest(BaseCase):
         self.assert_text("Date entered not valid", "#update_message")
 
 
+    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
     @login_pass
     def test_update_ticket_no_ticket(self, *_):
         """

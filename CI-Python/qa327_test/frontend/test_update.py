@@ -202,7 +202,7 @@ class FrontEndUpdateFunctionTest(BaseCase):
         self.type("#update_ticket_name", "blahblah")
         self.type("#update_num_tickets", "20")
         self.type("#update_ticket_price", "20")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_date",  future_date)
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")

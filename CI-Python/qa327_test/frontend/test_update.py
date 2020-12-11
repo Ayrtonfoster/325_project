@@ -78,9 +78,6 @@ class FrontEndUpdateFunctionTest(BaseCase):
         R5.0.1: Check if bad ticket name passes
         R5.1.1: Check if ticket name shorter than 60 works
         R5.1.2: Check if ticket name longer than 60 works
-        R5.2.1: Check if "ticket quantity" inside of range is accepted by front end
-        R5.3.1:	Check if "ticket price" inside of range is accepted by front end
-        R5.4.1: Check if entered date using proper format is accepted by front end
         R5.5.2: Check if the system allows you to purchase a ticket that exist
         """
 
@@ -120,6 +117,29 @@ class FrontEndUpdateFunctionTest(BaseCase):
         cur_url = self.get_current_url()
         self.assertEqual(cur_url, base_url + "/update")
 
+    @login_pass
+    def test_valid_input(self, *_):
+        """
+        R5.2.1: Check if "ticket quantity" inside of range is accepted by front end
+        R5.3.1: Check if "ticket price" inside of range is accepted by front end
+        R5.4.1: Check if entered date using proper format is accepted by front end
+        """
+    
+        self.type("#update_ticket_name", "testTicket")
+        self.type("#update_num_tickets", "15")
+        self.type("#update_ticket_price", "15")
+        self.type("#update_ticket_date",  future_date)
+
+        self.click('input[id="update_btn-submit"]')
+
+        time.sleep(10)
+
+        ticket_id = self.driver.find_element_by_id("testTicket%15%15%" 
+                            + format_date + "%test_sellerpage@test.com").text
+
+        self.assertIn("testTicket", ticket_id)
+        cur_url = self.get_current_url()
+        self.assertEqual(cur_url, base_url + "/update")
 
     @login_pass
     def test_update_ticket_num_regex(self, *_):

@@ -32,15 +32,6 @@ test_user = User(
     balance=5000
 )
 
-# Moch some sample ticksets
-'''test_tickets = [Ticket(
-    id = 1234,
-    ticket_name = "testticket",
-    num_tickets = 20,
-    ticket_price = 10,
-    ticket_date = format_date,
-    ticket_owner = "UncleSteve@email.com"
-)]'''
 
 test_tickets = [
     {'ticket_name': 'testTicket',
@@ -138,20 +129,20 @@ class FrontEndUpdateFunctionTest(BaseCase):
         R5.2.2: Check if "ticket quantity" outside of range causes updating action failure
         """
 
-        self.type("#update_ticket_name", "PastaMan")
+        self.type("#update_ticket_name", "testTicket")
         self.type("#update_num_tickets", "-20")
         self.type("#update_ticket_price", "44")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_date",  future_date)
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")
         self.assert_text("Number of tickets outside of range", "#update_message")
 
 
-        self.type("#update_ticket_name", "PastaMan")
+        self.type("#update_ticket_name", "testTicket")
         self.type("#update_num_tickets", "120")
         self.type("#update_ticket_price", "44")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_date",  future_date)
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")
@@ -164,20 +155,20 @@ class FrontEndUpdateFunctionTest(BaseCase):
         R5.3.2: Check if "ticket price" outside of range causes updating action failure
         """
 
-        self.type("#update_ticket_name", "PastaMan")
+        self.type("#update_ticket_name", "testTicket")
         self.type("#update_num_tickets", "20")
         self.type("#update_ticket_price", "5")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_date",  future_date)
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")
         self.assert_text("Ticket price outside of range", "#update_message")
 
 
-        self.type("#update_ticket_name", "PastaMan")
+        self.type("#update_ticket_name", "testTicket")
         self.type("#update_num_tickets", "20")
         self.type("#update_ticket_price", "210")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_date",  future_date)
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")
@@ -190,24 +181,14 @@ class FrontEndUpdateFunctionTest(BaseCase):
         R5.4.4: Check if dates that have already passed cause updating action failure
         """
 
-        self.type("#update_ticket_name", "PastaMan")
-        self.type("#update_num_tickets", "20")
-        self.type("#update_ticket_price", "5")
-        self.type("#update_ticket_date",  "2022\t1231")
+        self.type("#update_ticket_name", "testTicket")
+        self.type("#update_num_tickets", "50")
+        self.type("#update_ticket_price", "50")
+        self.type("#update_ticket_date",  "1998\t1231")
         self.click('input[id="update_btn-submit"]')
 
         self.assert_element("#update_message")
-        self.assert_text("Ticket price outside of range", "#update_message")
-
-
-        self.type("#update_ticket_name", "PastaMan")
-        self.type("#update_num_tickets", "20")
-        self.type("#update_ticket_price", "210")
-        self.type("#update_ticket_date",  "2022\t1231")
-        self.click('input[id="update_btn-submit"]')
-
-        self.assert_element("#update_message")
-        self.assert_text("Ticket price outside of range", "#update_message")
+        self.assert_text("Date entered not valid", "#update_message")
 
 
     @login_pass

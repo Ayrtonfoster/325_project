@@ -387,7 +387,6 @@ def ticket_info_sanitizer(ticket_name, num_tickets, ticket_price = 11, date = No
     elif (int(ticket_price) < 10 or int(ticket_price) > 100):
         return "Ticket price outside of range"
     elif(date != None and  passed < today):
-        print("hit")
         return "Date entered not valid"
     else:
         return None

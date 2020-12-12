@@ -334,7 +334,7 @@ class FrontEndSellFunctionTest(BaseCase):
         # Hit 'Post Ticket'
         self.click('input[id="sell_btn-submit"]')
 
-        # Check for signs that index.htmp was loaded
+        # Check for signs that index.html was loaded
         self.assert_element("#welcome-header")
         self.assert_element("#account-balance")
         self.assert_element("#sell_header")

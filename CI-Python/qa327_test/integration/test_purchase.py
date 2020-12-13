@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 dateTime = date.today()
 dateTime = dateTime + timedelta(days=10)
-future_date = dateTime.strftime("%Y\t%m%d")
+future_date = dateTime.strftime("%Y-%m-%d")
 format_date = dateTime.strftime("%Y-%m-%d")
 
 

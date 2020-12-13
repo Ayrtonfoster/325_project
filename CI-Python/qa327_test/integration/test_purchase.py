@@ -1,19 +1,8 @@
 import pytest
 from seleniumbase import BaseCase
 
-from unittest.mock import patch
-
 from qa327_test.conftest import base_url
-from qa327.models import User
-from werkzeug.security import generate_password_hash
 from datetime import date, timedelta
-
-test_user = User(
-    email='user@domain.com',
-    name='test user',
-    password=generate_password_hash('Password!1'),
-    balance=5000
-)
 
 dateTime = date.today()
 dateTime = dateTime + timedelta(days=10)
@@ -57,7 +46,7 @@ class IntegrationPurchaseTest(BaseCase):
         self.click('input[id="sell_btn-submit"]')
 
         # Check for posted ticket in table
-        self.driver.find_element_by_id('PurchaseTestTicket%20%15%' + format_date + '%user@domain.com')
+        self.driver.find_element_by_id('PurchaseTestTicket%20%15%' + format_date + '%user@domain.com').text
 
         # check that url is /sell
         self.assertEqual(self.get_current_url(), base_url + "/sell")

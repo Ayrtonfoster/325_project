@@ -1,8 +1,6 @@
 import pytest
 from seleniumbase import BaseCase
 
-from unittest.mock import patch
-
 from qa327_test.conftest import base_url
 from qa327.models import User
 from werkzeug.security import generate_password_hash
@@ -22,19 +20,30 @@ format_date = dateTime.strftime("%Y-%m-%d")
 
 
 @pytest.mark.usefixtures('server')
-@patch('qa327.backend.get_user', return_value=test_user)
 class IntegrationPostingTest(BaseCase):
+
+    def register_and_login(self, email, user, password):
+
+        # register
+        self.open(base_url + '/register')
+        self.type("#email", email)
+        self.type("#name", user)
+        self.type("#password", password)
+        self.type("#password2", password)
+        self.click('input[type="submit"]')
+
+        # log in
+        self.open(base_url + '/login')
+        self.type('#email', email)
+        self.type('#password', password)
+        self.click('input[type="submit"]')
 
     def test_posting(self, *_):
         """
         Test that user can post a ticket for sale, using full system from login through logout
         """
 
-        # log in patched user
-        self.open(base_url + '/login')
-        self.type('#email', 'user@domain.com')
-        self.type('#password', 'Password!1')
-        self.click('input[type="submit"]')
+        self.register_and_login('user@domain.com', 'test user', 'Password!1')
 
         # post a ticket for sale
         self.type("#sell_ticket_name", "PostingTestTicket")

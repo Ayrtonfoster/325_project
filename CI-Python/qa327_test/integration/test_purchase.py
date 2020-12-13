@@ -42,7 +42,8 @@ class IntegrationPurchaseTest(BaseCase):
 
     def test_purchase(self, *_):
         """
-        Test that one user can post a ticket for sale, then another user can purchase that ticket, using full system from login through logout
+        Test that one user can post a ticket for sale, then another user can purchase that ticket, using full system
+        from login through logout
         """
 
         # first user
@@ -56,7 +57,7 @@ class IntegrationPurchaseTest(BaseCase):
         self.click('input[id="sell_btn-submit"]')
 
         # Check for posted ticket in table
-        self.driver.find_element_by_id(f'PurchaseTestTicket%20%15%{format_date}%user@domain.com')
+        self.driver.find_element_by_id('PurchaseTestTicket%20%15%' + format_date + '%user@domain.com')
 
         # check that url is /sell
         self.assertEqual(self.get_current_url(), base_url + "/sell")
@@ -74,7 +75,8 @@ class IntegrationPurchaseTest(BaseCase):
         self.click('input[id="buy_btn-submit"]')
 
         # Check purchased tickets have gone
-        self.driver.find_element_by_id(f'PurchaseTestTicket%20%{15-purchase_num_tickets}%{format_date}%user@domain.com')
+        self.driver.find_element_by_id('PurchaseTestTicket%20%' + str(15-purchase_num_tickets) + '%' + format_date +
+                                       '%user@domain.com')
 
         # check that url is /buy
         self.assertEqual(self.get_current_url(), base_url + "/buy")

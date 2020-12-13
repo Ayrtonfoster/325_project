@@ -44,7 +44,7 @@ class IntegrationPostingTest(BaseCase):
         self.click('input[id="sell_btn-submit"]')
 
         # Check for posted ticket in table
-        self.driver.find_element_by_id(f'PostingTestTicket%15%15%{format_date}%user@domain.com')
+        self.driver.find_element_by_id('PostingTestTicket%15%15%' + format_date + '%user@domain.com')
 
         # check that url is /sell
         self.assertEqual(self.get_current_url(), base_url + "/sell")

@@ -17,11 +17,11 @@ the correct data base values.
 """
 
 dateTime = date.today()
-dateTime + timedelta(days=10)
-future_date = dateTime.strftime("%Y\t%m%d")
+dateTime = dateTime + timedelta(days=10)
+future_date = dateTime.strftime("%Y-%m-%d")
 format_date = dateTime.strftime("%Y-%m-%d")
 past = dateTime - timedelta(days=45)
-past_date = past.strftime("%Y\t%m%d")
+past_date = past.strftime("%Y-%m-%d")
 
 
 test_user = User(

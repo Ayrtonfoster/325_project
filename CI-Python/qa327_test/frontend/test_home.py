@@ -157,7 +157,7 @@ class MainPageTest(BaseCase):
         self.type("#sell_ticket_name", "test sell post name")
         self.type("#sell_num_tickets", "10" )
         self.type("#sell_ticket_price", "50" )
-        self.type("#sell_ticket_date",  "2022\t1231") 
+        self.type("#sell_ticket_date",  "2022-12-31")
         self.click('input[id="sell_btn-submit"]')
         #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")
@@ -201,7 +201,7 @@ class MainPageTest(BaseCase):
         self.type("#update_ticket_name", test_tickets[0].ticket_name)
         self.type("#update_num_tickets", str(test_tickets[0].num_tickets))
         self.type("#update_ticket_price", str(test_tickets[0].ticket_price))
-        self.type("#update_ticket_date",  "2022\t1231") 
+        self.type("#update_ticket_date",  "2022\t1231")
         self.click('input[id="update_btn-submit"]')
         #Confirm correct page and no 404 error /etc
         self.assert_element("#welcome-header")

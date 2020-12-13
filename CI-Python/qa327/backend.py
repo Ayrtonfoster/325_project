@@ -43,6 +43,11 @@ def post_tickets(ticket_name, num_tickets, ticket_price, ticket_date, email):
     :param email: email of the ticket owner
     :return: True when ticket created successfully
     """
+
+    # Check ticket of same name does not already exist
+    if get_ticket(ticket_name):
+        return False
+
     # store the encrypted password rather than the plain password
     new_ticket = Ticket(ticket_name=ticket_name, num_tickets=num_tickets, ticket_price=ticket_price, ticket_date=ticket_date, ticket_owner=email)
 

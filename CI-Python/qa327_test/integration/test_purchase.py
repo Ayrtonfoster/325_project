@@ -42,7 +42,7 @@ class IntegrationPurchaseTest(BaseCase):
 
     def test_purchase(self, *_):
         """
-        Test that user can post a ticket for sale, using full system from login through logout
+        Test that one user can post a ticket for sale, then another user can purchase that ticket, using full system from login through logout
         """
 
         # first user

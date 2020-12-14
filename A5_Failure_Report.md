@@ -1,6 +1,13 @@
 # A5 Failure Report
-## Contributors
-- Matthew Kruzich
+
+## Contributers
+•	Ayrton Foster
+
+•	Francesco Marrato
+
+•	Eric Leask
+ 
+•	Matthew Kruzich
 
 ## Integration-Posting | Failure Report
 No problems were discovered during posting integration testing
@@ -10,3 +17,84 @@ No problems were discovered during posting integration testing
 | Test Name | Test Function | Error in Output | Cause of Error | Solution |
 |---|---|---|---|---|
 | test_purchase | Test that one user can post a ticket for sale, then another user can purchase that ticket, using full system from login through logout | Tickets with identical names from other tests were purchased | Ticket name is not unique | Added check in backend to prevent listing tickets with duplicate ticket_name |
+
+## R1 /Login | Failure Report
+
+| Test Name                             | Test Function                                                                       | Error in Output                                                            | Cause of Error                                                                            | Solution                                                      |
+|---------------------------------------|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| test_show_login_not: R1.1.1           | Check if the default page before login is /login                                    | Check if the deselenium.common.exceptions.NoSuchElementException: Message: | Login page had no id tag for title                                                        | Gave the login.html page an id for its title (id=login_title) |
+| test_login_redirect_pass: R1.5.1      | Check if the post request submitted requests to / upon login success                | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.1                                     |
+| test_login_redirect_pass: R1.8.1      | Check if a correct password returns a True/Pass value when login is requested       | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.1                                     |
+| test_login_redirect_pass: R1.10.1     | If email and password are correct and a login request is made, redirect to / 'home' | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.1                                     |
+| test_login_redirect_fail: R1.5.2      | When a login post fails a redirection to /login is performed                        | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.2                                     |
+| test_login_email_RFC5322: R1.7.1      | Email inputs are checked against RFC 5322 regex                                     | Invalid Test                                                               | Selenium Base cannot explicitly confirm that a RFC 5322  REGEX is used                    | Rolled into test R1.7.2                                       |
+| test_login_formating_errors: R1.9.2   | Check if 'pop-up' message is shown on /login page if error_message has ben thrown   | Invalid Test                                                               | When originally outlined error messages were thought to generate a 'pop-up' style message | Rolled into test R1.9.1                                       |
+| test_login_formatting_errors: R1.11.2 | Check if 'pop-up' message is shown on /login page if error_message has been thrown  | Invalid Test                                                               | When originally outlined error messages were thought to generate a 'pop-up' style message | Rolled into test R1.11.1                                      |
+
+## R2 /Register | Failure Report
+
+| Test Name                             | Test Function                                                                       | Error in Output                                                            | Cause of Error                                                                            | Solution                                                      |
+|---------------------------------------|-------------------------------------------------------------------------------------|----------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| Test_submit_button_exists: R2.3.1      | Check that there is a submit button for registration       | Redundant                                                                  | No Error                                                                                  | Rolled into R.2.1                                     |
+| Check user created properly: R2.7.2     | Check if username is too short when registering | Valid Username                                                                  | Code checking whether username is too shirt or too long implemented incorrectly                                                                                  | Fixed logic for username length check                                   |
+| Check user created properly: R2.10.1     | Check to ensure user created successfully and can login | Redundant                                                                  | No Error                                                                                  | Combined with test R1.3.1                                     |
+
+   
+
+## R3 / | Failure Report
+| Test Name         | Test Function                      | Error in Output                   | Cause of Error                            | Solution                |
+|-------------------|------------------------------------|-----------------------------------|-------------------------------------------|-------------------------|
+| R3.0.1 test_redirect_login          | Check user not logged in redirect to /login          |              Planned to use the id of the login header but did not contain an ID at the time     | No ID to be found    |       Add id="login_title"         |
+| R3.0.2         |    Check user logged in does not redirect          |    Redundant Testing(R1.3.1)               |           N/A                      |      Testing completed by R1.3.1          |
+| R3.4.2         |    Check expired ticket not listed          |    Backend Test              |           Backend functionality therefore not tested in A3                     |      N/A          |
+| R3.5.1 test_sell_form_visuals        |    Check sell form present with all fields         |        sell, buy, and update forms fields all had the same id         |           Unable to distinguish elements between different forms         |    Add sell_ to id of each field id in sell_form of index.html          |
+| R3.6.1 test_buy_form_visuals        |    Check buy form present with all fields          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |    Add buy_ to id of each field id in buy_form of index.html          |
+| R3.7.1 test_update_form_visuals        |    Check update form present with all fields          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add update_ to id of each field id in update_form of index.html          |
+| R3.8.1 test_sell_post  |    Check submit to sell	          |        sell, buy, and update forms fields all had the same id           |    Unable to distinguish elements between different forms   |   Add sell_ to id of each field id in sell_form of index.html          |
+| R3.9.1 test_buy_post        |    Check submit to buy	    |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add buy_ to id of each field id in buy_form of index.html          |
+| R3.10.1 test_update_post        |    Check submit to update          |        sell, buy, and update forms fields all had the same id           |           Unable to distinguish elements between different forms         |   Add update_ to id of each field id in update_form of index.html          |
+
+
+## R4 /Sell | Failure Report
+
+| Test Name                            | Test Function                                                                                | Error in Output                                    | Cause of Error                                                                                                                      | Solution                                                                                                 |
+|--------------------------------------|----------------------------------------------------------------------------------------------|----------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------|
+| R4.0.1: test_sell_exists             | Check that page /sell can be accessed                                                        | Invalid Test                                       | When originally outlined /sell was thought to be a page not a post request                                                          | Removed test case                                                                                        |
+| R4.1.1: test_sell_name_regex         | Check if ticket name not following guidelines throws an error                                | no element with ID #ticket_name                    | No elements with correct ID's in the selling section of index.html template                                                         | Preface all selling related ID's on index.html template with 'sell_'                                     |
+| R4.5.2: test_sell_date_wrong         | Check if entered date using improper format cause selling action failure                     | Invalid Test                                       | Index.html page cannot accept anything but properly formatted inputs, since the entry has a mandatory input format built in.        | Removed test case                                                                                        |
+| R4.5.3: test_sell_date_impossible    | Check if dates that match the format but do not exist cause selling action failure           | Cannot Occur                                       | Index.html page cannot accept dates that do not exist. Dates are automatically altered to existing dates for the user to see.       | Removed test case                                                                                        |
+| R4.5.4: test_sell_date_past          | Check if dates that have already passed cause selling action failure                         | Dates were accepted but tickets were not displayed | Dates from days previous to current time/date were not checked and were accepted as any other date                                  | modified ticket_info_sanitizer to check if date has past and throw a related error                       |
+| R4.6.1: test_sell_error_redirection  | Check if when an errir message us created a redirection to / page occurs                     | Invalid Test                                       | When originally outlined /sell was thought to be a page not a post request. /sell is added to the / page url only as a Post request | modified the test case to check if the index.html template was loaded by checking for specific page ID's |
+| R4.6.2: test_sell_error_redirection  | Check if when an error message is created the message is displayed when a redirection occurs | Redundant                                          | No Error                                                                                                                            | Combined with test R4.6.1                                                                                |
+| R4.7.2: test_sell_display_duplicates | Check if correct number of items in the ticket list is presented                             | no element with ID #ticket_table                   | No elements with correct ID in the tickets for sale table on index.html template                                                    | Added an ID to index.html page to identify the selling ticket table                                      |
+## R5 /Update | Failure Report
+
+| Test Name | Test Function | Error in Output | Cause of Error | Solution |
+|-----------|------------------------|-----------------------|--------------------------|------------------|
+| R5.4.2: test_ticket_update_date | Check if entered date using improper format cause selling action failure | HTML date tool does not allow for improper dates | None | Invalid Test|
+| R5.4.3: test_ticket_update_date | Check if dates that match the format but do not exists(e.g. Nov 31st) cause selling action failure | HTML date tool does not allow for date that do not exist | None | Invalid Test |
+
+## R6 /Buy | Failure Report
+| Test Name | Test Function | Error in Output | Cause of Error | Solution |
+|-----------|------------------------|-----------------------|--------------------------|------------------|
+| R6.0.1.1: test_ticket_alphanumeric | Check if non-alphanumeric inputs against ticket name regex causes buying action failure |  Non-alphanumeric value in the first or last character is not caught by regex | Regex error, special check for spaces in the first or last string index caused regex to ignore other rules that should apply to the first and last character  | Regex updated |
+| R6.0.1.2: test_ticket_spaces | Check if space inputs at first or last character of ticket name cause regex buying action failure | Passing spaces on first and last string index, however spaces through a ticket name were failing | Regex error | Regex updated |
+| R6.1.1: test_ticket_purchase_success | Check if buying action passes with ticket names shorter than 60 characters | ticket_parser functionality failing | ticket_parser functionality had checks related to date(implemented for testing sell functionality). No checks are in place for when the input date is None, therefore a crash occurs | Date conversion only occurs if input date is not None |
+| R6.2.1: test_ticket_purchase_success | Check if "ticket quantity" inside of range is accepted by front end | Redundant | To test ticket quanity, ticket name must also be correct, therefore tested together  | Also implemented in test_ticket_purchase_success |
+| R6.3.1: test_available_ticket_max | Check if you can buy more tickets than what are available | Wrong Error Returned "Not a concert ticket" | Conditionals for error message separate if statements  | Converts seperate if statements to if elif |
+| R6.3.2: test_ticket_purchase_success | Check if you can buy less than the available amount | Redundant | To test ticket quanity, ticket name must also be correct, therefore tested together | Also implemented in test_ticket_purchase_success |
+| R6.5.1: NA | Check if when an error message is created a redirection to the / page occurs | Redundant |  | Testcase NA, previous testcases use error output for validation, therefore additional testcase for confirming errors is not required |  
+
+
+## R7 /Logout | Failure Report
+| Test Name                             | Test Function                                                                       | Error in Output                                                                             | Cause of Error                                                                            | Solution                                                      |
+|---------------------------------------|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|---------------------------------------------------------------|
+| R7.1.4: test_logout_redirect          | Confirm after logout that user is redirected to /login                              | Redundant (Duplicates 7.1.1)                                                                | No Error                                                                                  | Combined with test R7.1.1: test_logout_redirect               |
+| R7.1.6: test_logout_sell_denial       | Confirm that user cannot access /sell after logout                                  | Impossible test: GET not defined for /sell, POST not possible without access to homepage    | No Error                                                                                  | Rolled into test R7.1.5: test_logout_homepage_denial          |
+| R7.1.7: test_logout_buy_denial        | Confirm that user cannot access /buy after logout                                   | Impossible test: GET not defined for /buy, POST not possible without access to homepage     | No Error                                                                                  | Rolled into test R7.1.5: test_logout_homepage_denial          |
+| R7.1.8: test_logout_update_denial     | Confirm that user cannot access /update after logout                                | Impossible test: GET not defined for /update, POST not possible without access to homepage  | No Error                                                                                  | Rolled into test R7.1.5: test_logout_homepage_denial          |
+| R7.1.9: test_logout_invalid_denial    | Confirm after logout that user receives 404 error from nonexistent page requests    | Redundant (Duplicates 8.1.1)                                                                | No Error                                                                                  | Combined with test R8.1.1: test_bad_url_404                   |
+
+
+## R8 /* | Failure Report
+No errors were encountered implementing R8 testcases

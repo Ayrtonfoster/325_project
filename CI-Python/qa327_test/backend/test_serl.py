@@ -22,7 +22,7 @@ class BackendSellTest(BaseCase):
             Faker.seed(rand_seed)
 
             today = date.today()
-            today = today + date.timedelta(days=1)
+            today = today + timedelta(days=1)
             ticket_name = fake.name()
             num_tickets = random.randint(1, 101)
             ticket_price = random.randint(10, 101)

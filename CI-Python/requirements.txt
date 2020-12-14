@@ -33,3 +33,4 @@ numpy==1.19.2
 
 flask-pytest
 seleniumbase
+pymysql

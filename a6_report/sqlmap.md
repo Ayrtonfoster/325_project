@@ -19,3 +19,12 @@
 | Scan     | [http://127.0.0.1:8081/update](http://127.0.0.1:8081/update) | ticket date                                                                | log indicates field not injectable                                                                                   | 0                                     |
 | Scan      | [http://127.0.0.1:8081/buy](http://127.0.0.1:8081/buy)                        | ticket name                                                                  | log indicates field not injectable                                                                                   | 0                                     |
 | Scan      | [http://127.0.0.1:8081/buy](http://127.0.0.1:8081/buy)                        | ticket num                                                                  | log indicates field not injectable                                                                                   | 0                                     |                                     |
+
+
+
+## Questions
+1) All the field were tested, there were no security exploits found. Several of the field were found to have logic flaws that the injection tool was able to take advantage of (inputting string into a number form)
+
+2) The two rounds of scanning so that both the public side and the user specific side of the website could be tested individually. The /login and /register pages are accessible to the public, and most vulnerable to attack, so it was important to test it separately to insure its secure on its own. It was also important to test the /sell, /update, and /buy independently as these fields are separate from the initial login process and have to be tested for different vulnerabilities. Adding the session id allowed us to gain access to the users main page without physically logging in.
+
+3) The final logs outputted by the test we're empty, indicating all injection attempts were unsuccessful. This means that we have no example injection payloads to discuss.

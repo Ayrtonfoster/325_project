@@ -1,9 +1,14 @@
-from flask import render_template, request, session, redirect
+from flask import render_template, request, session, redirect, Response
 from qa327 import app
+import qa327.camera as cam
+#from CMPE-327-SOFT_QUAL_ASSU.CI-Python.covid_tracker.covid_trackerv3 as peeps
+import qa327.covid_tracker_v3 as peeps
 import qa327.backend as bn
 import datetime
 import re
 
+
+people_count = 1
 
 """
 This file defines the front-end part of the service.
@@ -48,6 +53,32 @@ def login_redirect(inner_function):
     # return the wrapped version of the inner_function:
     wrapped_inner.__name__ = inner_function.__name__
     return wrapped_inner
+
+
+def gen(camera):
+    global people_count
+    while True:
+        frame, people_count = camera.get_frame()
+        #print(people_count)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(peeps.VideoCamera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+def get_num_people(camera):
+    #global people_count
+    while True:
+        print(people_count)
+        #people_count = camera.get_num_peeps()
+        return people_count
+
+@app.route('/num_people')
+def num_people():
+    print("HELOOO THEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
 
 
 @app.route('/register', methods=['GET'])
@@ -443,5 +474,7 @@ def profile(user):
     # by using @authenticate, we don't need to re-write
     # the login checking code all the time for other
     # front-end portals
+    # num_people = get_num_people(peeps.VideoCamera())
+
     tickets = bn.get_all_tickets()
     return render_template('index.html', user=user, tickets=tickets)

@@ -124,7 +124,6 @@ class VideoCamera(object):
     
     def get_num_peeps(self):
         while True:
-            print(people_count)
             return people_count
 
     def get_frame(self):

@@ -1,3 +1,7 @@
+<head>p {
+  margin-top:-5px;
+}</head>
+
 {% extends 'base.html' %}
 
 {% block header %}
@@ -10,20 +14,18 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
 
-<nav id="sidebar">
+<nav id="sidebar" style="padding-left:10px">
   <div class="custom-menu">
-  <button type="button" id="sidebarCollapse" class="btn btn-primary">
-  <i class="fa fa-bars"></i>
   <span class="sr-only">Toggle Menu</span>
   </button>
   </div>
-  <h1><a href="index.html" class="logo">Safe Space</a></h1>
   <ul class="list-unstyled components mb-5">
   <li class="active">
-  <a href="#"><span class="fa fa-home mr-3"></span> Homepage</a>
+  <a href="#"><span class="fa fa-home fa-4x"></span> </a>
   </li>
+  <br>
   <li>
-  <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
+  <a href="#"><span class="fa fa-paper-plane fa-3x"></span></a>
   </li>
   </ul>
 </nav>
@@ -46,28 +48,55 @@
   
 {% block rooms %}
 
-<nav id="sidebar">
-  <div class="custom-menu">
-  <ul class="list-unstyled components mb-5">
-  <li class="active">
-  <a href="#"><span class="fa fa-home mr-3"></span> Homepage</a>
-  </li>
-  <li>
-  <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
-  </li>
-  </ul>
-</nav>
+<div class="container" align="left" style="padding-left:40px">
+  <nav id="sidebar">
+    <div class="custom-menu">
+      <h1>Bob's Burgers</h1>
+      <b>111 backerfield drive, Kingston, Ont, Canada, P6A 5K6</b>
+      <ul class="list-unstyled components mb-5">
+        <li class="active">
+          <a href="#"><span class="fa fa-home mr-3"></span> Homepage</a>
+        </li>
+        <li>
+          <a href="#"><span class="fa fa-paper-plane mr-3"></span> Settings</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</div>
+
+{% endblock %}
+
+
+{% block RoomInfo %}
+
+<h1>Main Room</h1>
+<b>Size: 20' x 20'</b>
+
+{% endblock %}
+
+
+{% block MaxCapacity %}
+
+<h1>Max Capacity</h1>
+<b>1</b>
+
+{% endblock %}
+
+{% block CurrentOccupation %}
+
+<h1>Current Occupation</h1>
+<b>2</b>
 
 {% endblock %}
 
 
 {% block content %}
 
-<h2>Number of people in the rooom:</h2>
-<b id="big" class="center" src="{{ url_for('num_people') }}"></b>
+<!---<h2>Number of people in the rooom:</h2>
+<b id="big" class="center" src="{{ url_for('num_people') }}"></b>-->
 
-<h1 align="center">Video Streaming Demonistration</h1>
-<img id="bg" class="center" src="{{ url_for('video_feed') }}">
+<img id="bg" align="center" src="{{ url_for('video_feed') }}">
 
 <br>
 <br>

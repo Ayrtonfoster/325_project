@@ -1,19 +1,4 @@
-<head>
-  <style>
-    p {
-    margin-top: 0px;
-    }
-    h1{
-      margin-bottom: 0px;
-    }
-  </style>
-</head>
-
 {% extends 'base.html' %}
-
-{% block header %}
-<h1>{% block title %}Profile{% endblock %}</h1>
-{% endblock %}
 
 {% block menue %}
 
@@ -40,7 +25,6 @@
   </li>
   <br>
   </ul>
-
 </nav>
 
 <!--
@@ -58,7 +42,8 @@
 
 
 {% endblock %}
-  
+
+
 {% block rooms %}
 
 <div class="container" align="left" style="padding-left:20px">
@@ -88,7 +73,7 @@
     </tr>
     <tr>
       <td><i class="fas fa-circle"></i></td>
-      <td>Other Room</td>
+      <td>Pasta Room</td>
       <td>Max: 0</td>
       <td>Current: 30</td>
     </tr>
@@ -106,34 +91,35 @@
 
 
 {% block RoomInfo %}
+<br>
+<div class="container" align="left" style="padding-left:65px">
 
-<h1>Main Room</h1>
-<h4>Size: 20' x 20'</h4>
-
-{% endblock %}
-
-
-{% block MaxCapacity %}
-
-<h1>Max Capacity</h1>
-<h4>1</h4>
+<h1>Settings</h1>
+</div>
 
 {% endblock %}
-
-{% block CurrentOccupation %}
-
-<h1>Current Occupation</h1>
-<h4>2</h4>
-
-{% endblock %}
-
 
 {% block content %}
 
-<!---<h2>Number of people in the rooom:</h2>
-<b id="big" class="center" src="{{ url_for('num_people') }}"></b>-->
-
-<img id="bg" align="center" src="{{ url_for('video_feed') }}">
+<div class="container" align="left" style="padding-left:20px">
+    <form method="post" >
+        <div class="form-group">
+            <label for="email">Name</label>
+            <input class="form-control" name="email" id="email" style="width: 350px;" required>
+            <br>
+            <label for="password">Size</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <label for="password">Max Occupency</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <label for="password">Link to Camera</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Submit">
+        </div>
+    </form>
+</div>
 
 <br>
 <br>

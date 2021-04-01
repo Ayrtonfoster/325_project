@@ -81,6 +81,7 @@ def num_people():
     print("HELOOO THEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
 
 
+
 @app.route('/register', methods=['GET'])
 @login_redirect
 def register_get():
@@ -455,6 +456,18 @@ def authenticate(inner_function):
     # return the wrapped version of the inner_function:
     wrapped_inner.__name__ = inner_function.__name__
     return wrapped_inner
+
+
+@app.route('/create_room', methods=['GET'])
+@authenticate
+def create_room_get(user):
+    """
+    Renders the login page for the user
+
+    :return: The login page to be rendered
+
+    """
+    return render_template('new_room.html')
 
 
 @app.route('/')

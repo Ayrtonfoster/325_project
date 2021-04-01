@@ -117,6 +117,8 @@ class VideoCamera(object):
         
         return frame, num_people
 
+        
+
     def get_frame():
             # success, image = self.video.read()
             # image=cv2.resize(image,None,fx=ds_factor,fy=ds_factor,interpolation=cv2.INTER_AREA)

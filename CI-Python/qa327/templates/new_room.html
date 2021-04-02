@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block menue %}
+
+<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<nav id="sidebar" style="padding-left:20px">
+  <div class="custom-menu">
+  <span class="sr-only">Toggle Menu</span>
+  </button>
+  </div>
+  <ul class="list-unstyled components mb-5">
+  <li class="active">
+  <a href="/"><span class="fa fa-home fa-4x"></span> </a>
+  </li>
+  <br>
+  <li>
+  <a href="/create_room"><span class="fa fa-paper-plane fa-3x"></span></a>
+  </li>
+  <br>
+  <li>
+    <a href="#"><span class="fas fa-sign-out-alt fa-4x"></span></a>
+  </li>
+  <br>
+  </ul>
+</nav>
+
+<!--
+<div class="bg-light border-right" id="sidebar-wrapper">
+  <div class="sidebar-heading">Start Bootstrap </div>
+  <div class="list-group list-group-flush">
+    <a href="#" class="list-group-item list-group-item-action bg-light">Dashboard</a>
+    <a href="#" class="list-group-item list-group-item-action bg-light">Shortcuts</a>
+    <a href="#" class="list-group-item list-group-item-action bg-light">Overview</a>
+    <a href="#" class="list-group-item list-group-item-action bg-light">Events</a>
+    <a href="#" class="list-group-item list-group-item-action bg-light">Profile</a>
+    <a href="#" class="list-group-item list-group-item-action bg-light">Status</a>
+  </div>
+</div>-->
+
+
+{% endblock %}
+
+
+{% block rooms %}
+
+<div class="container" align="left" style="padding-left:20px">
+  <nav id="sidebar">
+    <div class="custom-menu">
+      <h1>Bob's Burgers</h1>
+      <b>111 backerfield drive, Kingston, Ont, Canada, P6A 5K6</b>
+    </div>
+  </nav>
+</div>
+
+{% endblock %}
+
+
+{% block RoomList %}
+
+<div class="container" align="left" style="padding-left:20px">
+
+  <h3> Room list and status</h3>
+
+  <table>
+    <tr>
+      <td><i class="fas fa-circle"></i></td>
+      <td>Main Room</td>
+      <td>Max: 10</td>
+      <td>Current: 30</td>
+    </tr>
+    <tr>
+      <td><i class="fas fa-circle"></i></td>
+      <td>Pasta Room</td>
+      <td>Max: 0</td>
+      <td>Current: 30</td>
+    </tr>
+    <tr>
+      <td><i class="fas fa-circle"></i></td>
+      <td>Diner Room</td>
+      <td>Max: 20</td>
+      <td>Current: 30</td>
+    </tr>
+  </table>
+
+</div>
+
+{% endblock %}
+
+
+{% block RoomInfo %}
+<br>
+<div class="container" align="left" style="padding-left:65px">
+
+<h1>Settings</h1>
+</div>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container" align="left" style="padding-left:20px">
+    <form method="post" >
+        <div class="form-group">
+            <label for="email">Name</label>
+            <input class="form-control" name="email" id="email" style="width: 350px;" required>
+            <br>
+            <label for="password">Size</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <label for="password">Max Occupency</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <label for="password">Link to Camera</label>
+            <input class="form-control" type="password" name="password" id="password" style="width: 350px;" required>
+            <br>
+            <input class="btn btn-lg btn-primary" type="submit" id="btn-submit" value="Submit">
+        </div>
+    </form>
+</div>
+
+<br>
+<br>
+<a id="logout" href='/logout'>logout</a>
+{% endblock %}

@@ -23,7 +23,8 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="https://l1nna.com/black-assets/img/apple-icon.png">
-    <link rel="icon" type="image/x-icon" href="https://l1nna.com/images/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="https://cdn1.iconfinder.com/data/icons/social-distance-6/64/distance-social_distance-space-people-04-512.png">
+    
 
     <title>{% block title %}{% endblock %}</title>
 
@@ -36,13 +37,16 @@
     <!-- Nucleo Icons -->
     <link href="https://l1nna.com/black-assets/css/nucleo-icons.css" rel="stylesheet" />
     <!-- CSS Files -->
-    <link href="https://l1nna.com/black-assets/css/blk-design-system.css?v=1.0.0" rel="stylesheet" />
+    <!-- <link href="https://l1nna.com/black-assets/css/blk-design-system.css?v=1.0.0" rel="stylesheet" /> -->
     <!-- CSS Just for demo purpose, don't include it in your project -->
     <link href="https://l1nna.com/black-assets/demo/demo.css" rel="stylesheet" />
 
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- example file with black assets l1nna-->
+    <link rel="stylesheet" href="https://drive.google.com/uc?export=view&id=17hlgrBy2gZfbORyGdo-lxcbCt45urXeZ">
+    <link rel="stylesheet" href="https://drive.google.com/uc?export=view&id=115OmPxLzP0OwMBf-FI38FA12-9zERS-g">
 
-    <link rel="stylesheet" href="styles.css">
+    
 
     <style>
     .parent {
@@ -66,7 +70,7 @@
         margin-top: 0px;
     }
     h1{
-        margin-bottom: 0px;
+        margin-bottom: 15px;
     }
     h4{
         margin-top: 15px;
@@ -93,6 +97,14 @@
     <!-- Control Center for Black UI Kit: parallax effects, scripts for the example pages etc -->
     <script src="https://l1nna.com/black-assets/js/blk-design-system.min.js?v=1.0.0" type="text/javascript"></script>
 
+    <!-- for notification -->
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css'>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <script src="https://kit.fontawesome.com/60d5066c84.js" crossorigin="anonymous"></script>
+
+
 
     <style>
         label{
@@ -114,10 +126,44 @@
     <nav class="navbar navbar-expand-lg fixed-top ">
         <div class="container">
             <div class="navbar-translate">
-                <a class="navbar-brand" href="{{logo_url or base_url}}" rel="tooltip"">
-                    <span>
-                        <img src="https://l1nna.com/images/favicon.ico" style="height: 30px;vertical-align: middle;">
-                        SAFE SPACE
+                <a class="navbar-brand" href="{{logo_url or base_url}}" rel="tooltip">
+                    <span style="padding-left: 190%;">
+                        <!-- <img src="https://cdn1.iconfinder.com/data/icons/social-distance-6/64/distance-social_distance-space-people-04-512.png" style="height: 20px;vertical-align: middle;"> -->
+                                <!-- make an avatar-->
+                            <img src="https://m.media-amazon.com/images/M/MV5BZGJiNmM1NDctNWUxYS00YzE4LWJjNTgtYTJhYzE0NjFmMTMwXkEyXkFqcGdeQXVyNTAyODkwOQ@@._V1_.jpg"
+                            class="myimg" />
+                            <style>.myimg{
+                            width:50px;
+                            height:50px;
+                            object-fit:cover;
+                            border-radius:50%;
+                            padding-left: 0px; 
+                            font-size:54px
+                            }
+                            .notifications1{
+                                font-size: 40px;
+                                color: #ffffff;
+                                width:40px;
+                                height:40px;
+                            
+                            }
+
+                            </style>
+
+                            <!-- <div class="notifications1">
+                                <a href="#" class="fa fa-bell fa-4x" ></a>
+                            
+                            
+                            
+                            </div> -->
+                            <i style="padding-left:25px; font-size:24px"class="far fa-bell"></i>
+                           
+
+                        
+
+                        <!-- SAFE SPACE -->
+
+                        
                     </span>
                 </a>
                 <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse"

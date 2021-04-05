@@ -123,8 +123,8 @@ class VideoCamera(object):
 
     
     def get_num_peeps(self):
-        while True:
-            return people_count
+        #while True:
+        return people_count
 
     def get_frame(self):
         global people_count
@@ -155,7 +155,7 @@ class VideoCamera(object):
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             camOn = not camOn
-            cv2.imshow('Video', black_screen)
+            frame = black_screen
 
         if cv2.waitKey(1) & 0xFF == ord('q'):
             camOn = not camOn

@@ -44,12 +44,12 @@
 </nav> -->
 
 <div class="sidenav">
-  <a href="#" class="fa fa-home fa-4x" ></a>
+  <a href="/" class="fa fa-home fa-4x" ></a>
   <!-- <a href="#" class="fa fa-paper-plane fa-3x"></a>
   <a href="#" class="fa fa-paragraph fa-3x"></a> -->
   <a href="#"class="fas fa-chart-bar"></a>
-  <a href="#" class="fas fa-cog"></a>
-  <a href="#" span class="fas fa-sign-out-alt fa-4x" style="padding-top: 450px;"></a>
+  <a href="/settings" class="fas fa-cog"></a>
+  <a href="/logout" span class="fas fa-sign-out-alt fa-4x" style="padding-top: 450px;"></a>
 
 
 
@@ -102,12 +102,12 @@
         </style>
 
       <!-- <i class="txtbob">Bob's burgers</i> -->
-      <h1 class="txtbob"> Bob's burgers    </h1>
+      <h1 class="txtbob"> Tea Shop    </h1>
 
 
 
       </span>
-      
+      <br>
            
       <b style="margin-top: 15px;">1531 backerfield drive, Kingston, Ont, Canada, P6A 5K6</b>
     </div>
@@ -121,7 +121,14 @@
 
 <div class="container" align="left" style="padding-left:30px;padding-top: 20px;">
 
-  <h3> Room list and status</h3>
+  <!--<h3> Room list and status</h3>-->
+
+  <table >
+    <tr>
+      <td><h3> Room list and status</h3></td>
+      <td><a href="/create_room"class="fas fa-plus fa-2x" style="padding-left: 70px; padding-bottom: 30px;"></a></td>
+    </tr>
+  </table>
 
   <table >
     <tr>
@@ -238,7 +245,10 @@
 {% block RoomInfo %}
 
 <h1 style="padding-left:40px; padding-top: 20px;">Main Room</h1>
-<h4 style="padding-left:40px">Size: 20' x 20'</h4>
+
+<div class="form-group" style="padding-left:40px;">
+  <input class="form-control" name="email" id="email" value="Size: 2 x 2 meters" style="width: 150px;">
+</div>
 
 {% endblock %}
 
@@ -246,13 +256,18 @@
 {% block MaxCapacity %}
 
 <h1 style="padding-top: 20px;">Max Capacity</h1>
-<h4>1</h4>
+<h4>5</h4>
 
 {% endblock %}
 
 {% block CurrentOccupation %}
 
-<h1 style="padding-top: 20px;">Current</h1>
+<br>
+<h1>Current Occupation</h1>
+
+<!--<iframe frameborder="0" noresize="noresize"
+     style='background: transparent; width: 100%; height:100%;' src="{{ url_for('num_people')}}"></iframe>-->
+
 <h4>2</h4>
 
 {% endblock %}
@@ -263,8 +278,9 @@
 <!---<h2>Number of people in the rooom:</h2>
 <b id="big" class="center" src="{{ url_for('num_people') }}"></b>-->
 
-<!-- <img id="bg" align="center" src="{{ url_for('video_feed') }}" >  -->
-<img id="bg"  src="{{ url_for('video_feed') }} " style="padding-left:40px" > 
+<!-- <img id="bg" align="center" src="{{ url_for('video_feed') }}" > 
+<div class="container" align="left">-->
+  <img id="bg" align="center" src="{{ url_for('video_feed') }} " style="padding-left:40px" > 
 
 <br>
 <br>

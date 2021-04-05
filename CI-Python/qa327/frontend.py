@@ -6,6 +6,7 @@ import qa327.covid_tracker_v3 as peeps
 import qa327.backend as bn
 import datetime
 import re
+import time
 
 
 people_count = 1
@@ -65,20 +66,22 @@ def gen(camera):
 
 @app.route('/video_feed')
 def video_feed():
+    print("hello")
     return Response(gen(peeps.VideoCamera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 def get_num_people(camera):
-    #global people_count
+    global people_count
     while True:
-        print(people_count)
+        time.sleep(1)
         #people_count = camera.get_num_peeps()
-        return people_count
+        yield str(people_count) + '<br/>\r\n\r\n'
+            
 
 @app.route('/num_people')
 def num_people():
-    print("HELOOO THEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe")
+    return Response(get_num_people(peeps.VideoCamera()), mimetype='text/html')
 
 
 
@@ -458,9 +461,21 @@ def authenticate(inner_function):
     return wrapped_inner
 
 
-@app.route('/create_room', methods=['GET'])
+@app.route('/settings', methods=['GET'])
 @authenticate
 def create_room_get(user):
+    """
+    Renders the login page for the user
+
+    :return: The login page to be rendered
+
+    """
+    return render_template('settings.html')
+
+
+@app.route('/create_room', methods=['GET'])
+@authenticate
+def settings_get(user):
     """
     Renders the login page for the user
 

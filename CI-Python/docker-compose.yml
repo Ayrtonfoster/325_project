@@ -9,8 +9,8 @@ services:
     ports:
       - "8081:8081"
     environment:
-      - db_string=mysql+pymysql://root:root@seetgeek-db/qa327
-    command:  ["./wait-for-it.sh", "seetgeek-db:3306", "--strict" , "--timeout=300", "--", "python", "-m", "qa327"]
+      - db_string=mysql+pymysql://root:root@seetgeek-db/q325
+    command:  ["./wait-for-it.sh", "seetgeek-db:3306", "--strict" , "--timeout=300", "--", "python", "-m", "q325"]
     networks:
       - seetgeek-site
   

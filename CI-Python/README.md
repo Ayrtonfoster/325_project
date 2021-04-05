@@ -14,7 +14,7 @@ To run the application (make sure you have a python environment of 3.5+)
 
 ```
 $ pip install -r requirements.txt
-$ python -m qa327
+$ python -m q325
 ```
 
 You can register, login, logout from the web application. Data will be saved to a `db.sqlite` file under your working directory.
@@ -38,9 +38,9 @@ Folder structure:
 │   └── workflows
 │       └── pythonapp.yml ======> CI workflow for python (trigger test for commits/pull-requests)
 │
-├── qa327
+├── q325
 │   ├── __init__.py.  ==========> we define our flask app instance here
-│   ├── __main__.py   ==========> trigger by 'python -m qa327'
+│   ├── __main__.py   ==========> trigger by 'python -m q325'
 │   ├── backend.py    ==========> defines backend logic
 │   ├── frontend.py   ==========> defines frontend logic
 │   ├── models.py.    ==========> defines all the data models
@@ -49,7 +49,7 @@ Folder structure:
 │       ├── index.html
 │       ├── login.html
 │       └── register.html
-├── qa327_test
+├── q325_test
 │   ├── __init__.py
 │   ├── backend
 │   ├── conftest.py
@@ -61,7 +61,7 @@ Folder structure:
 └── requirements.txt  ====================> python dependencies, a MUST
 ```
 
-qa327 is the module that contains the application, and qa327_test is the module that contains the testing code for qa327
+q325 is the module that contains the application, and q325_test is the module that contains the testing code for q325
 
 ![image](https://user-images.githubusercontent.com/8474647/94135588-ad25a700-fe31-11ea-8839-59699a9608db.png)
 
@@ -69,9 +69,9 @@ qa327 is the module that contains the application, and qa327_test is the module 
 
 In order to understand every single bit of this template, first please try running it, registering a user, logging in, and logging out to develop a general sense of what is going on. 
 
-Next, try to read the python code from the entry point, starting from `qa327.__main__` file. It imports a pre-configured flask application instance from `qa327.__init__.py`. In the init file, `SECRET_KEY` is used to encrypt the session data stored in the client's browser, so one cannot just tell by intercepting your traffice. Usually this shouldn't be hardcoded and read from environment variable during deployment. For the seak of convinience, we hard-code the secret key here as a demo.
+Next, try to read the python code from the entry point, starting from `q325.__main__` file. It imports a pre-configured flask application instance from `q325.__init__.py`. In the init file, `SECRET_KEY` is used to encrypt the session data stored in the client's browser, so one cannot just tell by intercepting your traffice. Usually this shouldn't be hardcoded and read from environment variable during deployment. For the seak of convinience, we hard-code the secret key here as a demo.
 
-When the user type the link `localhost:8081` in the browser, the browser will send a request to the server. The client can type different routes such as `localhost:8081\login` or `localhost:8081\register` with different request methods such as `GET` or `POST`. These different routes will be handled by different python code fragments. And those code fragments are all defined in the `qa327.frontend.py` file. For example:
+When the user type the link `localhost:8081` in the browser, the browser will send a request to the server. The client can type different routes such as `localhost:8081\login` or `localhost:8081\register` with different request methods such as `GET` or `POST`. These different routes will be handled by different python code fragments. And those code fragments are all defined in the `q325.frontend.py` file. For example:
 
 ```python
 @app.route('/register', methods=['GET'])
@@ -80,7 +80,7 @@ def register_get():
     return render_template('register.html', message='')
 ```
 
-The first line here defines that if a client request `localhost:8081\register` with the 'GET' method, this fragment of code should handle that request and return the corresponding HTML code to be rendered at the client side. For example, if the user type `localhost:8081\register` on his/her browswer and hit enter, then the browser will send a GET request. The above fragment of code recieve the request, and the last line looks up for a HTMP template named `register.html` in the `qa327.templates` folder.
+The first line here defines that if a client request `localhost:8081\register` with the 'GET' method, this fragment of code should handle that request and return the corresponding HTML code to be rendered at the client side. For example, if the user type `localhost:8081\register` on his/her browswer and hit enter, then the browser will send a GET request. The above fragment of code recieve the request, and the last line looks up for a HTMP template named `register.html` in the `q325.templates` folder.
 ```html
 {% extends 'base.html' %}
 
@@ -190,7 +190,7 @@ It takes user email, name (for dispaly purpsoe), user entered password, and user
 
 ### Models
 
-When using a relational database, typically we interact with it using SQL language, which is not quite user friendly. Therefore we use another approach to avoid writing SQL language by defining objects that can be directly mapped into the database. In this example we use sqlite, which is simple file based database. By changing the application configuration in `__init__.py`, you can hood it up to other databases such as MySQL database. All these models we defined are in a single file `qa327.models.py`. Let's take a look at the user model:
+When using a relational database, typically we interact with it using SQL language, which is not quite user friendly. Therefore we use another approach to avoid writing SQL language by defining objects that can be directly mapped into the database. In this example we use sqlite, which is simple file based database. By changing the application configuration in `__init__.py`, you can hood it up to other databases such as MySQL database. All these models we defined are in a single file `q325.models.py`. Let's take a look at the user model:
 
 ```python
 class User(db.Model):
@@ -241,7 +241,7 @@ The testing will contain three parts (frontend testing, backend testing and inte
 Let's take a look at the file structure:
 
 ````
-├── qa327_test
+├── q325_test
 │   ├── __init__.py
 │   ├── conftest.py  ===================> defines fixture (run the web server)
 │   ├── frontend                ========> testing the front-end (without backend, using mocking)
@@ -325,9 +325,9 @@ class Registered(BaseCase):
 ```
 This one uses SeleniumBase API to control chrome browser. First we defined a class inherited from the BaseCase class, with the @pytest.mark.usefixtures('server') decoration (yes we need a live server running for this test case). Then all the test_xxx functions will be executed as a test case under this class. For this one, we have a test_register_login function. It means that we are going to test the registeration function. It first calls a register function, where the test case automatically fills in emails, passwords, and names into corresponding HTML elements using CSS selector. In this case, just using an ID selector. For #email it will look for element that has an attribute id="email". self.type means typing into. Then, the test case clicks the submit button. After registeration, it tries to login using the same credential, and verifies if the weclome header is correctly displayed.
 
-This test case runs both the frontend and the backend at the same time, as you can tell from the qa327 folder, the registration backend has been implemented. This is what we suppose to do in the **last assignment**. But before that, we will be only **testing the frontend and backend separately**.
+This test case runs both the frontend and the backend at the same time, as you can tell from the q325 folder, the registration backend has been implemented. This is what we suppose to do in the **last assignment**. But before that, we will be only **testing the frontend and backend separately**.
 
-Lets take a look at the frontend testing code, where we are supposed to run the frontend **without the backend**. How can we do it? We use a method called mocking. Lets take a look at the file `test_registraion.py` under the `qa327_test/frontend` folder:
+Lets take a look at the frontend testing code, where we are supposed to run the frontend **without the backend**. How can we do it? We use a method called mocking. Lets take a look at the file `test_registraion.py` under the `q325_test/frontend` folder:
 
 ```
 │   ├── frontend                ========> testing the front-end (without backend, using mocking)
@@ -354,8 +354,8 @@ First, this file define a user object and a list of tickets object. Since we don
 
 class FrontEndHomePageTest(BaseCase):
 
-    @patch('qa327.backend.get_user', return_value=test_user)
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    @patch('q325.backend.get_user', return_value=test_user)
+    @patch('q325.backend.get_all_tickets', return_value=test_tickets)
     def test_login_success(self, *_):
         """
         This is a sample front end unit test to login to home page
@@ -387,8 +387,8 @@ class FrontEndHomePageTest(BaseCase):
         self.assert_element("#tickets div h4")
         self.assert_text("t1 100", "#tickets div h4")
 
-    @patch('qa327.backend.get_user', return_value=test_user)
-    @patch('qa327.backend.get_all_tickets', return_value=test_tickets)
+    @patch('q325.backend.get_user', return_value=test_user)
+    @patch('q325.backend.get_all_tickets', return_value=test_tickets)
     def test_login_password_failed(self, *_):
         """ Login and verify if the tickets are correctly listed."""
         # open login page
@@ -409,7 +409,7 @@ The tests will only test the frontend portion of the program, by patching the ba
 specfic values. For example:
 
 ```python
-@patch('qa327.backend.get_user', return_value=test_user)
+@patch('q325.backend.get_user', return_value=test_user)
 ```
 
 Will patch the backend `get_user` function (within the scope of the current test case)

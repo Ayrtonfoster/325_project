@@ -8,7 +8,7 @@ Mocking:
 
 Actions:
  - open /logout (invalidate previous login)
- - run website startup with `python -m qa327`
+ - run website startup with `python -m q325`
  - check URL contains /login using `self.get_current_url()` from Selenium
 #### Test Case R1.1.2 If the user hasn't logged in, show the login page
 Test Data: None
@@ -17,7 +17,7 @@ Mocking:
  
 Actions:
  - open /logout (invalidate previous login)
- - run website startup with `python -m qa327`
+ - run website startup with `python -m q325`
  - open /
  - check URL contains /login using `self.get_current_url()` from Selenium
 #### Test Case R1.2.1 the login page has a message that by default says 'please login'
@@ -26,7 +26,7 @@ Mocking:
  - Mock backend.get_user to check if user has previously logged in
 
 Actions:
- - run website startup with `python -m qa327`
+ - run website startup with `python -m q325`
  - open /login
  - Check `#message` element exists and contains message 'please login'
 
@@ -77,7 +77,7 @@ Test Data: None
 Mocking: None
 Actions:
 - open /logout (invalidate previous login)
- - run website startup with `python -m qa327`
+ - run website startup with `python -m q325`
  - check URL contains /login using `self.get_current_url()` from Selenium
  - validate that the current URL contains two elements `#email` and `#password`
  - validate that elements `#email` and `#password` are both input elements
